@@ -9,6 +9,7 @@ from .views import (
     profile_edit,
 )
 
+app_name = 'accounts'
 urlpatterns = [
     url(r'^$', main_page, name="list"),
     url(r'^search/', search, name="search"),

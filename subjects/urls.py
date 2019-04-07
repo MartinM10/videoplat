@@ -3,6 +3,7 @@ from django.conf.urls import url
 from .views import (
     subject_detail, subject_list)
 
+app_name = 'subjects'
 urlpatterns = [
     url(r'^$', subject_list, name="subjects_list"),
     # url(r'^search/', search, name="search"),

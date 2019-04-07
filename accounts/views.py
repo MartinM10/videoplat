@@ -44,7 +44,7 @@ def profile_edit(request, slug=None):
 def profile_detail(request, slug=None):
     profile_instance = get_object_or_404(UserProfile, slug=slug)
     user_ = None
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         user_ = get_object_or_404(UserProfile, user=request.user)
     form = CommentForm(request.POST or None)
     if form.is_valid():
@@ -89,7 +89,7 @@ def about(request):
 
 
 def search(request):
-    if (request.user.is_authenticated()):
+    if request.user.is_authenticated:
         query = request.GET.get("search")
         user_ = get_object_or_404(UserProfile, user=request.user)
         print(query)
@@ -146,7 +146,7 @@ def main_page(request):
     user = request.user
     comments = None
     user_ = None
-    if user.is_authenticated():
+    if user.is_authenticated:
         user_ = get_object_or_404(UserProfile, user=request.user)
         query_list_users = UserProfile.objects.filter(interests__icontains=user_.interests).exclude(user=request.user)
         comments = Comment.objects.filter(user__in=(user_.followers.all()))
@@ -173,7 +173,7 @@ class CommentLikeToggle(RedirectView):
         profile_instance = get_object_or_404(UserProfile, user=comment_instance.user)
         url_ = profile_instance.get_absolute_url()
         user = self.request.user
-        if user.is_authenticated():
+        if user.is_authenticated:
             if user in comment_instance.likes.all():
                 comment_instance.likes.remove(user)
             else:
@@ -185,7 +185,7 @@ class CommentLikeToggle(RedirectView):
 
 class FollowToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             slug = self.kwargs.get("slug")
             print(slug)
             profile_instance = get_object_or_404(UserProfile, slug=slug)
@@ -205,7 +205,7 @@ class FollowToggle(RedirectView):
 # Login & Logout & Registration Functions from Course try-django 1.9 not from me
 
 def login_view(request):
-    if (not request.user.is_authenticated()):
+    if not request.user.is_authenticated:
         # next = request.GET.get('next')
         title = "Login"
         form = UserLoginForm(request.POST or None)
@@ -223,7 +223,7 @@ def login_view(request):
 
 
 def register_view(request):
-    if (not request.user.is_authenticated):
+    if not request.user.is_authenticated:
         # next = request.GET.get('next')
         title = "Register"
         form = UserRegisterForm(request.POST or None)
