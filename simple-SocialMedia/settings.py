@@ -73,6 +73,8 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = "accounts.UserProfile"
+
 WSGI_APPLICATION = 'simple-SocialMedia.wsgi.application'
 
 # Database

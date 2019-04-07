@@ -18,8 +18,8 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = [
             "slug",
-            "first",
-            "last",
+            "first_name",
+            "last_name",
             "interests",
             "image",
         ]

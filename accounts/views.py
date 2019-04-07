@@ -45,7 +45,7 @@ def profile_detail(request, slug=None):
     profile_instance = get_object_or_404(UserProfile, slug=slug)
     user_ = None
     if request.user.is_authenticated:
-        user_ = get_object_or_404(UserProfile, user=request.user)
+        user_ = request.user
     form = CommentForm(request.POST or None)
     if form.is_valid():
         content = form.cleaned_data.get("content")
@@ -91,16 +91,16 @@ def about(request):
 def search(request):
     if request.user.is_authenticated:
         query = request.GET.get("search")
-        user_ = get_object_or_404(UserProfile, user=request.user)
+        user_ = request.user
         print(query)
         query_list = None
         if query:
 
             query_list = UserProfile.objects.filter(
-                Q(user__username__icontains=query) |
+                Q(username__icontains=query) |
                 Q(interests__icontains=query) |
-                Q(user__first_name__icontains=query) |
-                Q(user__last_name__icontains=query)
+                Q(first_name__icontains=query) |
+                Q(last_name__icontains=query)
             ).distinct()
             if (query_list):
                 context = {
@@ -145,18 +145,16 @@ def main_page(request):
     # query_list_subjects = None
     user = request.user
     comments = None
-    user_ = None
     if user.is_authenticated:
-        user_ = get_object_or_404(UserProfile, user=request.user)
-        query_list_users = UserProfile.objects.filter(interests__icontains=user_.interests).exclude(user=request.user)
-        comments = Comment.objects.filter(user__in=(user_.followers.all()))
+        query_list_users = UserProfile.objects.filter(interests__icontains=user.interests).exclude(pk=user.pk)
+        comments = Comment.objects.filter(user__in=(user.followers.all()))
         # query_list_subjects = Subject.objects.all()
     # print(query_list_subjects)
 
     print(query_list_users)
     content = {
         "comments": comments,
-        "user_": user_,
+        "user_": user,
         'form': form,
         "users": query_list_users,
         "all_users": query_list_users_all,
@@ -170,9 +168,8 @@ class CommentLikeToggle(RedirectView):
         comment_id = self.kwargs.get("comment_id")
         print(comment_id)
         comment_instance = get_object_or_404(Comment, id=comment_id)
-        profile_instance = get_object_or_404(UserProfile, user=comment_instance.user)
-        url_ = profile_instance.get_absolute_url()
         user = self.request.user
+        url_ = user.get_absolute_url()
         if user.is_authenticated:
             if user in comment_instance.likes.all():
                 comment_instance.likes.remove(user)
@@ -188,15 +185,14 @@ class FollowToggle(RedirectView):
         if self.request.user.is_authenticated:
             slug = self.kwargs.get("slug")
             print(slug)
-            profile_instance = get_object_or_404(UserProfile, slug=slug)
-            url_ = profile_instance.get_absolute_url()
-            user_ = get_object_or_404(UserProfile, user=self.request.user)
-            if profile_instance in user_.followers.all():
-                user_.followers.remove(profile_instance)
+            user = self.request.user
+            url_ = user.get_absolute_url()
+            if user in user.followers.all():
+                user.followers.remove(user)
             else:
-                user_.followers.add(profile_instance)
-            print(user_)
-            print(user_.followers.all())
+                user.followers.add(user)
+            print(user)
+            print(user.followers.all())
             return url_
         else:
             return "/login"
