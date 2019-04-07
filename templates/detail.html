@@ -6,12 +6,12 @@
 {% endblock %}
 {% block content %}
     <div>
-        <h1>{{ profile.user.username}} Profile
+        <h1>{{ profile.username}} Profile
         {% include "items/follow_button.html" %}
         </h1>
     </div>
     <div>
-    {% if request.user == profile.user %}
+    {% if request.user == profile %}
         <div class="row">
         <div class="col-sm-9">
             <form method="POST" action=".">

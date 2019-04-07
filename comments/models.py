@@ -36,8 +36,8 @@ class Comment(models.Model):
         return self.likes.all()
 
     def get_user_object(self):
-        return get_object_or_404(UserProfile, user=self.user)
+        return self.user
 
     def get_image_url(self):
-        user_ = get_object_or_404(UserProfile, user=self.user)
+        user_ = self.user
         return user_.image.url
