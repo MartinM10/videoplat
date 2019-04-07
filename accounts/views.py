@@ -92,7 +92,7 @@ def search(request):
     if (request.user.is_authenticated()):
         query = request.GET.get("search")
         user_ = get_object_or_404(UserProfile, user=request.user)
-        print query
+        print(query)
         query_list = None
         if query:
 
@@ -131,7 +131,7 @@ def search(request):
 
                     }
                     return render(request, "search_videos.html", context)
-        print query_list
+        print(query_list)
 
 
     else:
@@ -151,9 +151,9 @@ def main_page(request):
         query_list_users = UserProfile.objects.filter(interests__icontains=user_.interests).exclude(user=request.user)
         comments = Comment.objects.filter(user__in=(user_.followers.all()))
         # query_list_subjects = Subject.objects.all()
-    # print query_list_subjects
+    # print(query_list_subjects)
 
-    print query_list_users
+    print(query_list_users)
     content = {
         "comments": comments,
         "user_": user_,
@@ -168,7 +168,7 @@ def main_page(request):
 class CommentLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         comment_id = self.kwargs.get("comment_id")
-        print (comment_id)
+        print(comment_id)
         comment_instance = get_object_or_404(Comment, id=comment_id)
         profile_instance = get_object_or_404(UserProfile, user=comment_instance.user)
         url_ = profile_instance.get_absolute_url()
@@ -187,7 +187,7 @@ class FollowToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated():
             slug = self.kwargs.get("slug")
-            print (slug)
+            print(slug)
             profile_instance = get_object_or_404(UserProfile, slug=slug)
             url_ = profile_instance.get_absolute_url()
             user_ = get_object_or_404(UserProfile, user=self.request.user)
@@ -195,8 +195,8 @@ class FollowToggle(RedirectView):
                 user_.followers.remove(profile_instance.user)
             else:
                 user_.followers.add(profile_instance.user)
-            print (user_.user)
-            print (user_.followers.all())
+            print(user_.user)
+            print(user_.followers.all())
             return url_
         else:
             return "/login"

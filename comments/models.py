@@ -13,11 +13,11 @@ from accounts.models import UserProfile
 # Create your models here.
 
 class Comment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, default=1)
     content = models.TextField(null=False, blank=False)
     added = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey("self", null=True, blank="True")
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank="True")
+    likes = models.ManyToManyField('accounts.UserProfile', blank=True,
                                    related_name="comment_likes")
 
     class Meta:

@@ -17,12 +17,12 @@ def upload_location(instance, filename):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    first = models.CharField(max_length=10, default="")
-    last = models.CharField(max_length=10, default="")
+    first = models.CharField(max_length=100, default="")
+    last = models.CharField(max_length=100, default="")
 
-    interests = models.CharField(max_length=100, default="")
+    interests = models.CharField(max_length=140, default="")
 
     slug = models.SlugField(unique=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
@@ -34,11 +34,11 @@ class UserProfile(models.Model):
         height_field='height_field',
         width_field='width_field',
     )
-    height_field = models.IntegerField(default=0)
-    width_field = models.IntegerField(default=0)
+    height_field = models.IntegerField(default=0, null=True, blank=True)
+    width_field = models.IntegerField(default=0, null=True, blank=True)
 
-    followers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
-                                       related_name="followers")
+    followers = models.ManyToManyField('self', blank=True, related_name="followers")
+    subjects = models.ManyToManyField('subjects.Subject', null=True, related_name="users")
 
     def __str__(self):
         return self.user.username
@@ -74,7 +74,7 @@ def create_profile(sender, instance, **kwargs):
         user_profile = UserProfile.objects.create(user=instance)
         user_profile.slug = create_slug(user_profile)
         user_profile.save()
-        print (user_profile.slug)
+        print(user_profile.slug)
 
 
 post_save.connect(create_profile, sender=User)

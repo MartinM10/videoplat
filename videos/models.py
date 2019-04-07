@@ -14,16 +14,15 @@ from subjects.models import Subject
 
 
 class Video(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, default=1)
     title = models.CharField(max_length=200, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     file = models.FileField(upload_to='video_folder/')
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
     watched = models.BooleanField(default=False)
-    parent = models.ForeignKey("self", null=True, blank="True")
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
-                                   related_name="video_likes")
+    parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
+    likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_liked")
     views = models.BigIntegerField(default=0)
 
     class Meta:
@@ -54,19 +53,13 @@ class Video(models.Model):
 
 
 class UsersVideos(models.Model):
-    user = models.ForeignKey(UserProfile, models.CASCADE)
-    video = models.ForeignKey(Video, models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="users_videos")
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="users_videos")
     seconds_watched = models.IntegerField(default=0)
-    comment = models.ManyToManyField(Comment, blank=True, related_name="video_coments")
-    timestamp = models.DateTimeField(auto_now=True)
-
-    '''
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
-                                   related_name="video_likes")
-    '''
+    comments = models.ManyToManyField(Comment, blank=True, related_name="video_comments")
+    created_on = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'users_videos'
         unique_together = (('user', 'video'),)
 
     def __str__(self):
@@ -78,7 +71,6 @@ class SubjectsVideos(models.Model):
     video = models.ForeignKey(Video, models.CASCADE)
 
     class Meta:
-        db_table = 'subjects_videos'
         unique_together = (('subject', 'video'),)
 
     def get_name_subject(self):

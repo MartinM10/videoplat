@@ -15,7 +15,6 @@ class Subject(models.Model):
     # related_name="subject_videos")
 
     class Meta:
-        db_table = 'subject'
         ordering = ['-added']
 
     def __str__(self):
@@ -24,24 +23,22 @@ class Subject(models.Model):
 
 '''
 class SubjectsVideos(models.Model):
-    subject = models.ForeignKey(Subject, models.CASCADE)
-    video = models.ForeignKey(Video, models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    video = models.ForeignKey(Video, on_delete=models.CASCADE)
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
 
     # tema = models.CharField(max_length=45, blank=True, null=True)
     # examen = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        db_table = 'subject_videos'
+        unique_together = (('subject', 'video'),)
+        ordering = ['-added']
+
+    def __str__(self):
+        return '{}' " - " '{}'.format(self.subject, self.video)
 '''
-
-
-class Meta:
-    db_table = 'subject_videos'
-    unique_together = (('subject', 'video'),)
-    ordering = ['-added']
-
-
-def __str__(self):
-    return '{}' " - " '{}'.format(self.subject, self.video)
 
 
 class University(models.Model):
@@ -55,7 +52,6 @@ class University(models.Model):
     edited = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'university'
         ordering = ['-added']
 
     def __str__(self):
@@ -68,16 +64,15 @@ class Center(models.Model):
     phone = models.CharField(max_length=50, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=True, null=True)
     rector = models.CharField(max_length=50, blank=True, null=True)
-    university = models.ForeignKey(University, models.CASCADE)  # Field name made lowercase.
+    university = models.ForeignKey(University, on_delete=models.CASCADE)  # Field name made lowercase.
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'center'
         ordering = ['-added']
 
     def __str__(self):
-        return self.nombre
+        return self.name
 
 
 class Degree(models.Model):
@@ -87,40 +82,40 @@ class Degree(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
 
+    # Relationships
+    center = models.ForeignKey(Center, blank=True, null=True, on_delete=models.CASCADE)
+
     class Meta:
-        db_table = 'degree'
         ordering = ['-added']
 
     def __str__(self):
         return self.name
 
 
-class CentersDegrees(models.Model):
-    center = models.ForeignKey(Center, models.CASCADE)
-    degree = models.ForeignKey(Degree, models.CASCADE)
-    added = models.DateTimeField(auto_now_add=True)
-    edited = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = 'centers_degrees'
-        unique_together = (('center', 'degree'),)
-        ordering = ['-added']
-
-    def __str__(self):
-        return '{}' " - " '{}'.format(self.center, self.degree)
+# class CentersDegrees(models.Model):
+#     center = models.ForeignKey(Center, on_delete=models.CASCADE)
+#     degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
+#     added = models.DateTimeField(auto_now_add=True)
+#     edited = models.DateTimeField(auto_now=True)
+#
+#     class Meta:
+#         db_table = 'centers_degrees'
+#         unique_together = (('center', 'degree'),)
+#         ordering = ['-added']
+#
+#     def __str__(self):
+#         return '{}' " - " '{}'.format(self.center, self.degree)
 
 
 class DegreesSubjects(models.Model):
-    degree = models.ForeignKey(Degree, models.CASCADE)
-    subject = models.ForeignKey(Subject, models.CASCADE)
+    degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     academic_year = models.CharField(max_length=50, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'degrees_subjects'
         unique_together = (('degree', 'subject'),)
-        ordering = ['-added']
 
     def __str__(self):
         return '{}' " - " '{}'.format(self.degree, self.subject)
@@ -137,7 +132,7 @@ class Video(models.Model):
     subido = models.DateTimeField(auto_now_add=True)
     modificado = models.DateTimeField(auto_now=True)
 
-    # propietario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='propietario')  # Field name made lowercase.
+    # propietario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, db_column='propietario')  # Field name made lowercase.
 
     class Meta:
         db_table = 'video'
@@ -158,16 +153,15 @@ class Usuario(AbstractUser):
 '''
 
 
-class UsersSubjects(models.Model):
-    user = models.ForeignKey(UserProfile, models.CASCADE)
-    subject = models.ForeignKey(Subject, models.CASCADE)
-    added = models.DateTimeField(auto_now_add=True)
-    edited = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = 'users_subjects'
-        unique_together = (('user', 'subject'),)
-        ordering = ['-added']
-
-    def __str__(self):
-        return '{}' " - " '{}'.format(self.user, self.subject)
+# class UsersSubjects(models.Model):
+#     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+#     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+#     added = models.DateTimeField(auto_now_add=True)
+#     edited = models.DateTimeField(auto_now=True)
+#
+#     class Meta:
+#         unique_together = (('user', 'subject'),)
+#         ordering = ['-added']
+#
+#     def __str__(self):
+#         return '{}' " - " '{}'.format(self.user, self.subject)
