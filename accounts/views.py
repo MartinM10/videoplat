@@ -44,7 +44,7 @@ def profile_edit(request, slug=None):
 def profile_detail(request, slug=None):
     profile_instance = get_object_or_404(UserProfile, slug=slug)
     user_ = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user_ = get_object_or_404(UserProfile, user=request.user)
     form = CommentForm(request.POST or None)
     if form.is_valid():

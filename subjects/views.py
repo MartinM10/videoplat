@@ -15,7 +15,7 @@ from videos.models import SubjectsVideos
 
 '''
 def logged_in(request):
-    if 'user' in request.session and request.user.is_authenticated():
+    if 'user' in request.session and request.user.is_authenticated:
         subjects = Subject.objects.all()
         return render(request, 'main.html', {'subjects': subjects})
     if request.method == "POST":
