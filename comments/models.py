@@ -16,7 +16,7 @@ class Comment(models.Model):
     user = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, default=1)
     content = models.TextField(null=False, blank=False)
     added = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank="True")
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True,
                                    related_name="comment_likes")
 

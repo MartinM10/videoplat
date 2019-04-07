@@ -51,7 +51,7 @@ def profile_detail(request, slug=None):
         content = form.cleaned_data.get("content")
         parent = None
         new_comment = Comment.objects.create(
-            user=request.user,
+            user=profile_instance,
             content=content,
             parent=parent,
         )
@@ -65,7 +65,7 @@ def profile_detail(request, slug=None):
 
         return HttpResponseRedirect(profile_instance.get_absolute_url())
 
-    qs_comments = Comment.objects.filter(user=profile_instance.user, parent=None)
+    qs_comments = Comment.objects.filter(user=profile_instance, parent=None)
     content = {
         "profile": profile_instance,
         'form': form,
@@ -191,11 +191,11 @@ class FollowToggle(RedirectView):
             profile_instance = get_object_or_404(UserProfile, slug=slug)
             url_ = profile_instance.get_absolute_url()
             user_ = get_object_or_404(UserProfile, user=self.request.user)
-            if profile_instance.user in user_.followers.all():
-                user_.followers.remove(profile_instance.user)
+            if profile_instance in user_.followers.all():
+                user_.followers.remove(profile_instance)
             else:
-                user_.followers.add(profile_instance.user)
-            print(user_.user)
+                user_.followers.add(profile_instance)
+            print(user_)
             print(user_.followers.all())
             return url_
         else:
