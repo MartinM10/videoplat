@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {{ block.super }}
+{% endblock %}
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        Title:<br>
+        <input type="text" name="title">
+        <br>
+
+        Subject:<br>
+
+        <!-- Campo de texto combinado con lista de opciones -->
+        <input type="text" list="items">
+        <!-- Lista de opciones -->
+        <datalist id="items">
+            {% for subject in subjects %}
+                <option>{{ subject.name }}</option>
+            {% endfor %}
+        </datalist>
+        <br>
+
+        Video:<br>
+        <input type="file" name="file">
+        <br>
+        <button type="submit">Upload</button>
+    </form>
+{% endblock %}

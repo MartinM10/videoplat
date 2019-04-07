@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if not request.user.is_authenticated %}
+        <div class="alert alert-danger col-sm-11">
+            <h4>YOU SHOULD <strong>
+                <a href="{% url "login" %}"> Sign In</a> or
+                <a href="{% url "register" %}">Sing Up</a>
+            </strong>First to see your account</h4>
+        </div>
+        <div class="alert alert-info col-sm-11">
+            <h4>After that, You Can meet People like : </h4>
+        </div>
+
+    {% else %}
+
+        {% for subject in subjects %}
+            <h1>{{ subject.name }}</h1>
+
+            {% for video in videos %}
+
+
+                <h3> {{ video.video.title }} </h3>
+
+                <video width="720" height="480" controls="controls">
+                    <source src={{ video.video.file.url }} type="video/mp4"/>
+                </video>
+                <div>
+                    {{ video.video.views }} views
+                </div>
+
+                <h4>Description: {{ video.video.description }} </h4>
+
+                <h4>{{ video.video.likes }}</h4>
+
+
+
+                {% if video.video.user.image %}
+                    <img style="height: 60px; width:60px; " src="{{ video.video.user.image.url }}">
+                {% else %}
+                    <img style="height: 60px; width:60px; " class="img-responsive"
+                         src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+
+
+                {% endif %}
+                <h4>Owner: {{ video.video.user }}</h4>
+
+            {% endfor %}
+
+        {% endfor %}
+    {% endif %}
+{% endblock %}

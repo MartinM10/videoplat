@@ -1,0 +1,25 @@
+{% block content %}
+    {% if not request.user.is_authenticated %}
+        <div class="alert alert-danger col-sm-11">
+            <h4>YOU SHOULD <strong>
+                <a href="{% url "login" %}"> Sign In</a> or
+                <a href="{% url "register" %}">Sing Up</a>
+            </strong>First to see your account</h4>
+        </div>
+        <div class="alert alert-info col-sm-11">
+            <h4>After that, You Can meet People like : </h4>
+        </div>
+
+    {% else %}
+        <h1>Subject: </h1>
+        {% for subject in subjects %}
+            <h2>{{ subject.name }}</h2>
+            {% for video2 in videos2 %}
+
+                {% include "video2.html" %}
+
+            {% endfor %}
+
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% block content %}
+    <h1>Videos</h1>
+    {% for video2 in videos2 %}
+
+
+        <h3> {{ video2.title }} </h3>
+
+        <video width="720" height="480" controls="controls">
+            <source src={{ video2.file.url }} type="video/mp4"/>
+        </video>
+        <div>
+            {{ video2.views }} views
+        </div>
+
+        <h4>Description: {{ video2.description }} </h4>
+
+        <h4>{{ video2.likes }}</h4>
+
+
+
+        {% if video2.user.image %}
+            <img style="height: 60px; width:60px; " src="{{ video2.user.image.url }}">
+        {% else %}
+            <img style="height: 60px; width:60px; " class="img-responsive"
+                 src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+
+
+        {% endif %}
+        <h4>Owner: {{ video2.user }}</h4>
+        {% include "items/comments.html" %}
+
+    {% endfor %}
+
+
+{% endblock %}
