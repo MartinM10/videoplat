@@ -66,10 +66,15 @@ def profile_detail(request, slug=None):
         return HttpResponseRedirect(profile_instance.get_absolute_url())
 
     qs_comments = Comment.objects.filter(user=profile_instance, parent=None)
+    qs_videos = Video.objects.filter(user=profile_instance)
+    qs_videos_comments = UsersVideos.objects.filter(video__title__icontains=qs_videos)
+
     content = {
         "profile": profile_instance,
         'form': form,
         "comments": qs_comments,
+        "videos2": qs_videos,
+        "video_comments": qs_videos_comments,
         "user_": user_,
     }
     return render(request, "detail.html", content)
@@ -98,7 +103,7 @@ def search(request):
 
             query_list = UserProfile.objects.filter(
                 Q(username__icontains=query) |
-                Q(interests__icontains=query) |
+                # Q(interests__icontains=query) |
                 Q(first_name__icontains=query) |
                 Q(last_name__icontains=query)
             ).distinct()
@@ -146,7 +151,7 @@ def main_page(request):
     user = request.user
     comments = None
     if user.is_authenticated:
-        query_list_users = UserProfile.objects.filter(interests__icontains=user.interests).exclude(pk=user.pk)
+        query_list_users = UserProfile.objects.filter(subjects__name__icontains=user.subjects).exclude(pk=user.pk)
         comments = Comment.objects.filter(user__in=(user.followers.all()))
         # query_list_subjects = Subject.objects.all()
     # print(query_list_subjects)

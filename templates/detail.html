@@ -6,28 +6,27 @@
 {% endblock %}
 {% block content %}
     <div>
-        <h1>{{ profile.username}} Profile
-        {% include "items/follow_button.html" %}
+        <h1>{{ profile.username }} Profile
+            {% include "items/follow_button.html" %}
         </h1>
     </div>
     <div>
-    {% if request.user == profile %}
-        <div class="row">
-        <div class="col-sm-9">
-            <form method="POST" action=".">
-        {% csrf_token %}
-        {{form|crispy}}
-        <input type="submit" class="btn btn-primary" value="Post">
-         </form>
-        </div>
-        <div class="col-sm-3"></div>
-        </div>
-    {% endif %}
+        {% if request.user == profile %}
+            <div class="row">
+                <div class="col-sm-9">
+                    <form method="POST" action=".">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input type="submit" class="btn btn-primary" value="Post">
+                    </form>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        {% endif %}
 
-    {% include "items/comments.html" %}
-
-    <!-- old way -->
-    <!--
+        {% include "items/comments.html" %}
+        <!-- old way -->
+        <!--
         {% for comment in comments %}
                 <blockquote class="blockquote">
                     <p>{{ comment.content }}</p>
@@ -70,6 +69,9 @@
 
                 </blockquote>
     {% endfor %}
+
     -->
     </div>
+    {% include "video2.html" %}
+
 {% endblock %}

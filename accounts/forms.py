@@ -20,7 +20,7 @@ class UserProfileForm(forms.ModelForm):
             "slug",
             "first_name",
             "last_name",
-            "interests",
+            #"interests",
             "image",
         ]
 

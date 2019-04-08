@@ -38,7 +38,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(blank=True, max_length=140)
     last_name = models.CharField(blank=True, max_length=140)
     email = models.EmailField(blank=True, null=True)
-    interests = models.CharField(max_length=140, default="")
+    #interests = models.CharField(max_length=140, default="")
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
     image = models.ImageField(
