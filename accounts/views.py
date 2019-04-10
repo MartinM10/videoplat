@@ -67,14 +67,16 @@ def profile_detail(request, slug=None):
 
     qs_comments = Comment.objects.filter(user=profile_instance, parent=None)
     qs_videos = Video.objects.filter(user=profile_instance)
-    qs_videos_comments = UsersVideos.objects.filter(video__title__icontains=qs_videos)
+    # qs_videos_comments = UsersVideos.objects.filter(video=qs_videos)
+    # if qs_videos_comments:
+    #    print ("qs_videos_comments")
 
     content = {
         "profile": profile_instance,
         'form': form,
         "comments": qs_comments,
-        "videos2": qs_videos,
-        "video_comments": qs_videos_comments,
+        "videos": qs_videos,
+        # "video_comments": qs_videos_comments,
         "user_": user_,
     }
     return render(request, "detail.html", content)
@@ -269,24 +271,17 @@ def uploadVideo(request):
     return render(request, 'videoupload.html', content)
 
 
-def exshow(request, typle, title):
-    if (typle == 'video'):
-        videos = Video.objects.filter(title=title)
+'''
+def exshow(request, slug, video_id):
+    videos = get_object_or_404(Video, pk=video_id)
+    # videos2 = Video.objects.filter(title=title)
+    # comments = UsersVideos.objects.filter(user__video__title__icontains=title)
 
-        content = {
-            'videos': videos,
-
-        }
-        return render(request, 'video.html', content)
-
-    if (typle == 'video2'):
-        videos2 = Video.objects.filter(title=title)
-        comments = UsersVideos.objects.filter(user__video__title__icontains=title)
-
-        content = {
-            'videos2': videos2,
-        }
-        return render(request, 'video2.html', content)
+    content = {
+        'videos': videos,
+    }
+    return render(request, 'items/videos.html', content)
+'''
 
 
 def list_subjects(request):

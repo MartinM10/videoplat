@@ -72,6 +72,27 @@
 
     -->
     </div>
-    {% include "video2.html" %}
+
+    {% if videos %}
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown">
+                My videos <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {% for video in videos %}
+
+                    <li><a href="{% url 'videos:video_id' video.id %}"> {{ video.title }}</a></li>
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+
+
+    {% endif %}
+
 
 {% endblock %}

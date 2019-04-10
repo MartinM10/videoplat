@@ -19,7 +19,8 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from accounts.views import main_page, about, register_view, login_view, logout_view, uploadVideo, exshow, list_subjects
+from accounts.views import main_page, about, register_view, login_view, logout_view, uploadVideo, list_subjects
+#exshow
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -34,7 +35,7 @@ urlpatterns = [
 
     url(r'^subjects/', include('subjects.urls')),
 
-    url(r'^show/(\S+)/(\S+)/$', exshow),
+    #url(r'^show/(\S+)/(\S+)/$', exshow),
 
     url(r'^$', main_page, name='main'),
 ]

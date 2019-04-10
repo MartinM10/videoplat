@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1> {{ video.title }} </h1>
+
+    <video width="720" height="480" controls="controls">
+        <source src={{ video.file.url }} type="video/mp4"/>
+    </video>
+    <div>
+        {{ video.views }} views
+    </div>
+
+    <h4>Description: {{ video.description }} </h4>
+
+    <h4>{{ video.likes }}</h4>
+
+
+
+    {% if video.user.image %}
+        <img style="height: 60px; width:60px; " src="{{ video.user.image.url }}">
+    {% else %}
+        <img style="height: 60px; width:60px; " class="img-responsive"
+             src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+
+
+    {% endif %}
+    <h4>Owner: {{ video.user }}</h4>
+
+
+{% endblock %}
