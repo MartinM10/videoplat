@@ -153,8 +153,8 @@ def main_page(request):
     user = request.user
     comments = None
     if user.is_authenticated:
-        query_list_users = UserProfile.objects.filter(subjects__name__icontains=user.subjects).exclude(pk=user.pk)
-        comments = Comment.objects.filter(user__in=(user.followers.all()))
+        query_list_users = UserProfile.objects.filter(subjects__in=user.subjects.all()).exclude(pk=user.pk).distinct()
+        comments = Comment.objects.filter(user__in=user.followers.all())
         # query_list_subjects = Subject.objects.all()
     # print(query_list_subjects)
 
@@ -193,12 +193,12 @@ class FollowToggle(RedirectView):
             slug = self.kwargs.get("slug")
             print(slug)
             user = self.request.user
+            user_to_follow = UserProfile.objects.get(slug=slug)
             url_ = user.get_absolute_url()
-            if user in user.followers.all():
-                user.followers.remove(user)
+            if user_to_follow in user.followers.all():
+                user.followers.remove(user_to_follow)
             else:
-                user.followers.add(user)
-            print(user)
+                user.followers.add(user_to_follow)
             print(user.followers.all())
             return url_
         else:
