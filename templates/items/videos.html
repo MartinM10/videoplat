@@ -13,8 +13,15 @@
 
     <h4>Description: {{ video.description }} </h4>
 
-    <h4>{{ video.likes }}</h4>
+    <a href="{{ video.get_like_url }}">
 
+        {% if request.user in video.get_like_instances %}
+            <span class="glyphicon glyphicon-heart " style="color: #993333"></span>
+        {% else %}
+            <span class="glyphicon glyphicon-heart" style="color: darkgray"></span>
+        {% endif %}
+    </a>
+    {{ video.likes.count }}
 
 
     {% if video.user.image %}
@@ -25,6 +32,7 @@
 
 
     {% endif %}
+
     <h4>Owner: {{ video.user }}</h4>
 
 

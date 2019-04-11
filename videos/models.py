@@ -22,7 +22,7 @@ class Video(models.Model):
     edited = models.DateTimeField(auto_now=True)
     watched = models.BooleanField(default=False)
     parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
-    likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_liked")
+    likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
     views = models.BigIntegerField(default=0)
 
     class Meta:
@@ -39,7 +39,7 @@ class Video(models.Model):
         return self.video_set
 
     def get_like_url(self):
-        return reverse("accounts:like_toggle", kwargs={"video_id": self.id})
+        return reverse("accounts:like_video_toggle", kwargs={"video_id": self.id})
 
     def get_like_instances(self):
         return self.likes.all()

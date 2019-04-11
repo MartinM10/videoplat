@@ -187,6 +187,25 @@ class CommentLikeToggle(RedirectView):
         return url_
 
 
+class VideoLikeToggle(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        video_id = self.kwargs.get("video_id")
+        print(video_id)
+        video_instance = get_object_or_404(Video, id=video_id)
+        user = self.request.user
+        url_ = "/videos/" + video_id + "/"
+        # print(url_ + "/video/" + video_id + "/")
+
+        if user.is_authenticated:
+            if user in video_instance.likes.all():
+                video_instance.likes.remove(user)
+            else:
+                video_instance.likes.add(user)
+        else:
+            return "/login"
+        return url_
+
+
 class FollowToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
