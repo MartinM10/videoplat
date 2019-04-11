@@ -49,7 +49,7 @@
                             {% for replay in comment.children %}
                                 <p>{{ replay.content }}</p>
                                 <footer>
-                                    <a href="{% url "accounts:detail" slug=replay.user.username %}">
+                                    <a href="{% url "accounts:detail" slug=replay.user.slug %}">
                                         {{ replay.user }}
                                     </a> | {{ replay.timestamp|timesince }} ago
                                 </footer>
@@ -58,7 +58,7 @@
                         {% if request.user.is_authenticated %}
 
                             <form name="form" method="POST"
-                                  action="{% url "accounts:detail" slug=comment.user %}/">{% csrf_token %}
+                                  action="{% url "accounts:detail" slug=user_.slug %}/">{% csrf_token %}
                                 {{ form|crispy }}
                                 <input type="hidden" name="parent_id" value="{{ comment.id }}">
                                 <input type="submit" class="btn btn-default" value="Reply">

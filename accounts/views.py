@@ -59,13 +59,15 @@ def profile_detail(request, slug=None):
             parent = int(request.POST.get("parent_id"))
         except:
             parent = None
-        if (parent):
+        if parent:
             new_comment.parent = Comment.objects.filter(id=parent).first()
             new_comment.save()
 
         return HttpResponseRedirect(profile_instance.get_absolute_url())
 
-    qs_comments = Comment.objects.filter(user=profile_instance, parent=None)
+    # qs_comments = Comment.objects.filter(user=profile_instance, parent=None) sin mensajes hijos
+    qs_comments = Comment.objects.filter(user=profile_instance)
+
     qs_videos = Video.objects.filter(user=profile_instance)
     # qs_videos_comments = UsersVideos.objects.filter(video=qs_videos)
     # if qs_videos_comments:
@@ -154,11 +156,11 @@ def main_page(request):
     comments = None
     if user.is_authenticated:
         query_list_users = UserProfile.objects.filter(subjects__in=user.subjects.all()).exclude(pk=user.pk).distinct()
-        comments = Comment.objects.filter(user__in=user.followers.all())
+        comments = Comment.objects.filter(user__in=user.followers.all()).exclude(user=user)
         # query_list_subjects = Subject.objects.all()
     # print(query_list_subjects)
 
-    print(query_list_users)
+    # print(query_list_users)
     content = {
         "comments": comments,
         "user_": user,
@@ -173,7 +175,7 @@ def main_page(request):
 class CommentLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         comment_id = self.kwargs.get("comment_id")
-        print(comment_id)
+        # print(comment_id)
         comment_instance = get_object_or_404(Comment, id=comment_id)
         user = self.request.user
         url_ = user.get_absolute_url()
@@ -190,7 +192,7 @@ class CommentLikeToggle(RedirectView):
 class VideoLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         video_id = self.kwargs.get("video_id")
-        print(video_id)
+        # print(video_id)
         video_instance = get_object_or_404(Video, id=video_id)
         user = self.request.user
         url_ = "/videos/" + video_id + "/"
@@ -210,7 +212,7 @@ class FollowToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             slug = self.kwargs.get("slug")
-            print(slug)
+            # print(slug)
             user = self.request.user
             user_to_follow = UserProfile.objects.get(slug=slug)
             url_ = user.get_absolute_url()
@@ -218,7 +220,7 @@ class FollowToggle(RedirectView):
                 user.followers.remove(user_to_follow)
             else:
                 user.followers.add(user_to_follow)
-            print(user.followers.all())
+            # print(user.followers.all())
             return url_
         else:
             return "/login"

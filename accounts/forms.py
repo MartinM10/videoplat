@@ -20,11 +20,13 @@ class UserProfileForm(forms.ModelForm):
             "slug",
             "first_name",
             "last_name",
-            #"interests",
+            # "interests",
             "image",
         ]
 
-User = get_user_model()
+
+# User = get_user_model() NO ESTOY SEGURO
+User = UserProfile
 
 
 class UserLoginForm(forms.Form):
@@ -65,15 +67,15 @@ class UserRegisterForm(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get("username")
-        #if (i.isupper() for i in username):
-            #raise forms.ValidationError("username should be lowercase without white spaces")
+        # if (i.isupper() for i in username):
+        # raise forms.ValidationError("username should be lowercase without white spaces")
         email = self.cleaned_data.get('email')
         email2 = self.cleaned_data.get('email2')
         if email != email2:
             raise forms.ValidationError("Emails must match")
         email_qs = User.objects.filter(email=email)
-        username_qs =  User.objects.filter(username=username)
+        username_qs = User.objects.filter(username=username)
         if email_qs.exists() or username_qs.exists():
             raise forms.ValidationError("This email or username has already been registered")
 
-        return super(UserRegisterForm,self).clean(*args, **kwargs)
+        return super(UserRegisterForm, self).clean(*args, **kwargs)
