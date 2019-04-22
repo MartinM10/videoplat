@@ -221,7 +221,7 @@ class FollowToggle(RedirectView):
             else:
                 user.followers.add(user_to_follow)
             # print(user.followers.all())
-            return url_
+            return user_to_follow.get_absolute_url()
         else:
             return "/login"
 
@@ -284,6 +284,13 @@ def uploadVideo(request):
             file=request.FILES.get('file'),
         )
         new_video.save(),
+
+        new_subject_video = SubjectsVideos(
+            video=new_video,
+            subject=request.POST['subject']
+        )
+        new_subject_video.save(),
+
     subjects = Subject.objects.all()
     content = {
         'subjects': subjects,

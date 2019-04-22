@@ -43,7 +43,7 @@ def list_subjects(request):
 '''
 
 
-def subject_detail(request, name):
+def subject_detail(request, subject_id):
     # profile_instance = get_object_or_404(UserProfile, slug=slug)
     # user_ = None
 
@@ -51,8 +51,15 @@ def subject_detail(request, name):
         # user_ = get_object_or_404(UserProfile, user=request.user)
         # query = request.GET.get("search")
 
-        subject = Subject.objects.filter(name__icontains=name)
-        videos = SubjectsVideos.objects.filter(subject__name__icontains=name)
+        print(subject_id)
+        subject = Subject.objects.filter(pk=subject_id)
+        if subject:
+            print("SIII")
+        else:
+            print("NOOO")
+        videos = SubjectsVideos.objects.filter(subject__id=subject_id)
+        if videos:
+            print("TAMBIEN")
 
         context = {
             'subjects': subject,

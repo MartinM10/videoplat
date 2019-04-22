@@ -15,7 +15,8 @@
             <ul class="dropdown-menu" role="menu">
                 {% for subject in subjects %}
 
-                    <li><a href="#">{{ subject.name }}</a></li>
+                    <li><a href="{% url "subjects:subject_detail" subject_id=subject.id %}">{{ subject.name }}</a></li>
+
                 {% endfor %}
 
             </ul>
