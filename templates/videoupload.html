@@ -16,11 +16,11 @@
         <!-- Campo de texto combinado con lista de opciones -->
         <input type="text" list="subjects">
         <!-- Lista de opciones -->
-        <select id="subjects">
+        <datalist id="subjects">
             {% for subject in subjects %}
                 <option>{{ subject.name }}</option>
             {% endfor %}
-        </select>
+        </datalist>
         <br>
 
         Video:<br>

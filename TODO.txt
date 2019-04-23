@@ -1,0 +1,12 @@
+POR HACER:
+    - Corregir que cuando se suba un video (en Videoupload.html) se guarde en la base de datos que ese video pertenece
+        a esa asignatura que se ha seleccionado desde el html
+
+    - Añadir los comentarios (con los likes, etc) a los videos
+
+    - Hacer una página html para mostrar información en detalle de cada asignatura (creo que lo estaba haciendo en
+        templates/items/subjects.html)
+
+    - Dejarlo más bonito visualmente ya sea usando css o boostrap, o lo que sea
+
+    - Revisar que todo funciona correctamente
