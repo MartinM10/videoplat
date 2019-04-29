@@ -10,7 +10,7 @@ from accounts.models import UserProfile
 from accounts.views import login_view
 from comments.forms import CommentForm
 from comments.models import Comment
-from subjects.models import Subject
+from subjects.models import Subject, University, Degree, Center
 from videos.models import SubjectsVideos
 
 '''
@@ -70,4 +70,16 @@ def subject_detail(request, subject_id):
 
 
 def subject_list(request):
-    return render(request, "subject_list.html", {'subjects': Subject.objects.all()})
+    subjects = Subject.objects.all()
+    degrees = Degree.objects.all()
+    centers = Center.objects.all()
+    universities = University.objects.all()
+
+    context = {
+        'universities': universities,
+        'degrees': degrees,
+        'centers': centers,
+        'subjects': subjects,
+    }
+
+    return render(request, "subject_list.html", context)

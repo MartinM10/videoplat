@@ -5,20 +5,7 @@ from accounts.models import UserProfile
 from comments.models import Comment
 
 
-class Subject(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    validated = models.BooleanField(default=False)
-    added = models.DateTimeField(auto_now_add=True)
-    edited = models.DateTimeField(auto_now=True)
-    #video = models.ManyToManyField(Video, blank=True,
-    # related_name="subject_videos")
 
-    class Meta:
-        ordering = ['-added']
-
-    def __str__(self):
-        return self.name
 
 
 '''
@@ -84,6 +71,7 @@ class Degree(models.Model):
 
     # Relationships
     center = models.ForeignKey(Center, blank=True, null=True, on_delete=models.CASCADE)
+    # subject = models.ForeignKey(Subject, blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-added']
@@ -91,6 +79,25 @@ class Degree(models.Model):
     def __str__(self):
         return self.name
 
+
+class Subject(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    course = models.CharField(max_length=50, blank=True, null=True)
+    validated = models.BooleanField(default=False)
+    added = models.DateTimeField(auto_now_add=True)
+    edited = models.DateTimeField(auto_now=True)
+
+    # Relationships
+    degree = models.ForeignKey(Degree, blank=True, null=True, on_delete=models.CASCADE)
+    # video = models.ManyToManyField(Video, blank=True,
+    # related_name="subject_videos")
+
+    class Meta:
+        ordering = ['-added']
+
+    def __str__(self):
+        return self.name
 
 # class CentersDegrees(models.Model):
 #     center = models.ForeignKey(Center, on_delete=models.CASCADE)
@@ -106,7 +113,7 @@ class Degree(models.Model):
 #     def __str__(self):
 #         return '{}' " - " '{}'.format(self.center, self.degree)
 
-
+'''
 class DegreesSubjects(models.Model):
     degree = models.ForeignKey(Degree, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -119,7 +126,7 @@ class DegreesSubjects(models.Model):
 
     def __str__(self):
         return '{}' " - " '{}'.format(self.degree, self.subject)
-
+'''
 
 '''
 class Video(models.Model):
@@ -151,7 +158,6 @@ class Usuario(AbstractUser):
     def __str__(self):
         return self.username
 '''
-
 
 # class UsersSubjects(models.Model):
 #     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
