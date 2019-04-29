@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth import authenticate
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 from accounts.forms import User
@@ -11,7 +11,6 @@ from accounts.views import login_view
 from comments.forms import CommentForm
 from comments.models import Comment
 from subjects.models import Subject, University, Degree, Center
-from videos.models import SubjectsVideos
 
 '''
 def logged_in(request):
@@ -52,21 +51,21 @@ def subject_detail(request, subject_id):
         # query = request.GET.get("search")
 
         print(subject_id)
-        subject = Subject.objects.filter(pk=subject_id)
+        subject = Subject.objects.get(pk=subject_id)
         if subject:
             print("SIII")
         else:
             print("NOOO")
-        videos = SubjectsVideos.objects.filter(subject__id=subject_id)
+        videos = subject.videos_subjects
         if videos:
             print("TAMBIEN")
 
         context = {
-            'subjects': subject,
+            'subject': subject,
             'videos': videos,
         }
-
-    return render(request, "subject_detail.html", context)
+        return render(request, "subject_detail.html", context)
+    return redirect("login")
 
 
 def subject_list(request):

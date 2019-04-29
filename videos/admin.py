@@ -5,7 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 import subjects.models
-from videos.models import Video, UsersVideos, SubjectsVideos
+from videos.models import Video, UsersVideos
 
 
 class VideoAdmin(admin.ModelAdmin):
@@ -22,9 +22,12 @@ class VideosUssersAdmin(admin.ModelAdmin):
 
 admin.site.register(UsersVideos, VideosUssersAdmin)
 
-
+'''
 class VideosSubjectsAdmin(admin.ModelAdmin):
     list_display = ['video', 'subject']
-admin.site.register(SubjectsVideos,VideosSubjectsAdmin)
+
+
+admin.site.register(VideosSubjectsAdmin)
+'''
 # admin.site.register(SubjectsVideos)
 # admin.site.register(UsersVideos)

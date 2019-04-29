@@ -25,6 +25,7 @@ class Video(models.Model):
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
     unlikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_unlikes")
     views = models.BigIntegerField(default=0)
+    subjects = models.ManyToManyField(Subject, null=True, blank=True, related_name="videos_subjects")
 
     class Meta:
         db_table = 'video'
@@ -73,6 +74,7 @@ class UsersVideos(models.Model):
         return '{}' " - " '{}'.format(self.user, self.video)
 
 
+'''
 class SubjectsVideos(models.Model):
     subject = models.ForeignKey(Subject, models.CASCADE)
     video = models.ForeignKey(Video, models.CASCADE)
@@ -85,6 +87,6 @@ class SubjectsVideos(models.Model):
 
     def get_title_video(self):
         return self.video.title
-
-    # tema = models.CharField(max_length=45, blank=True, null=True)
-    # examen = models.CharField(max_length=45, blank=True, null=True)
+'''
+# tema = models.CharField(max_length=45, blank=True, null=True)
+# examen = models.CharField(max_length=45, blank=True, null=True)

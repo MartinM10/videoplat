@@ -1,5 +1,5 @@
 from subjects.models import Subject
-from videos.models import Video, SubjectsVideos, UsersVideos
+from videos.models import Video, UsersVideos
 from .models import UserProfile
 from comments.forms import CommentForm
 from comments.models import Comment
@@ -141,7 +141,6 @@ def search(request):
                     }
                     return render(request, "search_videos.html", context)
         print(query_list)
-
 
     else:
         return redirect("login")
@@ -321,11 +320,12 @@ def uploadVideo(request):
         )
         new_video.save(),
 
-        new_subject_video = SubjectsVideos(
-            video=new_video,
-            subject=request.POST['subject']
-        )
-        new_subject_video.save(),
+        # video = new_video,
+        print(request.POST['subjects'])
+        subject = Subject.objects.get(id=request.POST['subjects'])
+        new_video.subjects.add(subject)
+
+        # new_subject_video.save(),
 
     subjects = Subject.objects.all()
     content = {
