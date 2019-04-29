@@ -23,6 +23,7 @@ class Video(models.Model):
     watched = models.BooleanField(default=False)
     parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
+    unlikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_unlikes")
     views = models.BigIntegerField(default=0)
 
     class Meta:
@@ -41,8 +42,14 @@ class Video(models.Model):
     def get_like_url(self):
         return reverse("accounts:like_video_toggle", kwargs={"video_id": self.id})
 
+    def get_unlike_url(self):
+        return reverse("accounts:unlike_video_toggle", kwargs={"video_id": self.id})
+
     def get_like_instances(self):
         return self.likes.all()
+
+    def get_unlike_instances(self):
+        return self.unlikes.all()
 
     def get_user_object(self):
         return get_object_or_404(UserProfile, user=self.user)

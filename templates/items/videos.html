@@ -16,12 +16,22 @@
     <a href="{{ video.get_like_url }}">
 
         {% if request.user in video.get_like_instances %}
-            <span class="glyphicon glyphicon-heart " style="color: #993333"></span>
+            <span class="glyphicon glyphicon-thumbs-up " style="color: #993333"></span>
         {% else %}
-            <span class="glyphicon glyphicon-heart" style="color: darkgray"></span>
+            <span class="glyphicon glyphicon-thumbs-up" style="color: darkgray"></span>
         {% endif %}
     </a>
     {{ video.likes.count }}
+
+    <a href="{{ video.get_unlike_url }}">
+
+        {% if request.user in video.get_unlike_instances %}
+            <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
+        {% else %}
+            <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
+        {% endif %}
+    </a>
+    {{ video.unlikes.count }}
 
 
     {% if video.user.image %}

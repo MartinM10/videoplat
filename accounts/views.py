@@ -189,6 +189,23 @@ class CommentLikeToggle(RedirectView):
         return url_
 
 
+class CommentUnLikeToggle(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        comment_id = self.kwargs.get("comment_id")
+        # print(comment_id)
+        comment_instance = get_object_or_404(Comment, id=comment_id)
+        user = self.request.user
+        url_ = user.get_absolute_url()
+        if user.is_authenticated:
+            if user in comment_instance.likes.all():
+                comment_instance.unlikes.remove(user)
+            else:
+                comment_instance.unlikes.add(user)
+        else:
+            return "/login"
+        return url_
+
+
 class VideoLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         video_id = self.kwargs.get("video_id")
@@ -203,6 +220,25 @@ class VideoLikeToggle(RedirectView):
                 video_instance.likes.remove(user)
             else:
                 video_instance.likes.add(user)
+        else:
+            return "/login"
+        return url_
+
+
+class VideoUnLikeToggle(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        video_id = self.kwargs.get("video_id")
+        # print(video_id)
+        video_instance = get_object_or_404(Video, id=video_id)
+        user = self.request.user
+        url_ = "/videos/" + video_id + "/"
+        # print(url_ + "/video/" + video_id + "/")
+
+        if user.is_authenticated:
+            if user in video_instance.unlikes.all():
+                video_instance.unlikes.remove(user)
+            else:
+                video_instance.unlikes.add(user)
         else:
             return "/login"
         return url_

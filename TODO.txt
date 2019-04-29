@@ -10,3 +10,5 @@ POR HACER:
     - Dejarlo más bonito visualmente ya sea usando css o boostrap, o lo que sea
 
     - Revisar que todo funciona correctamente
+
+    - Contabilizar las visualizaciones
