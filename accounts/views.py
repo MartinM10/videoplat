@@ -1,5 +1,5 @@
 from subjects.models import Subject
-from videos.models import Video, UsersVideos
+from videos.models import Video
 from .models import UserProfile
 from comments.forms import CommentForm
 from comments.models import Comment

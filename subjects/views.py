@@ -56,7 +56,7 @@ def subject_detail(request, subject_id):
             print("SIII")
         else:
             print("NOOO")
-        videos = subject.videos_subjects
+        videos = subject.videos_subjects.all()
         if videos:
             print("TAMBIEN")
 

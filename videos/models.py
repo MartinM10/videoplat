@@ -25,7 +25,7 @@ class Video(models.Model):
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
     unlikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_unlikes")
     views = models.BigIntegerField(default=0)
-    subjects = models.ManyToManyField(Subject, null=True, blank=True, related_name="videos_subjects")
+    subjects = models.ManyToManyField(Subject, blank=True, related_name="videos_subjects")
 
     class Meta:
         db_table = 'video'
@@ -60,7 +60,7 @@ class Video(models.Model):
         return user_.image.url
 
 
-class UsersVideos(models.Model):
+class UserVideo(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="users_videos")
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="users_videos")
     seconds_watched = models.IntegerField(default=0)
