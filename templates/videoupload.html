@@ -7,24 +7,27 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <label> Title: </label><br>
-        <input type="text" name="title">
-        <br>
+        <div class="alert alert-warning col-sm-10 ">
+            <label> Title: </label><br>
+            <input type="text" name="title">
+            <br>
 
-        <label>Subject: </label><br>
+            <label>Subject: </label><br>
 
-        <!-- Lista de opciones -->
-        <select id="subjects" name="subjects">
-            {% for subject in subjects %}
-                <option value="{{ subject.id }}">{{ subject.name }}</option>
-            {% endfor %}
-        </select>
-        <br>
+            <!-- Lista de opciones -->
+            <select id="subjects" name="subjects">
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+            <br>
 
-        <label>Video:</label>
-        <br>
-        <input type="file" name="file">
-        <br>
-        <button type="submit">Upload</button>
+            <label>Video:</label>
+            <br>
+            <input type="file" name="file">
+            <br>
+            <button type="submit">Upload</button>
+        </div>
+
     </form>
 {% endblock %}

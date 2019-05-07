@@ -310,8 +310,20 @@ def logout_view(request):
     return redirect("/")
 
 
+def myvideos(request):
+    user = request.user
+    videos = Video.objects.filter(user=user)
+
+    content = {
+        'user': user,
+        'videos': videos,
+
+    }
+    return render(request, 'myvideos.html', content)
+
+
 def uploadVideo(request):
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         user_au = request.user
         new_video = Video(
             user=user_au,

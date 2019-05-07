@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if videos %}
+
+        <div class="list-group"><strong>Mis Videos subidos</strong>
+            {% for video in videos %}
+
+
+                <a href="{% url 'videos:video_id' video.id %}"
+                   class="list-group-item list-group-item-action"> {{ video.title }}
+                </a>
+
+            {% endfor %}
+        </div>
+        <div>
+            <a href="{% url "videoupload" %}"><span
+                    class="glyphicon glyphicon-upload" aria-hidden="true"></span> Sube un vídeo ahora
+            </a>
+        </div>
+        {% if videos %}
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary"
+                        data-toggle="dropdown">
+                    Videos <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    {% for video in videos %}
+                        <li><a href="{% url 'videos:video_id' video.id %}"> {{ video.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-danger col-sm-10 ">
+            <h4> No hay videos subidos</h4>
+        </div>
+        <div>
+            <button type="button" class="btn btn-outline-primary">Sube un vídeo ahora</button>
+        </div>
+    {% endif %}
+
+{% endblock %}

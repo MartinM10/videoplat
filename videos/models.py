@@ -20,7 +20,6 @@ class Video(models.Model):
     file = models.FileField(upload_to='video_folder/')
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
-    watched = models.BooleanField(default=False)
     parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
     unlikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_unlikes")
@@ -63,8 +62,10 @@ class Video(models.Model):
 class UserVideo(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="users_videos")
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="users_videos")
+    watched = models.BooleanField(default=False)
     seconds_watched = models.IntegerField(default=0)
-    comments = models.ManyToManyField(Comment, blank=True, related_name="video_comments")
+    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True,
+                                 related_name="video_comments")
     created_on = models.DateTimeField(auto_now=True)
 
     class Meta:

@@ -13,38 +13,38 @@
         </div>
 
     {% else %}
+        <div class="alert alert-info col-sm-10 ">
+            <h2><strong>{{ subject.name }}</strong></h2>
+            <h3> {{ subject.degree }} {{ subject.degree.center.university }}</h3>
+        </div>
 
-        <h1>{{ subject.name }} || {{ subject.degree }}</h1>
-        <h3>{{ subject.description }}</h3>
-        {% for video in videos %}
-
-
-            <h3> {{ video.title }} </h3>
-
-            <video width="720" height="480" controls="controls">
-                <source src={{ video.file.url }} type="video/mp4"/>
-            </video>
-            <div>
-                {{ video.views }} views
+        {% if subject.videos_subjects.count == 0 %}
+            <div class="alert alert-danger col-sm-10 ">
+                <h4> No hay videos subidos</h4>
+            </div>
+        {% else %}
+            <div class="alert alert-info col-sm-10 ">
+                {% if  subject.videos_subjects.count == 1 %}
+                    <h4> {{ subject.videos_subjects.count }} video subido</h4>
+                {% else %}
+                    <h4> {{ subject.videos_subjects.count }} videos subidos</h4>
+                {% endif %}
             </div>
 
-            <h4>Description: {{ video.description }} </h4>
+            <div class="alert alert-info col-sm-10 ">
+                <h4>Lista de videos</h4>
+                {% for video in videos %}
+                    <ul>
+                        <li><a href="{% url "videos:video_id" video.id %}"> {{ video.title }}, {{ video.user }}</a></li>
+                    </ul>
+                {% endfor %}
+            </div>
 
-            <h4>{{ video.likes }}</h4>
-
-
-
-            {% if video.user.image %}
-                <img style="height: 60px; width:60px; " src="{{ video.user.image.url }}">
-            {% else %}
-                <img style="height: 60px; width:60px; " class="img-responsive"
-                     src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-
-
-            {% endif %}
-            <h4>Owner: {{ video.user }}</h4>
-
-        {% endfor %}
-
+        {% endif %}
+        {% if subject.description %}
+            <div class="alert alert-info col-sm-10 ">
+                <p>{{ subject.description }}</p>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}

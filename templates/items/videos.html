@@ -1,49 +1,125 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-    <h1> {{ video.title }} </h1>
 
-    <video width="720" height="480" controls="controls">
-        <source src={{ video.file.url }} type="video/mp4"/>
-    </video>
-    <div>
-        {{ video.views }} views
+    <div class="col-sm-8">
+        <div class="panel panel-default">
+            <video width="720" height="480" controls="controls">
+                <source src={{ video.file.url }} type="video/mp4"/>
+            </video>
+            <footer>
+                <h3> {{ video.title }} </h3>
+                {{ video.views }} views
+                <div class="pull-right">
+                    <a href="{{ video.get_like_url }}">
+
+                        {% if request.user in video.get_like_instances %}
+                            <span class="glyphicon glyphicon-thumbs-up " style="color: #993333"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-thumbs-up" style="color: darkgray"></span>
+                        {% endif %}
+                    </a>
+                    {{ video.likes.count }}
+
+                    <a href="{{ video.get_unlike_url }}">
+
+                        {% if request.user in video.get_unlike_instances %}
+                            <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
+                        {% endif %}
+                    </a>
+                    {{ video.unlikes.count }}
+                </div>
+
+            </footer>
+        </div>
+        <div>
+            <div>
+                {% if video.user.image %}
+                    <img style="height: 60px; width:60px; " src="{{ video.user.image.url }}">
+                {% else %}
+                    <img style="height: 60px; width:60px; " class="img-responsive"
+                         src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                {% endif %}
+
+                <h4>Owner: {{ video.user }}</h4>
+            </div>
+            <h4>{{ video.description }} </h4>
+        </div>
     </div>
 
-    <h4>Description: {{ video.description }} </h4>
+    {% for comment in comments %}
+            <div class="col-sm-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href='{% url "accounts:detail" slug=comment.comments.user.username %}'>
+                            <strong>{{ comment.comments.user }}</strong>
+                        </a>
+                        <span class="text-muted">Posted {{ comment.comments.timestamp|timesince }}</span>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            {{ comment.comments.content|linebreaksbr }}
 
-    <a href="{{ video.get_like_url }}">
+                        </p>
+                    </div><!-- /panel-body -->
+                    <footer>
+                        <strong>
+                            <a href="#" class="comment-reply-btn"> Replay </a>
+                            |
+                            {% if comment.comments.children.count > 0 %}
+                                {{ comment.comments.children.count }} Comments
+                            {% endif %}
+                            |
 
-        {% if request.user in video.get_like_instances %}
-            <span class="glyphicon glyphicon-thumbs-up " style="color: #993333"></span>
-        {% else %}
-            <span class="glyphicon glyphicon-thumbs-up" style="color: darkgray"></span>
-        {% endif %}
-    </a>
-    {{ video.likes.count }}
+                            <a href="{{ comment.comments.get_like_url }}">
 
-    <a href="{{ video.get_unlike_url }}">
+                                {% if request.user in comment.comments.get_like_instances %}
+                                    <span class="glyphicon glyphicon-thumbs-up " style="color: #993333"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-thumbs-up" style="color: darkgray"></span>
+                                {% endif %}
+                            </a>
+                            {{ comment.comments.likes.count }}
+                            |
+                            <a href="{{ comment.comments.get_unlike_url }}">
 
-        {% if request.user in video.get_unlike_instances %}
-            <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
-        {% else %}
-            <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
-        {% endif %}
-    </a>
-    {{ video.unlikes.count }}
+                                {% if request.user in comment.comments.get_unlike_instances %}
+                                    <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
+                                {% endif %}
+                            </a>
+                            {{ comment.comments.unlikes.count }}
 
+                        </strong>
+                        <div class="comment-reply" style="display: none">
+                            <blockquote class="blockquote">
+                                {% for replay in comment.comments.children %}
+                                    <p>{{ replay.content }}</p>
+                                    <footer>
+                                        <a href="{% url "accounts:detail" slug=replay.user.slug %}">
+                                            {{ replay.user }}
+                                        </a> | {{ replay.timestamp|timesince }} ago
+                                    </footer>
+                                {% endfor %}
+                            </blockquote>
+                            {% if request.user.is_authenticated %}
 
-    {% if video.user.image %}
-        <img style="height: 60px; width:60px; " src="{{ video.user.image.url }}">
-    {% else %}
-        <img style="height: 60px; width:60px; " class="img-responsive"
-             src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-
-
-    {% endif %}
-
-    <h4>Owner: {{ video.user }}</h4>
-
-
+                                <form name="form" method="POST"
+                                      action="{% url "accounts:detail" slug=user.slug %}/">{% csrf_token %}
+                                    {{ form|crispy }}
+                                    <input type="hidden" name="parent_id" value="{{ comment.comments.id }}">
+                                    <input type="submit" class="btn btn-default" value="Reply">
+                                </form>
+                            {% endif %}
+                        </div>
+                    </footer>
+                </div><!-- /panel panel-default -->
+            </div><!-- /col-sm-5 -->
+        </div><!-- /row -->
+    {% endfor %}
 {% endblock %}
