@@ -15,7 +15,8 @@
             </video>
             <footer>
                 <h3> {{ video.title }} </h3>
-                {{ video.views }} views
+                <h5>Publicado el {{ video.added }}</h5>
+                {{ video.views }} visualizaciones
                 <div class="pull-right">
                     <a href="{{ video.get_like_url }}">
 
