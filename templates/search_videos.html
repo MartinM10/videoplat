@@ -1,4 +1,5 @@
-{% extends "base.html" %}
 {% block content %}
-    {% include "video2.html" %}
+    {% for video in videos %}
+        {% include "items/videos.html" %}
+    {% endfor %}
 {% endblock %}

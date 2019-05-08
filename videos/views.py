@@ -13,6 +13,10 @@ def showVideo(request, video_id):
     comments = UserVideo.objects.filter(video_id=video_id)
     # videos2 = Video.objects.filter(title=title)
     # comments = UsersVideos.objects.filter(user__video__title__icontains=title)
+    views = video.views
+    print(views)
+    video.views = views + 1
+    video.save()
 
     context = {
         'user': user,

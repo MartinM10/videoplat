@@ -23,7 +23,7 @@ class Video(models.Model):
     parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
     unlikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_unlikes")
-    views = models.BigIntegerField(default=0)
+    views = models.BigIntegerField(null=True, blank=True, default=0)
     subjects = models.ManyToManyField(Subject, blank=True, related_name="videos_subjects")
 
     class Meta:

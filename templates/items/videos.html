@@ -52,74 +52,74 @@
     </div>
 
     {% for comment in comments %}
-            <div class="col-sm-8">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href='{% url "accounts:detail" slug=comment.comments.user.username %}'>
-                            <strong>{{ comment.comments.user }}</strong>
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href='{% url "accounts:detail" slug=comment.comments.user.username %}'>
+                        <strong>{{ comment.comments.user }}</strong>
+                    </a>
+                    <span class="text-muted">Posted {{ comment.comments.timestamp|timesince }}</span>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        {{ comment.comments.content|linebreaksbr }}
+
+                    </p>
+                </div><!-- /panel-body -->
+                <footer>
+                    <strong>
+                        <a href="#" class="comment-reply-btn"> Replay </a>
+                        |
+                        {% if comment.comments.children.count > 0 %}
+                            {{ comment.comments.children.count }} Comments
+                        {% endif %}
+                        |
+
+                        <a href="{{ comment.comments.get_like_url }}">
+
+                            {% if request.user in comment.comments.get_like_instances %}
+                                <span class="glyphicon glyphicon-thumbs-up " style="color: #993333"></span>
+                            {% else %}
+                                <span class="glyphicon glyphicon-thumbs-up" style="color: darkgray"></span>
+                            {% endif %}
                         </a>
-                        <span class="text-muted">Posted {{ comment.comments.timestamp|timesince }}</span>
+                        {{ comment.comments.likes.count }}
+                        |
+                        <a href="{{ comment.comments.get_unlike_url }}">
+
+                            {% if request.user in comment.comments.get_unlike_instances %}
+                                <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
+                            {% else %}
+                                <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
+                            {% endif %}
+                        </a>
+                        {{ comment.comments.unlikes.count }}
+
+                    </strong>
+                    <div class="comment-reply" style="display: none">
+                        <blockquote class="blockquote">
+                            {% for replay in comment.comments.children %}
+                                <p>{{ replay.content }}</p>
+                                <footer>
+                                    <a href="{% url "accounts:detail" slug=replay.user.slug %}">
+                                        {{ replay.user }}
+                                    </a> | {{ replay.timestamp|timesince }} ago
+                                </footer>
+                            {% endfor %}
+                        </blockquote>
+                        {% if request.user.is_authenticated %}
+
+                            <form name="form" method="POST"
+                                  action="{% url "accounts:detail" slug=user.slug %}/">{% csrf_token %}
+                                {{ form|crispy }}
+                                <input type="hidden" name="parent_id" value="{{ comment.comments.id }}">
+                                <input type="submit" class="btn btn-default" value="Reply">
+                            </form>
+                        {% endif %}
                     </div>
-                    <div class="panel-body">
-                        <p>
-                            {{ comment.comments.content|linebreaksbr }}
-
-                        </p>
-                    </div><!-- /panel-body -->
-                    <footer>
-                        <strong>
-                            <a href="#" class="comment-reply-btn"> Replay </a>
-                            |
-                            {% if comment.comments.children.count > 0 %}
-                                {{ comment.comments.children.count }} Comments
-                            {% endif %}
-                            |
-
-                            <a href="{{ comment.comments.get_like_url }}">
-
-                                {% if request.user in comment.comments.get_like_instances %}
-                                    <span class="glyphicon glyphicon-thumbs-up " style="color: #993333"></span>
-                                {% else %}
-                                    <span class="glyphicon glyphicon-thumbs-up" style="color: darkgray"></span>
-                                {% endif %}
-                            </a>
-                            {{ comment.comments.likes.count }}
-                            |
-                            <a href="{{ comment.comments.get_unlike_url }}">
-
-                                {% if request.user in comment.comments.get_unlike_instances %}
-                                    <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
-                                {% else %}
-                                    <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
-                                {% endif %}
-                            </a>
-                            {{ comment.comments.unlikes.count }}
-
-                        </strong>
-                        <div class="comment-reply" style="display: none">
-                            <blockquote class="blockquote">
-                                {% for replay in comment.comments.children %}
-                                    <p>{{ replay.content }}</p>
-                                    <footer>
-                                        <a href="{% url "accounts:detail" slug=replay.user.slug %}">
-                                            {{ replay.user }}
-                                        </a> | {{ replay.timestamp|timesince }} ago
-                                    </footer>
-                                {% endfor %}
-                            </blockquote>
-                            {% if request.user.is_authenticated %}
-
-                                <form name="form" method="POST"
-                                      action="{% url "accounts:detail" slug=user.slug %}/">{% csrf_token %}
-                                    {{ form|crispy }}
-                                    <input type="hidden" name="parent_id" value="{{ comment.comments.id }}">
-                                    <input type="submit" class="btn btn-default" value="Reply">
-                                </form>
-                            {% endif %}
-                        </div>
-                    </footer>
-                </div><!-- /panel panel-default -->
-            </div><!-- /col-sm-5 -->
+                </footer>
+            </div><!-- /panel panel-default -->
+        </div><!-- /col-sm-5 -->
         </div><!-- /row -->
     {% endfor %}
 {% endblock %}

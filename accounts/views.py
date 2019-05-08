@@ -1,5 +1,5 @@
 from subjects.models import Subject
-from videos.models import Video
+from videos.models import Video, UserVideo
 from .models import UserProfile
 from comments.forms import CommentForm
 from comments.models import Comment
@@ -111,7 +111,7 @@ def search(request):
                 Q(first_name__icontains=query) |
                 Q(last_name__icontains=query)
             ).distinct()
-            if (query_list):
+            if query_list:
                 context = {
                     'users': query_list,
                     'user_': user_,
@@ -121,21 +121,36 @@ def search(request):
 
             if not query_list:
 
+                # query_list = Subject.objects.filter(name__icontains=query)
                 query_list = Subject.objects.filter(name__icontains=query)
                 if query_list:
+                    videos = Video.objects.filter(subjects__id=query_list.id)
+
+                if query_list:
                     context = {
-                        'subjects': query_list,
+                        'subject': query_list,
                         'all_subjects': Subject.objects.all(),
-                        'videos2': Video.objects.filter(subjectsvideos__subject__name=query),
+                        'videos': videos,
 
                     }
                     return render(request, "search_subjects.html", context)
 
                 elif not query_list:
                     query_list = Video.objects.filter(title__contains=query)
+                    for vid in query_list:
+                        video = get_object_or_404(Video, id=vid.id)
+                        comments = UserVideo.objects.filter(video_id=video.id)
+
+                    # videos2 = Video.objects.filter(title=title)
+                    # comments = UsersVideos.objects.filter(user__video__title__icontains=title)
+                    views = video.views
+                    print(views)
+                    video.views = views + 1
+                    video.save()
                     context = {
-                        'videos2': query_list,
+                        'videos': query_list,
                         'all_videos': Video.objects.all(),
+                        'comments': comments,
                         # 'videos2': Video.objects.filter(subjectsvideos__subject__name=query),
 
                     }
