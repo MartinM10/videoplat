@@ -2,7 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+    <style>
+        img {
+            border-radius: 50%;
+        }
+    </style>
 
     <div class="col-sm-8">
         <div class="panel panel-default">
@@ -45,7 +49,7 @@
                          src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
                 {% endif %}
 
-                <h4>Owner: {{ video.user }}</h4>
+                <h4><strong>{{ video.user }}</strong></h4>
             </div>
             <h4>{{ video.description }} </h4>
         </div>

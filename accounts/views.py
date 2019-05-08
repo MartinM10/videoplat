@@ -147,10 +147,28 @@ def search(request):
                     print(views)
                     video.views = views + 1
                     video.save()
+                    form = CommentForm(request.POST or None)
+                    if form.is_valid():
+                        content = form.cleaned_data.get("content")
+                        parent = None
+                        new_comment = Comment.objects.create(
+                            user=user_,
+                            content=content,
+                            parent=parent,
+                        )
+                        try:
+                            parent = int(request.POST.get("parent_id"))
+                        except:
+                            parent = None
+                        if parent:
+                            new_comment.parent = Comment.objects.filter(id=parent).first()
+                            new_comment.save()
                     context = {
+                        'user:': user_,
                         'videos': query_list,
                         'all_videos': Video.objects.all(),
                         'comments': comments,
+                        'form': form,
                         # 'videos2': Video.objects.filter(subjectsvideos__subject__name=query),
 
                     }

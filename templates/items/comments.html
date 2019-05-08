@@ -43,7 +43,7 @@
                         </a>
                         {{ comment.likes.count }}
                         |
-                         <a href="{{ comment.get_unlike_url }}">
+                        <a href="{{ comment.get_unlike_url }}">
 
                             {% if request.user in comment.get_unlike_instances %}
                                 <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
