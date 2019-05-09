@@ -12,6 +12,7 @@
 
             {% endfor %}
         </div>
+
         <div>
             <a href="{% url "videoupload" %}"><span
                     class="glyphicon glyphicon-upload" aria-hidden="true"></span> Sube un vídeo ahora
@@ -34,10 +35,13 @@
     {% else %}
         <div class="alert alert-danger col-sm-10 ">
             <h4> No hay videos subidos</h4>
+            <div>
+                <a href="{% url "videoupload" %}"><span
+                        class="glyphicon glyphicon-upload" aria-hidden="true"></span> Sube un vídeo ahora
+                </a>
+            </div>
         </div>
-        <div>
-            <button type="button" class="btn btn-outline-primary">Sube un vídeo ahora</button>
-        </div>
+
     {% endif %}
 
 {% endblock %}
