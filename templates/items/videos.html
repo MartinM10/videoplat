@@ -2,22 +2,18 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <style>
-        img {
-            border-radius: 50%;
-        }
-    </style>
 
     <div class="col-sm-8">
-        <div class="panel panel-default">
-            <video width="720" height="480" controls="controls">
-                <source src={{ video.file.url }} type="video/mp4"/>
-            </video>
-            <footer>
+        <video width="720" height="480" controls="controls">
+            <source src={{ video.file.url }} type="video/mp4"/>
+        </video>
+        <footer>
+            <div class="panel-heading">
+
                 <h3> {{ video.title }} </h3>
-                <h5>Publicado el {{ video.added }}</h5>
+                <h6>Publicado el {{ video.added }}</h6>
                 {{ video.views }} visualizaciones
-                <div class="pull-right">
+                <div class="pull-right" style="margin-right: 20px">
                     <a href="{{ video.get_like_url }}">
 
                         {% if request.user in video.get_like_instances %}
@@ -38,21 +34,23 @@
                     </a>
                     {{ video.unlikes.count }}
                 </div>
+            </div>
 
-            </footer>
-        </div>
-        <div>
-            <div>
+        </footer>
+        <div class="panel-heading">
+            <a href="{% url "accounts:detail" slug=video.user.slug %}">
                 {% if video.user.image %}
-                    <img style="height: 60px; width:60px; " src="{{ video.user.image.url }}">
+                    <img style="height: 60px; width:60px; border-radius: 50%" src="{{ video.user.image.url }}">
                 {% else %}
                     <img style="height: 60px; width:60px; " class="img-responsive"
                          src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
                 {% endif %}
-
                 <h4><strong>{{ video.user }}</strong></h4>
+            </a>
+            <div class="panel" style="align-self: auto; background-color: aliceblue">
+                <h4>{{ video.description }} </h4>
             </div>
-            <h4>{{ video.description }} </h4>
+
         </div>
     </div>
 
@@ -63,7 +61,7 @@
                     <a href='{% url "accounts:detail" slug=comment.comments.user.username %}'>
                         <strong>{{ comment.comments.user }}</strong>
                     </a>
-                    <span class="text-muted">Posted {{ comment.comments.timestamp|timesince }}</span>
+                    <span class="text-muted">Hace {{ comment.comments.added|timesince }}</span>
                 </div>
                 <div class="panel-body">
                     <p>
@@ -108,7 +106,7 @@
                                 <footer>
                                     <a href="{% url "accounts:detail" slug=replay.user.slug %}">
                                         {{ replay.user }}
-                                    </a> | {{ replay.timestamp|timesince }} ago
+                                    </a> | {{ replay.added|timesince }} ago
                                 </footer>
                             {% endfor %}
                         </blockquote>

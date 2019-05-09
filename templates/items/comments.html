@@ -16,7 +16,7 @@
                     <a href='{% url "accounts:detail" slug=comment.user.username %}'>
                         <strong>{{ comment.user }}</strong>
                     </a>
-                    <span class="text-muted">Posted {{ comment.timestamp|timesince }}</span>
+                    <span class="text-muted">Hace {{ comment.added|timesince }}</span>
                 </div>
                 <div class="panel-body">
                     <p>
@@ -61,7 +61,7 @@
                                 <footer>
                                     <a href="{% url "accounts:detail" slug=replay.user.slug %}">
                                         {{ replay.user }}
-                                    </a> | {{ replay.timestamp|timesince }} ago
+                                    </a> | {{ replay.added|timesince }} ago
                                 </footer>
                             {% endfor %}
                         </blockquote>
