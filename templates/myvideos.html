@@ -2,22 +2,51 @@
 {% block content %}
     {% if videos %}
 
-        <div class="list-group"><strong>Mis Videos subidos</strong>
-            {% for video in videos %}
+        <div class="container">
 
-
-                <a href="{% url 'videos:video_id' video.id %}"
-                   class="list-group-item list-group-item-action"> {{ video.title }}
+            <h1>Mis videos</h1>
+            <p>Estos son los videos que he subido hasta el momento.
+                <a href="{% url "videoupload" %}"><strong>Sube un vídeo ahora</strong>
+                    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
                 </a>
+            </p>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Asignatura</th>
+                    <th>Grado</th>
+                    <th>Comentarios</th>
+                    <th>Visualizaciones</th>
+                    <th>Likes</th>
+                    <th>Dislikes</th>
+                    <th>Rating</th>
+                    <th>Fecha Subida</th>
+                    <th>Enlace</th>
 
-            {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for video in videos %}
+                    {% for subject in video.subjects.all %}
+                        <tr>
+                            <td>{{ video.title }}</td>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.degree }}</td>
+                            <td>{{ video.comments }}</td>
+                            <td>{{ video.views }}</td>
+                            <td>{{ video.likes.count }}</td>
+                            <td>{{ video.dislikes.count }}</td>
+                            <td>{{ video.rating.count }}</td>
+                            <td>{{ video.added }}</td>
+                            <td><a href="{% url 'videos:video_id' video.id %}">Enlace</a></td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
 
-        <div>
-            <a href="{% url "videoupload" %}"><span
-                    class="glyphicon glyphicon-upload" aria-hidden="true"></span> Sube un vídeo ahora
-            </a>
-        </div>
         {% if videos %}
             <div class="btn-group">
                 <button type="button" class="btn btn-outline-primary"

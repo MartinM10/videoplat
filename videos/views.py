@@ -12,14 +12,11 @@ from videos.models import Video, UserVideo
 def showVideo(request, video_id):
     user = request.user
     video = get_object_or_404(Video, pk=video_id)
-    comments = UserVideo.objects.filter(video_id=video_id)
     # videos2 = Video.objects.filter(title=title)
     # comments = UsersVideos.objects.filter(user__video__title__icontains=title)
     views = video.views
     print(views)
     video.views = views + 1
-    video.save()
-
     form = CommentForm(request.POST or None)
     if form.is_valid():
         content = form.cleaned_data.get("content")
@@ -35,7 +32,14 @@ def showVideo(request, video_id):
             parent = None
         if parent:
             new_comment.parent = Comment.objects.filter(id=parent).first()
-            new_comment.save()
+
+        new_comment.save()
+        video.comments = video.comments + 1
+        UserVideo.objects.update_or_create(user=user, video=video, comments=new_comment)
+
+    video.save()
+    comments = UserVideo.objects.filter(video_id=video_id).order_by('comments__added').reverse()
+
     context = {
         'user': user,
         'video': video,

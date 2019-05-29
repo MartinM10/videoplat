@@ -1,3 +1,4 @@
+pinax
 Django==1.11.2
 django-crispy-forms==1.6.0
 django-markdown-deux==1.0.5

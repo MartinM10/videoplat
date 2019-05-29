@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container" style="width: 50%">
+        <h2>Resultados obtenidos de la búsqueda</h2>
+        <h4><u><a href="search_advanced.html">Para una búsqueda avanzada haz click aquí</a></u></h4>
+
+        <ul class="list-group">
+            <li class="list-group-item">Usuarios<span class="badge"> {{ users.count }} </span></li>
+            <li class="list-group-item">Asignaturas<span class="badge"> {{ subjects.count }} </span></li>
+            <li class="list-group-item">Videos<span class="badge"> {{ videos.count }} </span></li>
+            <li class="list-group-item">Comentarios en los videos<span
+                    class="badge"> {{ comments_videos.count }} </span></li>
+            <li class="list-group-item">Comentarios generales<span
+                    class="badge">{{ comments.count }}  </span></li>
+        </ul>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <label class="form-check-label" for="defaultCheck1">
+            Default checkbox
+        </label>
+    </div>
+
+    {% if users %}
+        <div class="panel-heading">
+            <h3><strong>Usuarios</strong></h3>
+            <div class="panel-body">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>UserName</th>
+                        <th>Numero de Seguidores</th>
+                        <th>Numero de Videos Subidos</th>
+                        <th>Perfil</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for user in users %}
+
+                        <tr>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.followers.count }}</td>
+                            <td>{{ user.video_set.count }}</td>
+                            <td><a href="{% url "accounts:detail" slug=user.slug %}"> Enlace</a></td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
+
+    {% if subjects %}
+        <div class="panel-heading">
+            <h3>Asignaturas</h3>
+            <div class="panel-body">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Curso</th>
+                        <th>Grado</th>
+                        <th>Centro</th>
+                        <th>Universidad</th>
+                        <th>Creditos</th>
+                        <th>Añadida</th>
+                        <th>Validada</th>
+                        <th>Enlace</th>
+
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    {% for subject in subjects %}
+
+                        <tr>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.course }}</td>
+                            <td>{{ subject.degree }}</td>
+                            <td>{{ subject.degree.center }}</td>
+                            <td>{{ subject.degree.center.university }}</td>
+                            <td>{{ subject.degree.credits }}</td>
+                            <td>{{ subject.added }}</td>
+                            <td>{{ subject.validated }}</td>
+                            <td><a href="{% url "subjects:subject_detail" subject_id=subject.id %}"> Enlace</a></td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
+
+    {% if videos %}
+        <div class="panel-heading">
+            <h3>Videos</h3>
+            <div class="panel-body">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Asignatura</th>
+                        <th>Grado</th>
+                        <th>Comentarios</th>
+                        <th>Visualizaciones</th>
+                        <th>Likes</th>
+                        <th>Dislikes</th>
+                        <th>Rating</th>
+                        <th>Fecha Subida</th>
+                        <th>Enlace</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    {% for video in videos %}
+                        {% for subject in video.subjects.all %}
+                            <tr>
+                                <td>{{ video.title }}</td>
+                                <td>{{ subject.name }}</td>
+                                <td>{{ subject.degree }}</td>
+                                <td>{{ video.comments }}</td>
+                                <td>{{ video.views }}</td>
+                                <td>{{ video.likes.count }}</td>
+                                <td>{{ video.dislikes.count }}</td>
+                                <td>{{ video.rating.count }}</td>
+                                <td>{{ video.added }}</td>
+                                <td><a href="{% url 'videos:video_id' video.id %}">Enlace</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
+
+    {% if comments_videos %}
+        <div class="panel-heading">
+            <h3>Comentarios en los videos</h3>
+            <div class="panel-body">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Titulo video</th>
+                        <th>Likes</th>
+                        <th>Dislikes</th>
+                        <th>Contenido</th>
+                        <th>Añadido</th>
+                        <th>Enlace</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    {% for cv in comments_videos %}
+
+                        <tr>
+                            <td>{{ cv.comments.user }}</td>
+                            <td>{{ cv.video.title }}</td>
+                            <td>{{ cv.comments.likes.count }}</td>
+                            <td>{{ cv.comments.dislikes.count }}</td>
+                            <td>{{ cv.comments.content }}</td>
+                            <td>{{ cv.comments.added }}</td>
+                            <td><a href="{% url 'accounts:detail' slug=cv.user.slug %}">Enlace</a></td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+{% endblock %}

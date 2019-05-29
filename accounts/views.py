@@ -7,6 +7,8 @@ from comments.models import Comment
 from django.db.models import Q
 from django.contrib import messages
 
+from itertools import chain
+
 #  from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect  # Http404   HttpResponse
 
@@ -97,6 +99,7 @@ def about(request):
     return render(request, "about.html")
 
 
+'''
 def search(request):
     if request.user.is_authenticated:
         query = request.GET.get("search")
@@ -177,6 +180,38 @@ def search(request):
 
     else:
         return redirect("login")
+'''
+
+
+def search(request):
+    if request.user.is_authenticated:
+        query = request.GET.get("search")
+        user_ = request.user
+        print(query)
+        query_list = None
+        if query:
+            query_user = UserProfile.objects.filter(
+                Q(username__icontains=query) |
+                # Q(interests__icontains=query) |
+                Q(first_name__icontains=query) |
+                Q(last_name__icontains=query)
+            ).distinct()
+            query_subject = Subject.objects.filter(
+                Q(name__icontains=query) | Q(description__icontains=query)).distinct()
+            query_video = Video.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)).distinct()
+            query_comment_video = UserVideo.objects.filter(comments__content__icontains=query).distinct()
+            query_comment = Comment.objects.filter(content__icontains=query).distinct()
+
+            # merge Querysets from different models
+            result_list = list(chain(query_user, query_subject, query_video, query_comment_video, query_comment))
+
+            # si alguna de las queries anteriores tiene datos
+            context = {'users': query_user, 'subjects': query_subject, 'videos': query_video,
+                       'comments_videos': query_comment_video, 'comments': query_comment}
+            return render(request, "search.html", context)
+
+    else:
+        return redirect("login")
 
 
 def main_page(request):
@@ -189,16 +224,29 @@ def main_page(request):
     if user.is_authenticated:
         query_list_users = UserProfile.objects.filter(subjects__in=user.subjects.all()).exclude(pk=user.pk).distinct()
         comments = Comment.objects.filter(user__in=user.followers.all()).exclude(user=user)
+        top3users = UserProfile.objects.order_by('followers').reverse()[:3]
+        top3videosviews = Video.objects.order_by('views').reverse()[:3]
+        top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
+        # top3videoscomentados = Video.objects.order_by('comments').reverse()[:3]
+        print(top3users)
+        print(top3videosviews)
+        print(top3videoslikes)
+        # print(top3videoscomentados)
         # query_list_subjects = Subject.objects.all()
     # print(query_list_subjects)
 
     # print(query_list_users)
+
     content = {
         "comments": comments,
         "user_": user,
         'form': form,
         "users": query_list_users,
         "all_users": query_list_users_all,
+        "top3users": top3users,
+        "top3videosviews": top3videosviews,
+        "top3videoslikes": top3videoslikes,
+
     }
     return render(request, "list.html", content)
     # return redirect("accounts:list")
@@ -221,7 +269,7 @@ class CommentLikeToggle(RedirectView):
         return url_
 
 
-class CommentUnLikeToggle(RedirectView):
+class CommentDisLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         comment_id = self.kwargs.get("comment_id")
         # print(comment_id)
@@ -230,9 +278,9 @@ class CommentUnLikeToggle(RedirectView):
         url_ = user.get_absolute_url()
         if user.is_authenticated:
             if user in comment_instance.likes.all():
-                comment_instance.unlikes.remove(user)
+                comment_instance.dislikes.remove(user)
             else:
-                comment_instance.unlikes.add(user)
+                comment_instance.dislikes.add(user)
         else:
             return "/login"
         return url_
@@ -244,7 +292,7 @@ class VideoLikeToggle(RedirectView):
         # print(video_id)
         video_instance = get_object_or_404(Video, id=video_id)
         user = self.request.user
-        url_ = "/videos/" + video_id + "/"
+        url_ = video_instance.get_absolute_url()
         # print(url_ + "/video/" + video_id + "/")
 
         if user.is_authenticated:
@@ -252,28 +300,61 @@ class VideoLikeToggle(RedirectView):
                 video_instance.likes.remove(user)
             else:
                 video_instance.likes.add(user)
+                if user in video_instance.dislikes.all():
+                    video_instance.dislikes.remove(user)
         else:
             return "/login"
         return url_
 
 
-class VideoUnLikeToggle(RedirectView):
+class VideoDisLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         video_id = self.kwargs.get("video_id")
         # print(video_id)
         video_instance = get_object_or_404(Video, id=video_id)
         user = self.request.user
-        url_ = "/videos/" + video_id + "/"
+        # url_ = "/videos/" + video_id + "/"
+        url_ = video_instance.get_absolute_url()
         # print(url_ + "/video/" + video_id + "/")
 
         if user.is_authenticated:
-            if user in video_instance.unlikes.all():
-                video_instance.unlikes.remove(user)
+            if user in video_instance.dislikes.all():
+                video_instance.dislikes.remove(user)
             else:
-                video_instance.unlikes.add(user)
+                video_instance.dislikes.add(user)
+                if user in video_instance.likes.all():
+                    video_instance.likes.remove(user)
         else:
             return "/login"
         return url_
+
+
+'''
+class VideoRatingToggle(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        video_id = self.kwargs.get("video_id")
+        rating = self.kwargs.get("rating")
+
+        # print(video_id)
+        video_instance = get_object_or_404(Video, id=video_id)
+        user = self.request.user
+        url_ = video_instance.get_absolute_url()
+        # print(url_ + "/video/" + video_id + "/")
+        if user.is_authenticated:
+            video_instance.rating = Rating.objects.create(
+                user=user,
+                object_id=video_instance.id,
+                content_type=ContentType.objects.get_for_model(video_instance),
+                content_type_id=video_instance.id,
+                rating=rating,
+
+            )
+            video_instance.save()
+        else:
+            return "/login"
+        return url_
+
+'''
 
 
 class FollowToggle(RedirectView):
@@ -350,7 +431,6 @@ def myvideos(request):
     content = {
         'user': user,
         'videos': videos,
-
     }
     return render(request, 'myvideos.html', content)
 

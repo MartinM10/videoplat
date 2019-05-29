@@ -7,7 +7,7 @@ from .views import (
     FollowToggle,
     search,
     profile_edit,
-    VideoLikeToggle, VideoUnLikeToggle, CommentUnLikeToggle)
+    VideoLikeToggle, VideoDisLikeToggle, CommentDisLikeToggle)
 
 app_name = 'accounts'
 urlpatterns = [
@@ -15,10 +15,12 @@ urlpatterns = [
     url(r'^search/', search, name="search"),
 
     url(r'^comments/(?P<comment_id>\d+)/likes/$', CommentLikeToggle.as_view(), name="like_toggle"),
-    url(r'^comments/(?P<comment_id>\d+)/unlikes/$', CommentUnLikeToggle.as_view(), name="unlike_toggle"),
+    url(r'^comments/(?P<comment_id>\d+)/dislikes/$', CommentDisLikeToggle.as_view(), name="dislike_toggle"),
 
     url(r'^video/(?P<video_id>\d+)/likes/$', VideoLikeToggle.as_view(), name="like_video_toggle"),
-    url(r'^video/(?P<video_id>\d+)/unlikes/$', VideoUnLikeToggle.as_view(), name="unlike_video_toggle"),
+    url(r'^video/(?P<video_id>\d+)/dislikes/$', VideoDisLikeToggle.as_view(), name="dislike_video_toggle"),
+
+    # url(r'^video/(?P<video_id>\d+)/rating/$', VideoRatingToggle.as_view(), name="rating_video_toggle"),
 
     url(r'^(?P<slug>[\w-]+)/follow/$', FollowToggle.as_view(), name="follow_toggle"),
     url(r'^(?P<slug>[\w-]+)/edit/$', profile_edit, name="edit"),

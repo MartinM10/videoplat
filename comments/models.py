@@ -18,7 +18,7 @@ class Comment(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="comment_likes")
-    unlikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="comment_unlikes")
+    dislikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="comment_dislikes")
 
     class Meta:
         ordering = ['-added']
@@ -32,14 +32,14 @@ class Comment(models.Model):
     def get_like_url(self):
         return reverse("accounts:like_toggle", kwargs={"comment_id": self.id})
 
-    def get_unlike_url(self):
-        return reverse("accounts:unlike_toggle", kwargs={"comment_id": self.id})
+    def get_dislike_url(self):
+        return reverse("accounts:dislike_toggle", kwargs={"comment_id": self.id})
 
     def get_like_instances(self):
         return self.likes.all()
 
-    def get_unlike_instances(self):
-        return self.unlikes.all()
+    def get_dislike_instances(self):
+        return self.dislikes.all()
 
     def get_user_object(self):
         return self.user

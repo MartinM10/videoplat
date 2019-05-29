@@ -22,9 +22,11 @@ class Video(models.Model):
     edited = models.DateTimeField(auto_now=True)
     parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
-    unlikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_unlikes")
+    dislikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_dislikes")
+
     views = models.BigIntegerField(null=True, blank=True, default=0)
     subjects = models.ManyToManyField(Subject, blank=True, related_name="videos_subjects")
+    comments = models.IntegerField(default=0, null=True, blank=True)
 
     class Meta:
         db_table = 'video'
@@ -39,17 +41,23 @@ class Video(models.Model):
     def get_name_subject(self):
         return self.video_set
 
+    def get_absolute_url(self):
+        return reverse("videos:video_id", kwargs={"video_id": self.id})
+
     def get_like_url(self):
         return reverse("accounts:like_video_toggle", kwargs={"video_id": self.id})
 
-    def get_unlike_url(self):
-        return reverse("accounts:unlike_video_toggle", kwargs={"video_id": self.id})
+    def get_dislike_url(self):
+        return reverse("accounts:dislike_video_toggle", kwargs={"video_id": self.id})
+
+    def get_rating_url(self):
+        return reverse("accounts:rating_video_toggle", kwargs={"video_id": self.id})
 
     def get_like_instances(self):
         return self.likes.all()
 
-    def get_unlike_instances(self):
-        return self.unlikes.all()
+    def get_dislike_instances(self):
+        return self.dislikes.all()
 
     def get_user_object(self):
         return get_object_or_404(UserProfile, user=self.user)
@@ -69,7 +77,7 @@ class UserVideo(models.Model):
     created_on = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = (('user', 'video'),)
+        unique_together = (('user', 'video', 'comments'),)
 
     def __str__(self):
         return '{}' " - " '{}'.format(self.user, self.video)

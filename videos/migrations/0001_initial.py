@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('likes', models.ManyToManyField(blank=True, related_name='videos_likes', to=settings.AUTH_USER_MODEL)),
                 ('parent', models.ForeignKey(blank='True', null=True, on_delete=django.db.models.deletion.SET_NULL, to='videos.Video')),
                 ('subjects', models.ManyToManyField(blank=True, related_name='videos_subjects', to='subjects.Subject')),
-                ('unlikes', models.ManyToManyField(blank=True, related_name='videos_unlikes', to=settings.AUTH_USER_MODEL)),
+                ('dislikes', models.ManyToManyField(blank=True, related_name='videos_dislikes', to=settings.AUTH_USER_MODEL)),
                 ('user', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load pinax_ratings_tags %}
 
 {% block content %}
 
@@ -24,17 +25,27 @@
                     </a>
                     {{ video.likes.count }}
 
-                    <a href="{{ video.get_unlike_url }}">
+                    <a href="{{ video.get_dislike_url }}">
 
-                        {% if request.user in video.get_unlike_instances %}
+                        {% if request.user in video.get_dislike_instances %}
                             <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
                         {% else %}
                             <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
                         {% endif %}
                     </a>
-                    {{ video.unlikes.count }}
+                    {{ video.dislikes.count }}
                 </div>
             </div>
+
+            {% overall_rating video as the_overall_rating %}
+
+            <div class="overall_rating">{{ the_overall_rating }}</div>
+
+            {% user_rating request.user user as the_user_rating %}
+
+            <div class="user_rating"> rating de usuario {{ the_user_rating }}</div>
+            <div id="user_rating"> rating de usuario</div>
+
 
         </footer>
         <div class="panel-heading">
@@ -53,11 +64,25 @@
 
         </div>
     </div>
+    {% if request.user == user %}
+        <form method="POST" action="{% url "videos:video_id" video_id=video.id %}" class=form-group>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-primary" value="Post">
+        </form>
+    {% endif %}
 
     {% for comment in comments %}
-        <div class="col-sm-8">
+        <div class="form-group">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <div class="thumbnail" style="width: 10%">
+                        {% if comment.comments.get_user_object.image %}
+                            <img src="{{ comment.comments.get_image_url }}" alt="...">
+                        {% else %}
+                            <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="...">
+                        {% endif %}
+                    </div><!-- /thumbnail -->
                     <a href='{% url "accounts:detail" slug=comment.comments.user.username %}'>
                         <strong>{{ comment.comments.user }}</strong>
                     </a>
@@ -71,7 +96,7 @@
                 </div><!-- /panel-body -->
                 <footer>
                     <strong>
-                        <a href="#" class="comment-reply-btn"> Replay </a>
+                        <a href="#" class="comment-reply-btn"> Responder </a>
                         |
                         {% if comment.comments.children.count > 0 %}
                             {{ comment.comments.children.count }} Comments
@@ -88,15 +113,15 @@
                         </a>
                         {{ comment.comments.likes.count }}
                         |
-                        <a href="{{ comment.comments.get_unlike_url }}">
+                        <a href="{{ comment.comments.get_dislike_url }}">
 
-                            {% if request.user in comment.comments.get_unlike_instances %}
+                            {% if request.user in comment.comments.get_dislike_instances %}
                                 <span class="glyphicon glyphicon-thumbs-down " style="color: #993333"></span>
                             {% else %}
                                 <span class="glyphicon glyphicon-thumbs-down" style="color: darkgray"></span>
                             {% endif %}
                         </a>
-                        {{ comment.comments.unlikes.count }}
+                        {{ comment.comments.dislikes.count }}
 
                     </strong>
                     <div class="comment-reply" style="display: none">
@@ -123,6 +148,5 @@
                 </footer>
             </div><!-- /panel panel-default -->
         </div><!-- /col-sm-5 -->
-        </div><!-- /row -->
     {% endfor %}
 {% endblock %}

@@ -42,3 +42,15 @@
     margin: 5px auto 10px auto;
     text-align: center;
 }
+
+#top3 {
+    width: 20px;
+    margin-right: 10px;
+    border-width: 8px;
+}
+
+#general {
+    margin: auto;
+    width: 960px;
+    height: 800px;
+}

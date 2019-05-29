@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('added', models.DateTimeField(auto_now_add=True)),
                 ('likes', models.ManyToManyField(blank=True, related_name='comment_likes', to=settings.AUTH_USER_MODEL)),
                 ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='comments.Comment')),
-                ('unlikes', models.ManyToManyField(blank=True, related_name='comment_unlikes', to=settings.AUTH_USER_MODEL)),
+                ('dislikes', models.ManyToManyField(blank=True, related_name='comment_dislikes', to=settings.AUTH_USER_MODEL)),
                 ('user', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
