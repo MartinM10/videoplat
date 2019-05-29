@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Home</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -21,8 +21,8 @@
 
         /* Set gray background color and 100% height */
         .sidenav {
-            padding-top: 20px;
-            background-color: #f1f1f1;
+            /* padding-top: 20px; */
+            /* background-color: #f1f1f1; */
             height: 100%;
         }
 
@@ -93,18 +93,32 @@
         </div>
         <div class="col-sm-2 sidenav">
             <div class="well">
-                <p>ADS</p>
+                <h4> Top 3 Users </h4>
+                {% for t3u in top3users %}
+                    <p>{{ t3u.username }}</p>
+                {% endfor %}
             </div>
             <div class="well">
-                <p>ADS</p>
+                <h4> Top 3 Videos mas valorados </h4>
+                {% for t3vl in top3videoslikes %}
+                    <p>{{ t3vl.title }}</p>
+                {% endfor %}
+            </div>
+            <div class="well">
+                <h4> Top 3 Videos mas vistos </h4>
+                {% for t3vv in top3videosviews %}
+                    <p>{{ t3vv.title }}</p>
+                {% endfor %}
             </div>
         </div>
     </div>
 </div>
+<!-- Esto es un comentario
 
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
+ -->
 
 </body>
 </html>

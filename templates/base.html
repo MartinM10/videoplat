@@ -28,7 +28,7 @@
 <body>
 
 {% block navbar %}
-    <div class="navbar navbar-default" role="navigation">
+    <div class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -106,9 +106,41 @@
 
 {% include "items/messages_display.html" %}
 
+<div class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+            <p><a href="#">Link</a></p>
+            <p><a href="#">Link</a></p>
+            <p><a href="#">Link</a></p>
+        </div>
+        <div class="col-sm-8 text-left">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <div class="col-sm-2 sidenav">
+            <div class="well">
+                <h4> Top 3 Users </h4>
+                {% for t3u in top3users %}
+                    <p>{{ t3u.username }}</p>
+                {% endfor %}
+            </div>
+            <div class="well">
+                <h4> Top 3 Videos mas valorados </h4>
+                {% for t3vl in top3videoslikes %}
+                    <p>{{ t3vl.title }}</p>
+                {% endfor %}
+            </div>
+            <div class="well">
+                <h4> Top 3 Videos mas vistos </h4>
+                {% for t3vv in top3videosviews %}
+                    <p>{{ t3vv.title }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
-    {% block content %}
-    {% endblock %}
 </div>
 </body>
 <!-- Latest compiled and minified JavaScript -->
