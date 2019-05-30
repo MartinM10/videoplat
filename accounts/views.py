@@ -32,6 +32,9 @@ from .forms import UserLoginForm, UserRegisterForm, UserProfileForm
 # Create your views here.
 def profile_edit(request, slug=None):
     instance = get_object_or_404(UserProfile, slug=slug)
+    top3users = UserProfile.objects.order_by('followers').reverse()[:3]
+    top3videosviews = Video.objects.order_by('views').reverse()[:3]
+    top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
     form = UserProfileForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -40,7 +43,7 @@ def profile_edit(request, slug=None):
         messages.success(request, "item saved")
         return HttpResponseRedirect(instance.get_absolute_url())
 
-    return render(request, "form.html", context={"form": form, "title": "edit"})
+    return render(request, "form.html", context={"form": form, "title": "edit", })
 
 
 def profile_detail(request, slug=None):
@@ -207,7 +210,7 @@ def search(request):
 
             # si alguna de las queries anteriores tiene datos
             context = {'users': query_user, 'subjects': query_subject, 'videos': query_video,
-                       'comments_videos': query_comment_video, 'comments': query_comment}
+                       'comments_videos': query_comment_video, 'comments': query_comment, }
             return render(request, "search.html", context)
 
     else:
@@ -224,19 +227,14 @@ def main_page(request):
     if user.is_authenticated:
         query_list_users = UserProfile.objects.filter(subjects__in=user.subjects.all()).exclude(pk=user.pk).distinct()
         comments = Comment.objects.filter(user__in=user.followers.all()).exclude(user=user)
-        top3users = UserProfile.objects.order_by('followers').reverse()[:3]
-        top3videosviews = Video.objects.order_by('views').reverse()[:3]
-        top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
-        # top3videoscomentados = Video.objects.order_by('comments').reverse()[:3]
-        print(top3users)
-        print(top3videosviews)
-        print(top3videoslikes)
-        # print(top3videoscomentados)
         # query_list_subjects = Subject.objects.all()
     # print(query_list_subjects)
 
     # print(query_list_users)
-
+    top3users = UserProfile.objects.order_by('followers').reverse()[:3]
+    top3videosviews = Video.objects.order_by('views').reverse()[:3]
+    top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
+    count = 1
     content = {
         "comments": comments,
         "user_": user,
@@ -246,7 +244,7 @@ def main_page(request):
         "top3users": top3users,
         "top3videosviews": top3videosviews,
         "top3videoslikes": top3videoslikes,
-
+        "count": count,
     }
     return render(request, "list.html", content)
     # return redirect("accounts:list")
@@ -414,7 +412,7 @@ def register_view(request):
         return redirect("/")
     context = {
         "form": form,
-        "title": title
+        "title": title,
     }
     return render(request, "form.html", context)
 
@@ -453,9 +451,9 @@ def uploadVideo(request):
         # new_subject_video.save(),
 
     subjects = Subject.objects.all()
+
     content = {
         'subjects': subjects,
-
     }
     return render(request, 'videoupload.html', content)
 
@@ -475,6 +473,7 @@ def exshow(request, slug, video_id):
 
 def list_subjects(request):
     subjects = Subject.objects.all()
+
     content = {
         'subjects': subjects,
     }

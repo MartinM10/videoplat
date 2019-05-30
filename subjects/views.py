@@ -11,6 +11,7 @@ from accounts.views import login_view
 from comments.forms import CommentForm
 from comments.models import Comment
 from subjects.models import Subject, University, Degree, Center
+from videos.models import Video
 
 '''
 def logged_in(request):
@@ -49,7 +50,6 @@ def subject_detail(request, subject_id):
     if request.user.is_authenticated:
         # user_ = get_object_or_404(UserProfile, user=request.user)
         # query = request.GET.get("search")
-
         print(subject_id)
         subject = Subject.objects.get(pk=subject_id)
         if subject:

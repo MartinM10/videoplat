@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 
 # Create your views here.
+from accounts.models import UserProfile
 from comments.models import Comment
 from videos.models import Video
 
@@ -14,7 +15,7 @@ def index(request):
 
     context = {
         "comments": comments,
-        "comment": comment
+        "comment": comment,
     }
 
     return render(request, 'index.html', context)

@@ -22,12 +22,12 @@
 
 
     <link rel="stylesheet" href='{% static "/css/base.css" %}'/>
-
 </head>
 
 <body>
 
 {% block navbar %}
+
     <div class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -102,46 +102,41 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 {% include "items/messages_display.html" %}
 
-<div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-sm-2 sidenav">
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-        </div>
-        <div class="col-sm-8 text-left">
-            {% block content %}
+{% block laterales %}
 
-            {% endblock %}
-        </div>
-        <div class="col-sm-2 sidenav">
-            <div class="well">
-                <h4> Top 3 Users </h4>
-                {% for t3u in top3users %}
-                    <p>{{ t3u.username }}</p>
-                {% endfor %}
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav">
+                <p><a href="#">Link</a></p>
+                <p><a href="#">Link</a></p>
+                <p><a href="#">Link</a></p>
             </div>
-            <div class="well">
-                <h4> Top 3 Videos mas valorados </h4>
-                {% for t3vl in top3videoslikes %}
-                    <p>{{ t3vl.title }}</p>
-                {% endfor %}
+            <div class="col-sm-8 text-left">
+                {% block content %}
+
+                {% endblock %}
             </div>
-            <div class="well">
-                <h4> Top 3 Videos mas vistos </h4>
-                {% for t3vv in top3videosviews %}
-                    <p>{{ t3vv.title }}</p>
-                {% endfor %}
+            <div class="col-sm-2 sidenav">
+                {% block tops %}
+
+                {% endblock %}
+            </div>
+            <div class="container">
             </div>
         </div>
     </div>
-</div>
-<div class="container">
-</div>
+
+{% endblock %}
+
+<footer class="container-fluid text-center aligned" style="background-color:#222; padding-top: 1%;margin-top: 10%">
+    <p style="color: #878c99; font-family: Calibri">Footer Text</p>
+</footer>
+
 </body>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
