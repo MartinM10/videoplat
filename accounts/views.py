@@ -223,29 +223,40 @@ def main_page(request):
     query_list_users_all = UserProfile.objects.all()
     # query_list_subjects = None
     user = request.user
-    comments = None
-    if user.is_authenticated:
-        query_list_users = UserProfile.objects.filter(subjects__in=user.subjects.all()).exclude(pk=user.pk).distinct()
-        comments = Comment.objects.filter(user__in=user.followers.all()).exclude(user=user)
-        # query_list_subjects = Subject.objects.all()
-    # print(query_list_subjects)
 
-    # print(query_list_users)
+    comments = None
     top3users = UserProfile.objects.order_by('followers').reverse()[:3]
     top3videosviews = Video.objects.order_by('views').reverse()[:3]
     top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
-    count = 1
-    content = {
-        "comments": comments,
-        "user_": user,
-        'form': form,
-        "users": query_list_users,
-        "all_users": query_list_users_all,
-        "top3users": top3users,
-        "top3videosviews": top3videosviews,
-        "top3videoslikes": top3videoslikes,
-        "count": count,
-    }
+
+    if user.is_authenticated:
+        user_mod = get_object_or_404(UserProfile, pk=user.pk)
+        query_list_users = UserProfile.objects.filter(subjects__in=user.subjects.all()).exclude(pk=user.pk).distinct()
+        comments = Comment.objects.filter(user__in=user.followers.all()).exclude(user=user)
+        # query_list_subjects = Subject.objects.all()
+        # print(query_list_subjects)
+        content = {
+            "comments": comments,
+            "user_": user,
+            "user": user_mod,
+            'form': form,
+            "users": query_list_users,
+            "all_users": query_list_users_all,
+            "top3users": top3users,
+            "top3videosviews": top3videosviews,
+            "top3videoslikes": top3videoslikes,
+        }
+    else:
+        content = {
+            "comments": comments,
+            "user_": user,
+            'form': form,
+            "users": query_list_users,
+            "all_users": query_list_users_all,
+            "top3users": top3users,
+            "top3videosviews": top3videosviews,
+            "top3videoslikes": top3videoslikes,
+        }
     return render(request, "list.html", content)
     # return redirect("accounts:list")
 

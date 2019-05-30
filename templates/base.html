@@ -1,5 +1,5 @@
 {% load staticfiles %}
-
+{% load static %}
 <!-- DOCTYPE html -->
 <!DOCTYPE html>
 <html>
@@ -41,7 +41,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-
                     <li>
                         <a href="{% url "main" %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                             Home
@@ -112,8 +111,11 @@
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav">
-                <p><a href="#">Link</a></p>
-                <p><a href="#">Link</a></p>
+                <a href="https://www.uma.es/"><img src="{% static 'images/uma_logo.png' %}"
+                                                   style="height: 100%;width: 100%"></a>
+                <p>{% block detalle %}
+                    <img src="{{ re }}">
+                {% endblock %}</p>
                 <p><a href="#">Link</a></p>
             </div>
             <div class="col-sm-8 text-left">
@@ -134,7 +136,8 @@
 {% endblock %}
 
 <footer class="container-fluid text-center aligned" style="background-color:#222; padding-top: 1%;margin-top: 10%">
-    <p style="color: #878c99; font-family: Calibri">Footer Text</p>
+    <img style="height: 4%; width: 4%;border-radius: 60%" src="{% static 'images/uma2.jpg' %}">
+    <p style="color: #878c99; font-family: Calibri">Universidad de Málaga</p>
 </footer>
 
 </body>
