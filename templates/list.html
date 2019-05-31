@@ -40,8 +40,26 @@
             </div>
 
         {% endif %}
-
-        {% include "items/profiles.html" %}
+        <div class="row">
+            {% include "items/profiles.html" %}
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <h1><span class="glyphicon glyphicon-user" style="margin-left: 50%"></span></h1>
+                <h3 style="text-align: center;margin-left: 40px">Usuarios</h3>
+                <h3 style="margin-left: 55%"> {{ all_users.count }}</h3>
+            </div>
+            <div class="col-sm-3">
+                <h1><span class="glyphicon glyphicon-hd-video" style="margin-left: 50%"></span></h1>
+                <h3 style="text-align: center; margin-left: 40px">Videos</h3>
+                <h3 style="margin-left: 55%">{{ all_videos.count }}</h3>
+            </div>
+            <div class="col-sm-3">
+                <h1><span class="glyphicon glyphicon-comment" style="margin-left: 50%;"></span></h1>
+                <h3 style="text-align: center; margin-left: 40px">Comentarios</h3>
+                <h3 style="margin-left: 55%">{{ all_comments.count }}</h3>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
@@ -49,10 +67,10 @@
 {% block tops %}
 
     <div class="panel-primary" style="padding-top: 5%">
-        <div class="panel-heading" style="border-radius: 50%">
+        <div class="panel-heading">
             <h4>Top Subidores</h4>
         </div>
-        <div class="panel-body" style="background-color: #f7f7f7; border-radius: 5%">
+        <div class="panel-body" style="background-color: #f7f7f7">
             <ol>
                 {% for t3u in top3users %}
                     <a href="{% url "accounts:detail" slug=t3u.slug %}">
@@ -64,10 +82,10 @@
     </div>
 
     <div class="panel-primary" style="padding-top: 10%">
-        <div class="panel-heading" style="border-radius: 50%">
+        <div class="panel-heading">
             <h4>Mejores Videos</h4>
         </div>
-        <div class="panel-body" style="background-color: #f7f7f7; border-radius: 5%">
+        <div class="panel-body" style="background-color: #f7f7f7">
             <ol>
                 {% for t3vl in top3videoslikes %}
                     <a href="{% url "videos:video_id" video_id=t3vl.id %}">
@@ -79,10 +97,10 @@
     </div>
 
     <div class="panel-primary" style="padding-top: 10%">
-        <div class="panel-heading" style="border-radius: 50%">
+        <div class="panel-heading">
             <h4>Videos Mas vistos</h4>
         </div>
-        <div class="panel-body" style="background-color: #f7f7f7; border-radius: 5%">
+        <div class="panel-body" style="background-color: #f7f7f7">
             <ol>
                 {% for t3vv in top3videosviews %}
                     <a href="{% url "videos:video_id" video_id=t3vv.id %}">
@@ -113,3 +131,4 @@
         </div>
     {% endif %}
 {% endblock %}
+

@@ -221,6 +221,9 @@ def main_page(request):
     form = CommentForm(request.POST or None)
     query_list_users = None
     query_list_users_all = UserProfile.objects.all()
+    query_list_videos_all = Video.objects.all()
+    query_list_comments_all = Comment.objects.all()
+
     # query_list_subjects = None
     user = request.user
 
@@ -242,6 +245,8 @@ def main_page(request):
             'form': form,
             "users": query_list_users,
             "all_users": query_list_users_all,
+            "all_comments": query_list_comments_all,
+            "all_videos": query_list_videos_all,
             "top3users": top3users,
             "top3videosviews": top3videosviews,
             "top3videoslikes": top3videoslikes,
@@ -253,6 +258,8 @@ def main_page(request):
             'form': form,
             "users": query_list_users,
             "all_users": query_list_users_all,
+            "all_comments": query_list_comments_all,
+            "all_videos": query_list_videos_all,
             "top3users": top3users,
             "top3videosviews": top3videosviews,
             "top3videoslikes": top3videoslikes,
