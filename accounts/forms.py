@@ -29,6 +29,20 @@ class UserProfileForm(forms.ModelForm):
 User = UserProfile
 
 
+class UserAdvancedSearchForm(forms.Form):
+    username = forms.CharField(label="username", required=False)
+    first_name = forms.CharField(label="first_name", required=False)
+    last_name = forms.CharField(label="last_name", required=False)
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+        ]
+
+
 class UserLoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)

@@ -7,12 +7,13 @@ from .views import (
     FollowToggle,
     search,
     profile_edit,
-    VideoLikeToggle, VideoDisLikeToggle, CommentDisLikeToggle)
+    VideoLikeToggle, VideoDisLikeToggle, CommentDisLikeToggle, advanced_search)
 
 app_name = 'accounts'
 urlpatterns = [
     url(r'^$', main_page, name="list"),
-    url(r'^search/', search, name="search"),
+    url(r'^search/$', search, name="search"),
+    url(r'^search/advanced_search/$', advanced_search, name="advanced_search"),
 
     url(r'^comments/(?P<comment_id>\d+)/likes/$', CommentLikeToggle.as_view(), name="like_toggle"),
     url(r'^comments/(?P<comment_id>\d+)/dislikes/$', CommentDisLikeToggle.as_view(), name="dislike_toggle"),

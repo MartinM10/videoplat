@@ -3,10 +3,24 @@
 
     <div class="container" style="width: 50%">
         <h2>Resultados obtenidos de la búsqueda</h2>
-        <h4><u><a href="search_advanced.html">Para una búsqueda avanzada haz click aquí</a></u></h4>
+        <form action="{% url  "accounts:advanced_search" %}">
+            <input value="{{ request.GET.search }}" name="search" type="hidden" class="form-control"
+                   placeholder="Search">
+            <h4><u>
+                <button type="submit" class="btn btn-default">Para una búsqueda avanzada haz click aquí</button>
+            </u></h4>
+        </form>
 
         <ul class="list-group">
-            <li class="list-group-item">Usuarios<span class="badge"> {{ users.count }} </span></li>
+            <li class="list-group-item">
+                <form action="{% url  "accounts:advanced_search" %}">
+                    <input value="{{ request.GET.search }}" name="search" type="hidden" class="form-control"
+                           placeholder="Search">
+
+                    <button type="submit" class="btn btn-link p-0">Usuarios</button>
+                    <span class="badge pull-right"> {{ users.count }} </span>
+                </form>
+            </li>
             <li class="list-group-item">Asignaturas<span class="badge"> {{ subjects.count }} </span></li>
             <li class="list-group-item">Videos<span class="badge"> {{ videos.count }} </span></li>
             <li class="list-group-item">Comentarios en los videos<span

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container" style="width: 50%">
+        <h2>Resultados obtenidos de la búsqueda</h2>
+
+        <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-info" value="Buscar">
+        </form>
+
+        {% if users %}
+            <div class="panel-heading">
+                <h3><strong>Usuarios</strong></h3>
+                <div class="panel-body">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>UserName</th>
+                            <th>Numero de Seguidores</th>
+                            <th>Numero de Videos Subidos</th>
+                            <th>Perfil</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for user in users %}
+
+                            <tr>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.followers.count }}</td>
+                                <td>{{ user.video_set.count }}</td>
+                                <td><a href="{% url "accounts:detail" slug=user.slug %}"> Enlace</a></td>
+
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+{% endblock %}
