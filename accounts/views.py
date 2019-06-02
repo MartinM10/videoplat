@@ -25,7 +25,7 @@ from django.contrib.auth import (
     logout,
 
 )
-from .forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserAdvancedSearchForm
+from .forms import UserLoginForm, UserRegisterForm, UserProfileForm
 
 
 # Create your views here.
@@ -211,34 +211,6 @@ def search(request):
             context = {'users': query_user, 'subjects': query_subject, 'videos': query_video,
                        'comments_videos': query_comment_video, 'comments': query_comment, }
             return render(request, "search.html", context)
-
-    else:
-        return redirect("login")
-
-
-def advanced_search(request):
-    if request.user.is_authenticated:
-        if request.POST:
-
-            form = UserAdvancedSearchForm(request.POST)
-            if form.is_valid():
-                username = form.cleaned_data.get('username')
-                first_name = form.cleaned_data.get('first_name')
-                last_name = form.cleaned_data.get('last_name')
-                query_user = UserProfile.objects.filter(username__icontains=username, first_name__icontains=first_name,
-                                                        last_name__icontains=last_name)
-                context = {'users': query_user, 'form': form}
-                return render(request, "advanced_search_users.html", context)
-
-        else:
-            query = request.GET.get("search")
-            query_user = UserProfile.objects.filter(username__icontains=query)
-            if query_user:
-                print(query_user)
-            print(query)
-            form = UserAdvancedSearchForm()
-            context = {'users': query_user, 'form': form}
-            return render(request, "advanced_search_users.html", context)
 
     else:
         return redirect("login")
