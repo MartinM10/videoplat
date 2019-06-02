@@ -3,7 +3,7 @@
 
     <div class="container" style="width: 50%">
         <h2>Resultados obtenidos de la búsqueda</h2>
-        <form action="{% url  "accounts:advanced_search" %}">
+        <form action="{% url  "accounts:advanced_search_users" %}">
             <input value="{{ request.GET.search }}" name="search" type="hidden" class="form-control"
                    placeholder="Search">
             <h4><u>
@@ -13,16 +13,29 @@
 
         <ul class="list-group">
             <li class="list-group-item">
-                <form action="{% url  "accounts:advanced_search" %}">
+                <form action="{% url  "accounts:advanced_search_users" %}">
                     <input value="{{ request.GET.search }}" name="search" type="hidden" class="form-control"
                            placeholder="Search">
-
                     <button type="submit" class="btn btn-link p-0">Usuarios</button>
                     <span class="badge pull-right"> {{ users.count }} </span>
                 </form>
             </li>
-            <li class="list-group-item">Asignaturas<span class="badge"> {{ subjects.count }} </span></li>
-            <li class="list-group-item">Videos<span class="badge"> {{ videos.count }} </span></li>
+            <li class="list-group-item">
+                <form action="{% url  "accounts:advanced_search_subjects" %}">
+                    <input value="{{ request.GET.search }}" name="search" type="hidden" class="form-control"
+                           placeholder="Search">
+                    <button type="submit" class="btn btn-link p-0">Asignaturas</button>
+                    <span class="badge pull-right"> {{ subjects.count }} </span>
+                </form>
+            </li>
+            <li class="list-group-item">
+                <form action="{% url  "accounts:advanced_search_videos" %}">
+                    <input value="{{ request.GET.search }}" name="search" type="hidden" class="form-control"
+                           placeholder="Search">
+                    <button type="submit" class="btn btn-link p-0">Videos</button>
+                    <span class="badge pull-right"> {{ videos.count }} </span>
+                </form>
+            </li>
             <li class="list-group-item">Comentarios en los videos<span
                     class="badge"> {{ comments_videos.count }} </span></li>
             <li class="list-group-item">Comentarios generales<span

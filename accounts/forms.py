@@ -7,7 +7,16 @@ from django.contrib.auth import (
     logout,
 )
 
+from subjects.models import Subject
 from .models import UserProfile
+
+COURSE_CHOICES = (
+    ('', ''),
+    ('1º', '1º'),
+    ('2º', '2º'),
+    ('3º', '3º'),
+    ('4º', '4º'),
+)
 
 
 class UserProfileForm(forms.ModelForm):
@@ -29,7 +38,7 @@ class UserProfileForm(forms.ModelForm):
 User = UserProfile
 
 
-class UserAdvancedSearchForm(forms.Form):
+class UserAdvancedSearchUserForm(forms.Form):
     username = forms.CharField(label="username", required=False)
     first_name = forms.CharField(label="first_name", required=False)
     last_name = forms.CharField(label="last_name", required=False)
@@ -40,6 +49,24 @@ class UserAdvancedSearchForm(forms.Form):
             'username',
             'first_name',
             'last_name',
+        ]
+
+
+class UserAdvancedSearchSubjectForm(forms.Form):
+    name = forms.CharField(label="name", required=False)
+    course = forms.ChoiceField(choices=COURSE_CHOICES, label="course", required=False)
+    degree = forms.CharField(label="degree", required=False)
+    center = forms.CharField(label="center", required=False)
+    university = forms.CharField(label="university", required=False)
+
+    class Meta:
+        model = Subject
+        fields = [
+            'name',
+            'course',
+            'degree',
+            'center',
+            'university',
         ]
 
 

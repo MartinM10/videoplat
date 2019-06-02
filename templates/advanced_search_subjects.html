@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container" style="width: 50%">
+        <h2>Resultados obtenidos de la búsqueda</h2>
+
+        <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-info" value="Buscar">
+        </form>
+
+        {% if subjects %}
+
+
+            <div class="container">
+
+                <h1>Listado Asignaturas</h1>
+                <p>Aquí se encuentra un listado con todas las asignaturas.
+                </p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Curso</th>
+                        <th>Grado</th>
+                        <th>Centro</th>
+                        <th>Universidad</th>
+                        <th>Creditos</th>
+                        <th>Creada</th>
+                        <th>Validada</th>
+                        <th>Enlace</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for subject in subjects %}
+                        <tr>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.course }}</td>
+                            <td>{{ subject.degree }}</td>
+                            <td>{{ subject.degree.center }}</td>
+                            <td>{{ subject.degree.center.university }}</td>
+                            <td>{{ subject.degree.credits }}</td>
+                            <td>{{ subject.added }}</td>
+                            <td>{{ subject.validated }}</td>
+                            <td><a href="{% url 'subjects:subject_detail' subject.id %}">Enlace</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown">
+                    Asignaturas <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    {% for subject in subjects %}
+
+                        <li><a href="{% url "subjects:subject_detail" subject_id=subject.id %}">{{ subject.name }}</a>
+                        </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        {% endif %}
+    </div>
+{% endblock %}

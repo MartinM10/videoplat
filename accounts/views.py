@@ -26,7 +26,8 @@ from django.contrib.auth import (
     logout,
 
 )
-from .forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserAdvancedSearchForm
+from .forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserAdvancedSearchUserForm, \
+    UserAdvancedSearchSubjectForm
 
 
 # Create your views here.
@@ -217,16 +218,16 @@ def search(request):
         return redirect("login")
 
 
-def advanced_search(request):
+def advanced_search_users(request):
     if request.user.is_authenticated:
         if request.POST:
-
-            form = UserAdvancedSearchForm(request.POST)
+            form = UserAdvancedSearchUserForm(request.POST)
             if form.is_valid():
                 username = form.cleaned_data.get('username')
                 first_name = form.cleaned_data.get('first_name')
                 last_name = form.cleaned_data.get('last_name')
-                query_user = UserProfile.objects.filter(username__icontains=username, first_name__icontains=first_name,
+                query_user = UserProfile.objects.filter(username__icontains=username,
+                                                        first_name__icontains=first_name,
                                                         last_name__icontains=last_name)
                 context = {'users': query_user, 'form': form}
                 return render(request, "advanced_search_users.html", context)
@@ -237,9 +238,42 @@ def advanced_search(request):
             if query_user:
                 print(query_user)
             print(query)
-            form = UserAdvancedSearchForm()
+            form = UserAdvancedSearchUserForm()
             context = {'users': query_user, 'form': form}
             return render(request, "advanced_search_users.html", context)
+
+    else:
+        return redirect("login")
+
+
+def advanced_search_subjects(request):
+    if request.user.is_authenticated:
+        if request.POST:
+            form = UserAdvancedSearchSubjectForm(request.POST)
+            if form.is_valid():
+                name = form.cleaned_data.get('name')
+                course = form.cleaned_data.get('course')
+                degree = form.cleaned_data.get('degree')
+                center = form.cleaned_data.get('center')
+                university = form.cleaned_data.get('university')
+
+                query_subject = Subject.objects.filter(name__icontains=name,
+                                                       course__icontains=course,
+                                                       degree__name__icontains=degree,
+                                                       degree__center__name__icontains=center,
+                                                       degree__center__university__name__icontains=university)
+                context = {'subjects': query_subject, 'form': form}
+                return render(request, "advanced_search_subjects.html", context)
+
+        else:
+            query = request.GET.get("search")
+            query_subject = Subject.objects.filter(name__icontains=query)
+            if query_subject:
+                print(query_subject)
+            print(query)
+            form = UserAdvancedSearchSubjectForm()
+            context = {'subjects': query_subject, 'form': form}
+            return render(request, "advanced_search_subjects.html", context)
 
     else:
         return redirect("login")

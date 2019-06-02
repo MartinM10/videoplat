@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container" style="width: 50%">
+        <h2>Resultados obtenidos de la búsqueda</h2>
+
+        <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-info" value="Buscar">
+        </form>
+
+        {% if videos %}
+
+            <div class="container">
+
+                <h1>Mis videos</h1>
+                <p>Estos son los videos que he subido hasta el momento.
+                    <a href="{% url "videoupload" %}"><strong>Sube un vídeo ahora</strong>
+                        <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                    </a>
+                </p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Asignatura</th>
+                        <th>Grado</th>
+                        <th>Comentarios</th>
+                        <th>Visualizaciones</th>
+                        <th>Likes</th>
+                        <th>Dislikes</th>
+                        <th>Rating</th>
+                        <th>Fecha Subida</th>
+                        <th>Enlace</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for video in videos %}
+                        {% for subject in video.subjects.all %}
+                            <tr>
+                                <td>{{ video.title }}</td>
+                                <td>{{ subject.name }}</td>
+                                <td>{{ subject.degree }}</td>
+                                <td>{{ video.comments }}</td>
+                                <td>{{ video.views }}</td>
+                                <td>{{ video.likes.count }}</td>
+                                <td>{{ video.dislikes.count }}</td>
+                                <td>{{ video.rating.count }}</td>
+                                <td>{{ video.added }}</td>
+                                <td><a href="{% url 'videos:video_id' video.id %}">Enlace</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
