@@ -9,7 +9,6 @@ from django.contrib import messages
 
 from itertools import chain
 
-#  from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect  # Http404   HttpResponse
 
 from django.views.generic import RedirectView
