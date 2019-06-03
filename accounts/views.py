@@ -285,7 +285,7 @@ def main_page(request):
     query_list_users_all = UserProfile.objects.all()
     query_list_videos_all = Video.objects.all()
     query_list_comments_all = Comment.objects.all()
-
+    query_list_subjects_all = Subject.objects.all()
     # query_list_subjects = None
     user = request.user
 
@@ -307,6 +307,7 @@ def main_page(request):
             'form': form,
             "users": query_list_users,
             "all_users": query_list_users_all,
+            "all_subjects": query_list_subjects_all,
             "all_comments": query_list_comments_all,
             "all_videos": query_list_videos_all,
             "top3users": top3users,
@@ -320,6 +321,7 @@ def main_page(request):
             'form': form,
             "users": query_list_users,
             "all_users": query_list_users_all,
+            "all_subjects": query_list_subjects_all,
             "all_comments": query_list_comments_all,
             "all_videos": query_list_videos_all,
             "top3users": top3users,
