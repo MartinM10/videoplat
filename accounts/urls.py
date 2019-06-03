@@ -1,6 +1,5 @@
 from django.conf.urls import url
 
-from videos.views import advanced_search_videos
 from .views import (
     profile_detail,
     main_page,
@@ -8,7 +7,8 @@ from .views import (
     FollowToggle,
     search,
     profile_edit,
-    VideoLikeToggle, VideoDisLikeToggle, CommentDisLikeToggle, advanced_search_users, advanced_search_subjects)
+    VideoLikeToggle, VideoDisLikeToggle, CommentDisLikeToggle, advanced_search_users, advanced_search_subjects,
+    advanced_search_videos)
 
 app_name = 'accounts'
 urlpatterns = [

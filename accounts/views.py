@@ -27,7 +27,7 @@ from django.contrib.auth import (
 
 )
 from .forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserAdvancedSearchUserForm, \
-    UserAdvancedSearchSubjectForm
+    UserAdvancedSearchSubjectForm, UserAdvancedSearchVideoForm
 
 
 # Create your views here.
@@ -274,6 +274,48 @@ def advanced_search_subjects(request):
             form = UserAdvancedSearchSubjectForm()
             context = {'subjects': query_subject, 'form': form}
             return render(request, "advanced_search_subjects.html", context)
+
+    else:
+        return redirect("login")
+
+
+def advanced_search_videos(request):
+    if request.user.is_authenticated:
+        if request.POST:
+            form = UserAdvancedSearchVideoForm(request.POST)
+            if form.is_valid():
+                title = form.cleaned_data.get('title')
+                user = form.cleaned_data.get('user')
+                description = form.cleaned_data.get('description')
+                likes = form.cleaned_data.get('likes')
+                dislikes = form.cleaned_data.get('dislikes')
+                views = form.cleaned_data.get('views')
+                subjects = form.cleaned_data.get('subjects')
+                start_date = form.cleaned_data.get('start_date')
+                end_date = form.cleaned_data.get('end_date')
+                print(subjects)
+                query_video = Video.objects.filter(title__icontains=title,
+                                                   video__user__username=user,
+                                                   video__description__icontains=description,
+                                                   video__likes=likes,
+                                                   video__dislikes=dislikes,
+                                                   video__views__gte=views,
+                                                   video__subjects__name__icontains=subjects,
+                                                   )
+                print(Video.objects.all())
+                print(query_video)
+                context = {'videos': query_video, 'form': form}
+                return render(request, "advanced_search_videos.html", context)
+
+        else:
+            query = request.GET.get("search")
+            query_video = Video.objects.filter(title__icontains=query)
+            if query_video:
+                print(query_video)
+            print(query)
+            form = UserAdvancedSearchVideoForm()
+            context = {'videos': query_video, 'form': form}
+            return render(request, "advanced_search_videos.html", context)
 
     else:
         return redirect("login")

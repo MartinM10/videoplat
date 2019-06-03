@@ -6,8 +6,10 @@ from django.contrib.auth import (
     login,
     logout,
 )
+from django.forms import SelectDateWidget
 
 from subjects.models import Subject
+from videos.models import Video
 from .models import UserProfile
 
 COURSE_CHOICES = (
@@ -67,6 +69,54 @@ class UserAdvancedSearchSubjectForm(forms.Form):
             'degree',
             'center',
             'university',
+        ]
+
+
+class UserAdvancedSearchVideoForm(forms.Form):
+    title = forms.CharField(label="Título", required=False)
+    user = forms.CharField(label="Propietario", required=False)
+    description = forms.CharField(label="Descripcion", required=False)
+    likes = forms.IntegerField(label="Nº de Likes", required=False)
+    dislikes = forms.IntegerField(label="Nº de Dislikes", required=False)
+    views = forms.IntegerField(label="Visualizaciones", required=False)
+    subjects = forms.CharField(label="Asignatura", required=False)
+    start_date = forms.DateField(
+        widget=SelectDateWidget(
+            empty_label=("Año", "Mes", "Día")
+        ), required=False, label="Fecha Inicio"
+    )
+    end_date = forms.DateField(
+        widget=SelectDateWidget(
+            empty_label=("Año", "Mes", "Día"),
+        ), required=False, label="Fecha Fin"
+    )
+
+    class Meta:
+        model = Video
+        fields = [
+            'title',
+            'user',
+            'description',
+            'likes',
+            'dislikes',
+            'views',
+            'subjects',
+            'start_date'
+            'end_date'
+        ]
+
+    class Meta:
+        model = Video
+        fields = [
+            'title',
+            'user',
+            'description',
+            'likes',
+            'dislikes',
+            'views',
+            'subject',
+            'start_date',
+            'end_date'
         ]
 
 

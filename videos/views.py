@@ -6,7 +6,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from comments.forms import CommentForm
 from comments.models import Comment
-from videos.forms import UserAdvancedSearchVideoForm
 from videos.models import Video, UserVideo
 
 
@@ -48,41 +47,3 @@ def showVideo(request, video_id):
         'form': form,
     }
     return render(request, 'items/videos.html', context)
-
-
-def advanced_search_videos(request):
-    if request.user.is_authenticated:
-        if request.POST:
-            form = UserAdvancedSearchVideoForm(request.POST)
-            if form.is_valid():
-                title = form.cleaned_data.get('title')
-                user = form.cleaned_data.get('user')
-                description = form.cleaned_data.get('description')
-                likes = form.cleaned_data.get('likes')
-                dislikes = form.cleaned_data.get('dislikes')
-                views = form.cleaned_data.get('views')
-                subjects = form.cleaned_data.get('subjects')
-
-                query_video = Video.objects.filter(title__icontains=title,
-                                                   user__in=user,
-                                                   description__icontains=description,
-                                                   likes=likes,
-                                                   dislikes=dislikes,
-                                                   views__gt=views,
-                                                   subjects__name__icontains=subjects)
-                print(query_video)
-                context = {'videos': query_video, 'form': form}
-                return render(request, "advanced_search_videos.html", context)
-
-        else:
-            query = request.GET.get("search")
-            query_video = Video.objects.filter(title__icontains=query)
-            if query_video:
-                print(query_video)
-            print(query)
-            form = UserAdvancedSearchVideoForm()
-            context = {'videos': query_video, 'form': form}
-            return render(request, "advanced_search_videos.html", context)
-
-    else:
-        return redirect("login")
