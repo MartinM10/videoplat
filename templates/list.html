@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="container-fluid text-center" style="height: max-content">
         {% if comments %}
             <div class="alert alert-info col-sm-3 col-sm-offset-1">
                 <h4>Your followers posts: </h4>
@@ -45,19 +45,19 @@
         </div>
         <div class="row">
             <div class="col-sm-3">
-                <h1><span class="glyphicon glyphicon-user" style="margin-left: 50%"></span></h1>
-                <h3 style="text-align: center;margin-left: 40px">Usuarios</h3>
-                <h3 style="margin-left: 55%"> {{ all_users.count }}</h3>
+                <h1><span class="glyphicon glyphicon-user"></span></h1>
+                <h3 style="text-align: center">Usuarios</h3>
+                <h3> {{ all_users.count }}</h3>
             </div>
             <div class="col-sm-3">
-                <h1><span class="glyphicon glyphicon-hd-video" style="margin-left: 50%"></span></h1>
-                <h3 style="text-align: center; margin-left: 40px">Videos</h3>
-                <h3 style="margin-left: 55%">{{ all_videos.count }}</h3>
+                <h1><span class="glyphicon glyphicon-hd-video"></span></h1>
+                <h3 style="text-align: center">Videos</h3>
+                <h3>{{ all_videos.count }}</h3>
             </div>
             <div class="col-sm-3">
-                <h1><span class="glyphicon glyphicon-comment" style="margin-left: 50%;"></span></h1>
-                <h3 style="text-align: center; margin-left: 40px">Comentarios</h3>
-                <h3 style="margin-left: 55%">{{ all_comments.count }}</h3>
+                <h1><span class="glyphicon glyphicon-comment"></span></h1>
+                <h3 style="text-align: center">Comentarios</h3>
+                <h3>{{ all_comments.count }}</h3>
             </div>
         </div>
     </div>
