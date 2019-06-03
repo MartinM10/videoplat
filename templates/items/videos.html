@@ -76,13 +76,12 @@
         <div class="form-group">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="thumbnail" style="width: 10%">
-                        {% if comment.comments.get_user_object.image %}
-                            <img src="{{ comment.comments.get_image_url }}" alt="...">
-                        {% else %}
-                            <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="...">
-                        {% endif %}
-                    </div><!-- /thumbnail -->
+                    {% if comment.comments.get_user_object.image %}
+                        <img src="{{ comment.comments.get_image_url }}" alt="..." style="width: 6%;height: 6%">
+                    {% else %}
+                        <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..."
+                             style="width: 6%;height: 6%">
+                    {% endif %}
                     <a href='{% url "accounts:detail" slug=comment.comments.user.username %}'>
                         <strong>{{ comment.comments.user }}</strong>
                     </a>
