@@ -8,7 +8,7 @@ from django.contrib.auth import (
 )
 from django.forms import SelectDateWidget
 
-from subjects.models import Subject
+from subjects.models import Subject, University
 from videos.models import Video
 from .models import UserProfile
 
@@ -59,7 +59,7 @@ class UserAdvancedSearchSubjectForm(forms.Form):
     course = forms.ChoiceField(choices=COURSE_CHOICES, label="course", required=False)
     degree = forms.CharField(label="degree", required=False)
     center = forms.CharField(label="center", required=False)
-    university = forms.CharField(label="university", required=False)
+    university = forms.ModelChoiceField(queryset=University.objects.all(), empty_label="", required=False)
 
     class Meta:
         model = Subject

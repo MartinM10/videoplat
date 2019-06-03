@@ -261,7 +261,7 @@ def advanced_search_subjects(request):
                                                        course__icontains=course,
                                                        degree__name__icontains=degree,
                                                        degree__center__name__icontains=center,
-                                                       degree__center__university__name__icontains=university)
+                                                       degree__center__university=university)
                 context = {'subjects': query_subject, 'form': form}
                 return render(request, "advanced_search_subjects.html", context)
 
@@ -295,14 +295,33 @@ def advanced_search_videos(request):
                 end_date = form.cleaned_data.get('end_date')
                 print(subjects)
                 query_video = Video.objects.filter(title__icontains=title,
-                                                   video__user__username=user,
+
                                                    video__description__icontains=description,
-                                                   video__likes=likes,
-                                                   video__dislikes=dislikes,
-                                                   video__views__gte=views,
-                                                   video__subjects__name__icontains=subjects,
+
                                                    )
-                print(Video.objects.all())
+                print(views)
+                print(likes)
+                print(dislikes)
+
+                if user:
+                    query_video = query_video.filter(
+                        video__user__username__icointains=user, )
+
+                if likes:
+                    query_video = query_video.filter(
+                        video__likes=likes, )
+
+                if dislikes:
+                    query_video = query_video.filter(
+                        video__dislikes=dislikes, )
+
+                if views:
+                    query_video = query_video.filter(
+                        video__views__gte=views, )
+
+                if subjects:
+                    query_video = query_video.filter(video__subjects__name__icontains=subjects,
+                                                     )
                 print(query_video)
                 context = {'videos': query_video, 'form': form}
                 return render(request, "advanced_search_videos.html", context)
