@@ -7,6 +7,5 @@ django-pagedown
 markdown2
 olefile
 Pillow
-pkg-resources
 pytz
 

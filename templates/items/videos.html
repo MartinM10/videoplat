@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load pinax_ratings_tags %}
-
+{% load ratings %}
 {% block content %}
 
     <div class="col-sm-8">
@@ -44,7 +44,8 @@
             {% user_rating request.user user as the_user_rating %}
 
             <div class="user_rating"> rating de usuario {{ the_user_rating }}</div>
-            <div id="user_rating"> rating de usuario</div>
+
+            {% ratings video %}
 
 
         </footer>
