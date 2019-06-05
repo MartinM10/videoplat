@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
+{% load ratings %}
 {% block header %}
     {{ profile.slug }}|{{ block.super }}
 {% endblock %}
@@ -8,7 +8,20 @@
     <div>
         <h1>{{ profile.username }} Profile
             {% include "items/follow_button.html" %}
+
+
         </h1>
+    </div>
+    <div class="container-fluid text-left" style="height: max-content; padding-top: 20px">
+        <h4>Videos subidos: {{ profile.video_set.count }}</h4>
+        <h4>Comentarios realizados: {{ profile.comment_set.count }}</h4>
+        <h4>Registrado: {{ profile.added.date }}</h4>
+        <h4>Seguidores: {{ profile.followers.count }}</h4>
+        <h4>Email: {{ profile.email }}</h4>
+        <h4>Ultimo acceso: {{ profile.last_login }}</h4>
+        <div>
+            {% ratings profile %}
+        </div>
     </div>
     <div>
         {% if request.user == profile %}
