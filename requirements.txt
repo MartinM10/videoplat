@@ -1,6 +1,7 @@
 pinax
 pinax-ratings
 Django
+django-star-ratings
 django-crispy-forms
 django-markdown-deux
 django-pagedown
