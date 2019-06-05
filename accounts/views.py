@@ -27,7 +27,7 @@ from django.contrib.auth import (
 
 )
 from .forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserAdvancedSearchUserForm, \
-    UserAdvancedSearchSubjectForm, UserAdvancedSearchVideoForm
+    UserAdvancedSearchSubjectForm, UserAdvancedSearchVideoForm, UserDisplayForm
 
 
 # Create your views here.
@@ -53,6 +53,8 @@ def profile_detail(request, slug=None):
     if request.user.is_authenticated:
         user_ = request.user
     form = CommentForm(request.POST or None)
+    form_user = UserDisplayForm(request.GET or None, request.GET or None, instance=profile_instance)
+
     if form.is_valid():
         content = form.cleaned_data.get("content")
         parent = None
@@ -82,6 +84,7 @@ def profile_detail(request, slug=None):
     content = {
         "profile": profile_instance,
         'form': form,
+        'formUser': form_user,
         "comments": qs_comments,
         "videos": qs_videos,
         # "video_comments": qs_videos_comments,

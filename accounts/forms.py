@@ -105,19 +105,42 @@ class UserAdvancedSearchVideoForm(forms.Form):
             'end_date'
         ]
 
+
+class UserDisplayForm(forms.ModelForm):
+    last_login = forms.DateField(
+        widget=forms.TimeInput(format='%d/%m/%Y - %H:%M',
+                               attrs={'class': 'form-control',
+                                      'readonly': 'readonly'}), required=False, label='Ultimo acceso')
+    added = forms.DateField(
+        widget=forms.TimeInput(format='%d/%m/%Y - %H:%M',
+                               attrs={'class': 'form-control', 'readonly': 'readonly'}), required=False)
+
     class Meta:
-        model = Video
+        model = UserProfile
         fields = [
-            'title',
-            'user',
-            'description',
-            'likes',
-            'dislikes',
-            'views',
-            'subject',
-            'start_date',
-            'end_date'
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'last_login',
         ]
+        labels = {
+            'username': 'Username',
+            'first_name': 'Nombre',
+            'last_name': 'Apellido',
+            'email': 'Email',
+            'last_login': 'Ultimo acceso',
+            'added': 'Registro',
+        }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'email': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'added': forms.DateField(
+                widget=forms.TimeInput(format='%d/%m/%Y - %H:%M',
+                                       attrs={'class': 'form-control', 'readonly': 'readonly'}), required=False)
+        }
 
 
 class UserLoginForm(forms.Form):

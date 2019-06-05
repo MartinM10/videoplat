@@ -6,26 +6,72 @@
 {% endblock %}
 {% block content %}
     <div>
-        <h1>{{ profile.username }} Profile
+        <h1>{{ profile.username }} perfil
             {% include "items/follow_button.html" %}
 
 
         </h1>
     </div>
-    <div class="container-fluid text-left" style="height: max-content; padding-top: 20px">
-        <h4>Videos subidos: {{ profile.video_set.count }}</h4>
-        <h4>Comentarios realizados: {{ profile.comment_set.count }}</h4>
-        <h4>Registrado: {{ profile.added.date }}</h4>
-        <h4>Seguidores: {{ profile.followers.count }}</h4>
-        <h4>Email: {{ profile.email }}</h4>
-        <h4>Ultimo acceso: {{ profile.last_login }}</h4>
-        <div>
-            {% ratings profile %}
-        </div>
-    </div>
-    <div>
-        {% if request.user == profile %}
+    <div class="container-fluid text-center" style="height: max-content; padding-top: 20px">
+        <div class="container-fluid" style="width: max-content">
             <div class="row">
+                <div class="col-md-4 text-center"
+                     style="border: #555555; border-style: solid; border-width: 1px">
+                    <div class="card-header"><h1>{{ profile.username }}</h1>
+                    </div>
+                    <div class="card-body">
+                        {% if profile.image %}
+                            <img style="height: 50%; width: 50%;margin-top: 20px" src="{{ profile.image.url }}">
+                        {% else %}
+                            <img class="img-responsive" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                                 style="height: 50%; width:50%;margin-left: 25%">
+
+                        {% endif %}
+
+                    </div>
+                    <div class="card-footer" style="padding-top: 10px"><p>
+                        <strong>Username:</strong> {{ profile.username }}
+                    </p>
+                        {% if profile.first_name %}<p><strong>Nombre:</strong> {{ profile.first_name }}</p>
+                        {% endif %}
+                        {% if profile.last_name %}<p><strong>Apellido:</strong> {{ profile.last_name }}</p>
+                        {% endif %}
+                        <p><strong>Email:</strong> {{ profile.email }}</p>
+                        <p><strong>Registrado:</strong> {{ profile.added.date }}</p>
+                        <p><strong>Ultimo acceso:</strong> {{ profile.last_login }}</p></div>
+                </div>
+                <div class="col-md-5 text-center"
+                     style="border: #555555; border-style: solid; border-width: 1px;">
+                    <h3>Aportaciones</h3>
+                    <h4><span class="label label-primary">Videos subidos {{ profile.video_set.count }}</span></h4>
+                    <h4><span class="label label-primary ">Comentarios realizados {{ profile.comment_set.count }}</span>
+                    </h4>
+                    <h4><span class="label label-primary ">Seguidores {{ profile.followers.count }}</span></h4>
+                </div>
+                <div class="col col-md-3"
+                     style="border: #555555; border-style: solid; border-width: 1px; ">
+                    <h3>Descripcion</h3>
+                    <p>Aqui va la descripcion de cada perfil</p>
+                    <div class="row1">
+                        <h3>Intereses</h3>
+                        <p>Aqui van las asignaturas que en las que esta interesado</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div>
+        {% if request.user != profile %}
+            <div class="container-fluid text-center" style="height: max-content; padding-top: 20px">
+                <h2>Puntúa a este usuario</h2>
+                {% ratings profile %}
+            </div>
+            <div class="container-fluid" style="height: max-content; padding-top: 30px">
                 <div class="col-sm-9">
                     <form method="POST" action=".">
                         {% csrf_token %}
@@ -39,7 +85,7 @@
 
     </div>
 
-    <div>
+    <div class="container-fluid text-left" style="height: max-content; padding-top: 30px">
         {% include "items/comments.html" %}
     </div>
 
