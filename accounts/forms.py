@@ -20,6 +20,12 @@ COURSE_CHOICES = (
     ('4º', '4º'),
 )
 
+VALIDATED_CHOICES = (
+    ('', ''),
+    ('True', 'True'),
+    ('False', 'False'),
+)
+
 
 class UserProfileForm(forms.ModelForm):
     """docstring for PostForm """
@@ -46,7 +52,6 @@ class UserAdvancedSearchUserForm(forms.Form):
     last_name = forms.CharField(label="Apellido", required=False)
     email = forms.CharField(label="Email", required=False)
     followers = forms.IntegerField(label="Followers", required=False)
-    subjects = forms.ModelChoiceField(Subject.objects.all(), empty_label="", required=False)
 
     class Meta:
         model = UserProfile
@@ -56,16 +61,20 @@ class UserAdvancedSearchUserForm(forms.Form):
             'last_name',
             'email',
             'followers',
-            'subjects',
         ]
 
 
 class UserAdvancedSearchSubjectForm(forms.Form):
-    name = forms.CharField(label="name", required=False)
-    course = forms.ChoiceField(choices=COURSE_CHOICES, label="course", required=False)
-    degree = forms.ModelChoiceField(queryset=Degree.objects.all(), empty_label="", required=False)
-    center = forms.ModelChoiceField(queryset=Center.objects.all(), empty_label="", required=False)
-    university = forms.ModelChoiceField(queryset=University.objects.all(), empty_label="", required=False)
+    name = forms.CharField(label="Nombre", required=False)
+    course = forms.ChoiceField(choices=COURSE_CHOICES, label="Curso", required=False)
+    degree = forms.ModelChoiceField(queryset=Degree.objects.all().order_by('-name'), label="Grado", empty_label="",
+                                    required=False)
+    center = forms.ModelChoiceField(queryset=Center.objects.all().order_by('-name'), label="Centro", empty_label="",
+                                    required=False)
+    university = forms.ModelChoiceField(queryset=University.objects.all().order_by('-name'), label="Universidad",
+                                        empty_label="",
+                                        required=False)
+    validated = forms.ChoiceField(choices=VALIDATED_CHOICES, label="Validada", required=False)
 
     class Meta:
         model = Subject
@@ -75,17 +84,18 @@ class UserAdvancedSearchSubjectForm(forms.Form):
             'degree',
             'center',
             'university',
+            'validated',
         ]
 
 
 class UserAdvancedSearchVideoForm(forms.Form):
     title = forms.CharField(label="Título", required=False)
     user = forms.CharField(label="Propietario", required=False)
-    description = forms.CharField(label="Descripcion", required=False)
+    subjects = forms.ModelChoiceField(queryset=Subject.objects.all().order_by('-name'), empty_label="", required=False)
+    views = forms.IntegerField(label="Visualizaciones", required=False)
     likes = forms.IntegerField(label="Nº de Likes", required=False)
     dislikes = forms.IntegerField(label="Nº de Dislikes", required=False)
-    views = forms.IntegerField(label="Visualizaciones", required=False)
-    subjects = forms.CharField(label="Asignatura", required=False)
+    description = forms.CharField(label="Descripcion", required=False)
     start_date = forms.DateField(
         widget=SelectDateWidget(
             empty_label=("Año", "Mes", "Día")

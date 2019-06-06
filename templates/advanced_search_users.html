@@ -11,23 +11,23 @@
         </form>
     </div>
 
-    <div class="container-fluid text-left" style="height: max-content">
+    <div class="container-fluid text-center" style="height: max-content">
         {% if users %}
             <div class="panel-heading">
-                <h1>Lista Usuarios</h1>
+                <h1>Usuarios</h1>
                 <div class="panel-body">
 
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Email</th>
-                            <th>UserName</th>
-                            <th>Numero de Seguidores</th>
-                            <th>Numero de Videos Subidos</th>
-                            <th>Perfil</th>
-
+                            <th style="text-align: center">UserName</th>
+                            <th style="text-align: center">Rating</th>
+                            <th style="text-align: center">Nombre</th>
+                            <th style="text-align: center">Apellido</th>
+                            <th style="text-align: center">Email</th>
+                            <th style="text-align: center">Seguidores</th>
+                            <th style="text-align: center">Videos Subidos</th>
+                            <th style="text-align: center">Perfil</th>
                         </tr>
                         </thead>
 
@@ -35,10 +35,11 @@
                         {% for user in users %}
 
                             <tr>
+                                <td>{{ user.username }}</td>
+                                <td></td>
                                 <td>{{ user.first_name }}</td>
                                 <td>{{ user.last_name }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.username }}</td>
                                 <td>{{ user.followers.count }}</td>
                                 <td>{{ user.video_set.count }}</td>
                                 <td><a href="{% url "accounts:detail" slug=user.slug %}"> Enlace</a></td>

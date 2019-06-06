@@ -13,22 +13,23 @@
 
     {% if videos %}
 
-        <div class="container-fluid text-left" style="height: max-content">
+        <div class="container-fluid text-center" style="height: max-content">
 
             <h1>Lista de videos</h1>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Titulo</th>
-                    <th>Asignatura</th>
-                    <th>Grado</th>
-                    <th>Comentarios</th>
-                    <th>Visualizaciones</th>
-                    <th>Likes</th>
-                    <th>Dislikes</th>
-                    <th>Rating</th>
-                    <th>Fecha Subida</th>
-                    <th>Enlace</th>
+                    <th style="text-align: center">Titulo</th>
+                    <th style="text-align: center">Propietario</th>
+                    <th style="text-align: center">Asignatura</th>
+                    <th style="text-align: center">Grado</th>
+                    <th style="text-align: center">Comentarios</th>
+                    <th style="text-align: center">Visualizaciones</th>
+                    <th style="text-align: center">Likes</th>
+                    <th style="text-align: center">Dislikes</th>
+                    <th style="text-align: center">Rating</th>
+                    <th style="text-align: center">Fecha Subida</th>
+                    <th style="text-align: center">Enlace</th>
 
                 </tr>
                 </thead>
@@ -37,6 +38,7 @@
                     {% for subject in video.subjects.all %}
                         <tr>
                             <td>{{ video.title }}</td>
+                            <td>{{ video.user }}</td>
                             <td>{{ subject.name }}</td>
                             <td>{{ subject.degree }}</td>
                             <td>{{ video.comments }}</td>

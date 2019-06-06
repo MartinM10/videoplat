@@ -236,17 +236,17 @@ def advanced_search_users(request):
                 query_user = UserProfile.objects.all()
 
                 if username:
-                    query_user = UserProfile.objects.filter(username__icontains=username)
+                    query_user = query_user.filter(username__icontains=username)
                 if first_name:
-                    query_user = UserProfile.objects.filter(first_name__icontains=first_name)
+                    query_user = query_user.filter(first_name__icontains=first_name)
                 if last_name:
-                    query_user = UserProfile.objects.filter(last_name__icontains=last_name)
+                    query_user = query_user.filter(last_name__icontains=last_name)
                 if email:
-                    query_user = UserProfile.objects.filter(email__icontains=email)
+                    query_user = query_user.filter(email__icontains=email)
                 if followers:
-                    query_user = UserProfile.objects.filter(followers=followers)
+                    query_user = query_user.filter(followers=followers)
                 if subjects:
-                    query_user = UserProfile.objects.filter(subjects__name__icontains=subjects)
+                    query_user = query_user.filter(subjects__name__icontains=subjects)
 
                 context = {'users': query_user, 'form': form}
                 return render(request, "advanced_search_users.html", context)
@@ -275,19 +275,22 @@ def advanced_search_subjects(request):
                 degree = form.cleaned_data.get('degree')
                 center = form.cleaned_data.get('center')
                 university = form.cleaned_data.get('university')
+                validated = form.cleaned_data.get('validated')
 
-                query_subject = Subject.objects.all()
+                query_subject = Subject.objects.all().order_by('-name')
 
                 if name:
-                    query_subject = Subject.objects.filter(name__icontains=name)
+                    query_subject = query_subject.filter(name__icontains=name)
                 if course:
-                    query_subject = Subject.objects.filter(course__icontains=course)
+                    query_subject = query_subject.filter(course__icontains=course)
                 if degree:
-                    query_subject = Subject.objects.filter(degree__name__icontains=degree)
+                    query_subject = query_subject.filter(degree__name__icontains=degree)
                 if center:
-                    query_subject = Subject.objects.filter(degree__center__name__icontains=center)
+                    query_subject = query_subject.filter(degree__center__name__icontains=center)
                 if university:
-                    query_subject = Subject.objects.filter(degree__center__university=university)
+                    query_subject = query_subject.filter(degree__center__university=university)
+                if validated:
+                    query_subject = query_subject.filter(validated=validated)
 
                 context = {'subjects': query_subject, 'form': form}
                 return render(request, "advanced_search_subjects.html", context)
@@ -320,40 +323,24 @@ def advanced_search_videos(request):
                 subjects = form.cleaned_data.get('subjects')
                 start_date = form.cleaned_data.get('start_date')
                 end_date = form.cleaned_data.get('end_date')
-                query_video = Video.objects.all()
+                query_video = Video.objects.all().order_by('-views')
 
-                if title:
-                    query_video = Video.objects.filter(title__icontains=title)
-                print(title)
                 print(user)
-                print(description)
-                print(likes)
-                print(dislikes)
-                print(views)
-                print(subjects)
-
-                if description:
-                    query_video = query_video.filter(video__description__icontains=description)
-
+                if title:
+                    query_video = query_video.filter(title__icontains=title).order_by('-views')
                 if user:
-                    query_video = query_video.filter(
-                        video__user__username__icointains=user, )
-
+                    query_video = query_video.filter(user__username__contains=user).order_by('-views')
+                if description:
+                    query_video = query_video.filter(description__icontains=description).order_by('-views')
                 if likes:
-                    query_video = query_video.filter(
-                        video__likes=likes, )
-
+                    query_video = query_video.filter(video__likes=likes).order_by('-views')
                 if dislikes:
-                    query_video = query_video.filter(
-                        video__dislikes=dislikes, )
-
+                    query_video = query_video.filter(video__dislikes=dislikes).order_by('-views')
                 if views:
-                    query_video = query_video.filter(
-                        video__views__gte=views, )
-
+                    query_video = query_video.filter(views__gte=views).order_by('-views')
                 if subjects:
-                    query_video = query_video.filter(video__subjects__name__icontains=subjects,
-                                                     )
+                    query_video = query_video.filter(subjects__name__icontains=subjects).order_by('-views')
+
                 print(query_video)
                 context = {'videos': query_video, 'form': form}
                 return render(request, "advanced_search_videos.html", context)
@@ -617,7 +604,7 @@ def uploadVideo(request):
             file=request.FILES.get('file'),
         )
         new_video.save(),
-
+        messages.success(request, "item saved")
         # video = new_video,
         print(request.POST['subjects'])
         subject = Subject.objects.get(id=request.POST['subjects'])
