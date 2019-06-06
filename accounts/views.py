@@ -229,9 +229,25 @@ def advanced_search_users(request):
                 username = form.cleaned_data.get('username')
                 first_name = form.cleaned_data.get('first_name')
                 last_name = form.cleaned_data.get('last_name')
-                query_user = UserProfile.objects.filter(username__icontains=username,
-                                                        first_name__icontains=first_name,
-                                                        last_name__icontains=last_name)
+                email = form.cleaned_data.get('email')
+                followers = form.cleaned_data.get('followers')
+                subjects = form.cleaned_data.get('subjects')
+
+                query_user = UserProfile.objects.all()
+
+                if username:
+                    query_user = UserProfile.objects.filter(username__icontains=username)
+                if first_name:
+                    query_user = UserProfile.objects.filter(first_name__icontains=first_name)
+                if last_name:
+                    query_user = UserProfile.objects.filter(last_name__icontains=last_name)
+                if email:
+                    query_user = UserProfile.objects.filter(email__icontains=email)
+                if followers:
+                    query_user = UserProfile.objects.filter(followers=followers)
+                if subjects:
+                    query_user = UserProfile.objects.filter(subjects__name__icontains=subjects)
+
                 context = {'users': query_user, 'form': form}
                 return render(request, "advanced_search_users.html", context)
 
@@ -260,11 +276,19 @@ def advanced_search_subjects(request):
                 center = form.cleaned_data.get('center')
                 university = form.cleaned_data.get('university')
 
-                query_subject = Subject.objects.filter(name__icontains=name,
-                                                       course__icontains=course,
-                                                       degree__name__icontains=degree,
-                                                       degree__center__name__icontains=center,
-                                                       degree__center__university=university)
+                query_subject = Subject.objects.all()
+
+                if name:
+                    query_subject = Subject.objects.filter(name__icontains=name)
+                if course:
+                    query_subject = Subject.objects.filter(course__icontains=course)
+                if degree:
+                    query_subject = Subject.objects.filter(degree__name__icontains=degree)
+                if center:
+                    query_subject = Subject.objects.filter(degree__center__name__icontains=center)
+                if university:
+                    query_subject = Subject.objects.filter(degree__center__university=university)
+
                 context = {'subjects': query_subject, 'form': form}
                 return render(request, "advanced_search_subjects.html", context)
 
@@ -296,15 +320,20 @@ def advanced_search_videos(request):
                 subjects = form.cleaned_data.get('subjects')
                 start_date = form.cleaned_data.get('start_date')
                 end_date = form.cleaned_data.get('end_date')
-                print(subjects)
-                query_video = Video.objects.filter(title__icontains=title,
+                query_video = Video.objects.all()
 
-                                                   video__description__icontains=description,
-
-                                                   )
-                print(views)
+                if title:
+                    query_video = Video.objects.filter(title__icontains=title)
+                print(title)
+                print(user)
+                print(description)
                 print(likes)
                 print(dislikes)
+                print(views)
+                print(subjects)
+
+                if description:
+                    query_video = query_video.filter(video__description__icontains=description)
 
                 if user:
                     query_video = query_video.filter(

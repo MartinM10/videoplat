@@ -8,7 +8,7 @@ from django.contrib.auth import (
 )
 from django.forms import SelectDateWidget
 
-from subjects.models import Subject, University
+from subjects.models import Subject, University, Center, Degree
 from videos.models import Video
 from .models import UserProfile
 
@@ -41,24 +41,30 @@ User = UserProfile
 
 
 class UserAdvancedSearchUserForm(forms.Form):
-    username = forms.CharField(label="username", required=False)
-    first_name = forms.CharField(label="first_name", required=False)
-    last_name = forms.CharField(label="last_name", required=False)
+    username = forms.CharField(label="Username", required=False)
+    first_name = forms.CharField(label="Nombre", required=False)
+    last_name = forms.CharField(label="Apellido", required=False)
+    email = forms.CharField(label="Email", required=False)
+    followers = forms.IntegerField(label="Followers", required=False)
+    subjects = forms.ModelChoiceField(Subject.objects.all(), empty_label="", required=False)
 
     class Meta:
-        model = User
+        model = UserProfile
         fields = [
             'username',
             'first_name',
             'last_name',
+            'email',
+            'followers',
+            'subjects',
         ]
 
 
 class UserAdvancedSearchSubjectForm(forms.Form):
     name = forms.CharField(label="name", required=False)
     course = forms.ChoiceField(choices=COURSE_CHOICES, label="course", required=False)
-    degree = forms.CharField(label="degree", required=False)
-    center = forms.CharField(label="center", required=False)
+    degree = forms.ModelChoiceField(queryset=Degree.objects.all(), empty_label="", required=False)
+    center = forms.ModelChoiceField(queryset=Center.objects.all(), empty_label="", required=False)
     university = forms.ModelChoiceField(queryset=University.objects.all(), empty_label="", required=False)
 
     class Meta:
