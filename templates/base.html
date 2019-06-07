@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load static %}
+{% load ratings %}
 <!-- DOCTYPE html -->
 <!DOCTYPE html>
 <html>
@@ -117,10 +118,20 @@
             <div class="col-sm-2 sidenav">
                 <a href="https://www.uma.es/"><img src="{% static 'images/uma_logo.png' %}"
                                                    style="height: 100%;width: 100%"></a>
-                <p>{% block detalle %}
-                    <img src="{{ re }}">
-                {% endblock %}</p>
-                <p><a href="#">Link</a></p>
+                <p>
+                    {% block detalle %}
+
+                    {% endblock %}
+                </p>
+
+
+                {% if request.user.is_authenticated %}
+                    <p><a href="#">Link</a>
+                    </p>
+                    {% ratings request.user %}
+                {% endif %}
+
+
             </div>
             <div class="col-sm-8 text-left">
                 {% block content %}
