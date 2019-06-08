@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
@@ -39,11 +40,13 @@ def showVideo(request, video_id):
 
     video.save()
     comments = UserVideo.objects.filter(video_id=video_id).order_by('comments__added').reverse()
+    contenttypeid = ContentType.objects.get(model='video').id
 
     context = {
         'user': user,
         'video': video,
         'comments': comments,
         'form': form,
+        'contenttypeid': contenttypeid
     }
     return render(request, 'items/videos.html', context)

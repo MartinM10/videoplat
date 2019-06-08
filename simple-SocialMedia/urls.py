@@ -39,9 +39,9 @@ urlpatterns = [
     url(r'^subjects/', include('subjects.urls')),
 
     # url(r'^show/(\S+)/(\S+)/$', exshow),
-    url(r"^ratings/", include("pinax.ratings.urls", namespace="pinax_ratings")),
+    # url(r"^ratings/", include("pinax.ratings.urls", namespace="pinax_ratings")),
 
-    url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
+    # url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
 
 
     url(r'^$', main_page, name='main'),

@@ -96,6 +96,7 @@ class UserAdvancedSearchVideoForm(forms.Form):
     likes = forms.IntegerField(label="Nº de Likes", required=False)
     dislikes = forms.IntegerField(label="Nº de Dislikes", required=False)
     description = forms.CharField(label="Descripcion", required=False)
+    rating = forms.IntegerField(label="Rating", required=False)
     start_date = forms.DateField(
         widget=SelectDateWidget(
             empty_label=("Año", "Mes", "Día")
@@ -117,8 +118,9 @@ class UserAdvancedSearchVideoForm(forms.Form):
             'dislikes',
             'views',
             'subjects',
-            'start_date'
-            'end_date'
+            'rating',
+            'start_date',
+            'end_date',
         ]
 
 

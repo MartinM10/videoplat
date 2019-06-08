@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% load ratings %}
+
 {% block header %}
     {{ profile.slug }}|{{ block.super }}
 {% endblock %}
@@ -69,7 +69,6 @@
         {% if request.user != profile %}
             <div class="container-fluid text-center" style="padding-top: 20px">
                 <h2>Puntúa a este usuario</h2>
-                {% ratings profile %}
             </div>
             <div class="container-fluid" style="padding-top: 30px">
                 <div class="col-sm-9">

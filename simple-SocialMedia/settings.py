@@ -37,8 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     #
-    'pinax.ratings',
-    'star_ratings',
     'accounts',
     'comments',
     'videos',

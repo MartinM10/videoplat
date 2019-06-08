@@ -1,6 +1,6 @@
 {% load staticfiles %}
 {% load static %}
-{% load ratings %}
+
 <!-- DOCTYPE html -->
 <!DOCTYPE html>
 <html>
@@ -128,7 +128,6 @@
                 {% if request.user.is_authenticated %}
                     <p><a href="#">Link</a>
                     </p>
-                    {% ratings request.user %}
                 {% endif %}
 
 

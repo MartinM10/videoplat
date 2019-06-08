@@ -1,3 +1,5 @@
+from star_ratings import get_star_ratings_rating_model
+
 from subjects.models import Subject
 from videos.models import Video, UserVideo
 from .models import UserProfile
@@ -321,6 +323,7 @@ def advanced_search_videos(request):
                 dislikes = form.cleaned_data.get('dislikes')
                 views = form.cleaned_data.get('views')
                 subjects = form.cleaned_data.get('subjects')
+                rating = form.cleaned_data.get('rating')
                 start_date = form.cleaned_data.get('start_date')
                 end_date = form.cleaned_data.get('end_date')
                 query_video = Video.objects.all().order_by('-views')
@@ -340,7 +343,8 @@ def advanced_search_videos(request):
                     query_video = query_video.filter(views__gte=views).order_by('-views')
                 if subjects:
                     query_video = query_video.filter(subjects__name__icontains=subjects).order_by('-views')
-
+                if rating:
+                    query_video = query_video.filter(content_type__overall_rating__rating__gte=rating).order_by('-views')
                 print(query_video)
                 context = {'videos': query_video, 'form': form}
                 return render(request, "advanced_search_videos.html", context)
