@@ -34,6 +34,52 @@
                     </a>
                     {{ video.dislikes.count }}
                 </div>
+                <div class="row">
+                    <form id="form_rating" method="POST" action="{% url "videos:video_rating" video.id %}">
+                        {% csrf_token %}
+
+                        <fieldset id="fieldset_rating" class="rating pull-right">
+                            <input type="radio" id="star5" name="rating" value="5" class="input_rating" {% if rating_average == 5.0 %} checked='checked' {% endif %}/>
+                            <label class="full" for="star5" title="Awesome - 5 stars"></label>
+
+
+                            <input type="radio" id="star4half" name="rating" value="4.5" class="input_rating" {% if rating_average >= 4.5 and rating_average < 5.0 %} checked='checked' {% endif %}/>
+                            <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+
+
+                            <input type="radio" id="star4" name="rating" value="4" class="input_rating" {% if rating_average >= 4.0 and rating_average < 4.5 %} checked='checked' {% endif %}/>
+                            <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+
+                            <input type="radio" id="star3half" name="rating" value="3.5" class="input_rating" {% if rating_average >= 3.5 and rating_average < 4.0 %} checked='checked' {% endif %}/>
+                            <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+
+
+                            <input type="radio" id="star3" name="rating" value="3" class="input_rating" {% if rating_average >= 3.0 and rating_average < 3.5 %} checked='checked' {% endif %}/>
+                            <label class="full" for="star3" title="Meh - 3 stars"></label>
+
+                            <input type="radio" id="star2half" name="rating" value="2 and a half" class="input_rating" {% if rating_average >= 2.5 and rating_average < 3.0 %} checked='checked' {% endif %}/>
+                            <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+
+
+                            <input type="radio" id="star2" name="rating" value="2" class="input_rating" {% if rating_average >= 2.0 and rating_average < 2.5 %} checked='checked' {% endif %}/>
+                            <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+
+
+                            <input type="radio" id="star1half" name="rating" value="1.5" class="input_rating" {% if rating_average >= 1.5 and rating_average < 2.0%} checked='checked' {% endif %}/>
+                            <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+
+
+                            <input type="radio" id="star1" name="rating" value="1" class="input_rating" {% if rating_average >= 1.0 and rating_average < 1.5 %} checked='checked' {% endif %}/>
+                            <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+
+                            <input type="radio" id="starhalf" name="rating" value="0.5" class="input_rating" {% if rating_average >= 0.5 and rating_average < 1.0 %} checked='checked' {% endif %}/>
+                            <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                        </fieldset>
+                    </form>
+                </div>
+                <p style="margin-top: 1%;text-align: right">Tu puntuación {{ rating_vote }} </p>
+                <p style="margin-top: 1%;text-align: right">Puntuación media {{ rating_average }}</p>
+
             </div>
 
 
@@ -138,4 +184,13 @@
             </div><!-- /panel panel-default -->
         </div><!-- /col-sm-5 -->
     {% endfor %}
+    <script>
+        $(document).ready(function () {
+            $('.input_rating').on('click', function () {
+                $('#form_rating').submit();
+                console.log("xdsadsadsa");
+            })
+        })
+    </script>
 {% endblock %}
+

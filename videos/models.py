@@ -67,7 +67,7 @@ class Video(models.Model):
         return user_.image.url
 
     def get_average_rating(self):
-        rations = self.rating.all()
+        rations = Rating.objects.filter(video_rating=self)
         total = 0
         for cont in rations:
             total += cont.vote

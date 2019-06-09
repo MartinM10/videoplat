@@ -43,7 +43,6 @@ urlpatterns = [
 
     # url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
 
-
     url(r'^$', main_page, name='main'),
 ]
 
