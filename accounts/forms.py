@@ -29,15 +29,23 @@ VALIDATED_CHOICES = (
 
 class UserProfileForm(forms.ModelForm):
     """docstring for PostForm """
+    username = forms.CharField(label="Username", required=False)
+    first_name = forms.CharField(label="Nombre", required=False)
+    last_name = forms.CharField(label="Apellido", required=False)
+    email = forms.CharField(label="Email", required=False)
+    subjects = forms.ModelMultipleChoiceField(label="Asignaturas de interes", widget=forms.CheckboxSelectMultiple,
+                                              queryset=Subject.objects.all(), required=False)
 
     class Meta:
         """docstring for Meta"""
         model = UserProfile
         fields = [
-            "slug",
+            "username",
             "first_name",
             "last_name",
+            'email',
             # "interests",
+            'subjects',
             "image",
         ]
 

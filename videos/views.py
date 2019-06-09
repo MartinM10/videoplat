@@ -16,7 +16,7 @@ def showVideo(request, video_id):
     instance_rating = Rating.objects.filter(video_rating=video, user_rating=request.user).first()
     print("INSTANCE_RATING: " + str(instance_rating))
     print("GET AVERAGE: " + str(video.get_average_rating()))
-
+    votes = Rating.objects.filter(video_rating=video).count()
     # videos2 = Video.objects.filter(title=title)
     # comments = UsersVideos.objects.filter(user__video__title__icontains=title)
     views = video.views
@@ -44,16 +44,15 @@ def showVideo(request, video_id):
 
     video.save()
     comments = UserVideo.objects.filter(video_id=video_id).order_by('comments__added').reverse()
-    contenttypeid = ContentType.objects.get(model='video').id
 
     context = {
         'user': user,
         'video': video,
         'comments': comments,
         'form': form,
-        'contenttypeid': contenttypeid,
         'rating_average': video.get_average_rating(),
-        'rating_vote': instance_rating.vote
+        'rating_vote': instance_rating.vote,
+        'votes': votes
 
     }
     return render(request, 'items/videos.html', context)
