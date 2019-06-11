@@ -8,7 +8,7 @@ from .views import (
     search,
     profile_edit,
     VideoLikeToggle, VideoDisLikeToggle, CommentDisLikeToggle, advanced_search_users, advanced_search_subjects,
-    advanced_search_videos)
+    advanced_search_videos, rating_user)
 
 app_name = 'accounts'
 urlpatterns = [
@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)/edit/$', profile_edit, name="edit"),
 
     # url(r'^(?P<slug>[\w-]+)/video/(?P<video_id>\d+)', exshow, name="video_id"),
+    url(r'^rating/(?P<slug>[\w-]+)/$', rating_user, name="user_rating"),
 
     url(r'^(?P<slug>[\w-]+)/', profile_detail, name="detail"),
 

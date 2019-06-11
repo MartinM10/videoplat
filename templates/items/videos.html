@@ -77,9 +77,9 @@
                         </fieldset>
                     </form>
                 </div>
-                <p style="margin-top: 1%;text-align: right">Tu puntuación <span class="badge">{{ rating_vote }}</span>
+                <p style="margin-top: 1%;text-align: right">Tu puntuación <span class="badge">{% if rating_vote %} {{ rating_vote }} {% else %} No puntuaste {% endif %}</span>
                 Puntuación media <span class="badge"> {{ rating_average }}</span>
-                Numero de votos <span class="badge"> {{ votes }}</span></p>
+                Numero de votos <span class="badge"> {% if votes %} {{ votes }} {% else %} 0 {% endif %}</span></p>
 
 
             </div>

@@ -2,7 +2,7 @@ from star_ratings import get_star_ratings_rating_model
 
 from subjects.models import Subject
 from videos.models import Video, UserVideo
-from .models import UserProfile
+from .models import UserProfile, RatingUser
 from comments.forms import CommentForm
 from comments.models import Comment
 #  from django.conf import settings
@@ -54,6 +54,12 @@ def profile_detail(request, slug=None):
     user_ = None
     if request.user.is_authenticated:
         user_ = request.user
+
+    instance_rating = RatingUser.objects.filter(user_rated=profile_instance, user_rating=request.user).first()
+    print("INSTANCE_RATING: " + str(instance_rating))
+    print("GET AVERAGE: " + str(profile_instance.get_average_rating()))
+    votes = RatingUser.objects.filter(user_rated=profile_instance).count()
+
     form = CommentForm(request.POST or None)
     form_user = UserDisplayForm(request.GET or None, request.GET or None, instance=profile_instance)
 
@@ -82,17 +88,32 @@ def profile_detail(request, slug=None):
     # qs_videos_comments = UsersVideos.objects.filter(video=qs_videos)
     # if qs_videos_comments:
     #    print ("qs_videos_comments")
-
-    content = {
-        "profile": profile_instance,
-        'form': form,
-        'formUser': form_user,
-        "comments": qs_comments,
-        "videos": qs_videos,
-        # "video_comments": qs_videos_comments,
-        "user_": user_,
-    }
-    return render(request, "detail.html", content)
+    if instance_rating:
+        context = {
+            "profile": profile_instance,
+            'form': form,
+            'formUser': form_user,
+            "comments": qs_comments,
+            "videos": qs_videos,
+            # "video_comments": qs_videos_comments,
+            "user_": user_,
+            'rating_average': profile_instance.get_average_rating(),
+            'rating_vote': instance_rating.vote,
+            'votes': votes
+        }
+    else:
+        context = {
+            "profile": profile_instance,
+            'form': form,
+            'formUser': form_user,
+            "comments": qs_comments,
+            "videos": qs_videos,
+            # "video_comments": qs_videos_comments,
+            "user_": user_,
+            'rating_average': profile_instance.get_average_rating(),
+            'votes': votes
+        }
+    return render(request, "detail.html", context)
 
 
 def profile_list(request):
@@ -344,7 +365,8 @@ def advanced_search_videos(request):
                 if subjects:
                     query_video = query_video.filter(subjects__name__icontains=subjects).order_by('-views')
                 if rating:
-                    query_video = query_video.filter(content_type__overall_rating__rating__gte=rating).order_by('-views')
+                    query_video = query_video.filter(content_type__overall_rating__rating__gte=rating).order_by(
+                        '-views')
                 print(query_video)
                 context = {'videos': query_video, 'form': form}
                 return render(request, "advanced_search_videos.html", context)
@@ -361,6 +383,19 @@ def advanced_search_videos(request):
 
     else:
         return redirect("login")
+
+
+def rating_user(request, slug):
+    print("XSADFSAFDS")
+    user = get_object_or_404(UserProfile, slug=slug)
+    rating_value = request.POST.get('rating')
+    print("USER" + str(user))
+    if rating_value:
+        instance_rating = RatingUser.objects.get_or_create(user_rated=user, user_rating=request.user)[0]
+        instance_rating.vote = rating_value
+        instance_rating.save(update_fields=['vote'])
+        print("RATING: " + str(instance_rating.vote))
+    return redirect(user.get_absolute_url())
 
 
 def main_page(request):

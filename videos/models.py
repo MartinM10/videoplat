@@ -23,7 +23,8 @@ class Video(models.Model):
     parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
     dislikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_dislikes")
-    rating = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="video_rating", through='Rating')
+    rating = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="video_rating",
+                                    through='RatingVideo')
     views = models.BigIntegerField(null=True, blank=True, default=0)
     subjects = models.ManyToManyField(Subject, blank=True, related_name="videos_subjects")
     comments = models.IntegerField(default=0, null=True, blank=True)
@@ -67,14 +68,17 @@ class Video(models.Model):
         return user_.image.url
 
     def get_average_rating(self):
-        rations = Rating.objects.filter(video_rating=self)
+        rations = RatingVideo.objects.filter(video_rating=self)
         total = 0
         for cont in rations:
             total += cont.vote
-        return total / rations.count()
+        if rations.count() == 0:
+            return 0
+        else:
+            return total / rations.count()
 
 
-class Rating(models.Model):
+class RatingVideo(models.Model):
     user_rating = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, default=1,
                                     related_name="rating_video")
     video_rating = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="rating_user")

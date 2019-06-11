@@ -5,11 +5,59 @@
     {{ profile.slug }}|{{ block.super }}
 {% endblock %}
 {% block content %}
-    <div>
+    <div class="row1">
         <h1>{{ profile.username }} perfil
             {% include "items/follow_button.html" %}
         </h1>
     </div>
+        <div class="row1 center-block">
+           <form id="form_rating" method="POST" action="{% url "accounts:user_rating" profile.slug %}">
+                {% csrf_token %}
+                <h4>
+                <fieldset {% if user_ == profile %}disabled{% endif %} id="fieldset_rating" class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" class="input_rating" {% if rating_average == 5.0 %} checked='checked' {% endif %}/>
+                    <label class="full" for="star5" title="5 estrellas"></label>
+
+
+                    <input type="radio" id="star4half" name="rating" value="4.5" class="input_rating" {% if rating_average >= 4.5 and rating_average < 5.0 %} checked='checked' {% endif %}/>
+                    <label class="half" for="star4half" title="4.5 estrellas"></label>
+
+
+                    <input type="radio" id="star4" name="rating" value="4" class="input_rating" {% if rating_average >= 4.0 and rating_average < 4.5 %} checked='checked' {% endif %}/>
+                    <label class="full" for="star4" title="4 estrellas"></label>
+
+                    <input type="radio" id="star3half" name="rating" value="3.5" class="input_rating" {% if rating_average >= 3.5 and rating_average < 4.0 %} checked='checked' {% endif %}/>
+                    <label class="half" for="star3half" title="3.5 estrellas"></label>
+
+
+                    <input type="radio" id="star3" name="rating" value="3" class="input_rating" {% if rating_average >= 3.0 and rating_average < 3.5 %} checked='checked' {% endif %}/>
+                    <label class="full" for="star3" title="3 estrellas"></label>
+
+                    <input type="radio" id="star2half" name="rating" value="2.5" class="input_rating" {% if rating_average >= 2.5 and rating_average < 3.0 %} checked='checked' {% endif %}/>
+                    <label class="half" for="star2half" title="2.5 estrellas"></label>
+
+
+                    <input type="radio" id="star2" name="rating" value="2" class="input_rating" {% if rating_average >= 2.0 and rating_average < 2.5 %} checked='checked' {% endif %}/>
+                    <label class="full" for="star2" title="2 estrellas"></label>
+
+
+                    <input type="radio" id="star1half" name="rating" value="1.5" class="input_rating" {% if rating_average >= 1.5 and rating_average < 2.0%} checked='checked' {% endif %}/>
+                    <label class="half" for="star1half" title="1.5 estrellas"></label>
+
+
+                    <input type="radio" id="star1" name="rating" value="1" class="input_rating" {% if rating_average >= 1.0 and rating_average < 1.5 %} checked='checked' {% endif %}/>
+                    <label class="full" for="star1" title="1 estrella"></label>
+
+                    <input type="radio" id="starhalf" name="rating" value="0.5" class="input_rating" {% if rating_average >= 0.5 and rating_average < 1.0 %} checked='checked' {% endif %}/>
+                    <label class="half" for="starhalf" title="0.5 estrellas"></label>
+                </fieldset>
+                </h4>
+            </form>
+        <p style="padding-top: 1%; text-align: center">{% if user_ != profile %}Tu puntuación <span class="badge">{% if rating_vote %} {{ rating_vote }} {% else %} No puntuaste {% endif %}</span>{% endif %}
+        Puntuación media <span class="badge"> {{ rating_average }}</span>
+        Numero de votos <span class="badge"> {% if votes %} {{ votes }} {% else %} 0 {% endif %}</span></p>
+    </div>
+
     <div class="container-fluid text-center" style="height: max-content; padding-top: 20px">
         <div class="container-fluid">
             <div class="row">
@@ -84,6 +132,13 @@
 
     </div>
 
-
+  <script>
+        $(document).ready(function () {
+            $('.input_rating').on('click', function () {
+                $('#form_rating').submit();
+                console.log("xdsadsadsa");
+            })
+        })
+  </script>
 
 {% endblock %}

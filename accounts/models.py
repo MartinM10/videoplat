@@ -38,7 +38,10 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(blank=True, max_length=140)
     last_name = models.CharField(blank=True, max_length=140)
     email = models.EmailField(blank=True, null=True)
-    #interests = models.CharField(max_length=140, default="")
+    rating = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="rating_beetween_users",
+                                    through='RatingUser')
+
+    # interests = models.CharField(max_length=140, default="")
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
     image = models.ImageField(
@@ -67,6 +70,19 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def get_follow_url(self):
         return reverse("accounts:follow_toggle", kwargs={"slug": self.slug})
 
+    def get_rating_url(self):
+        return reverse("accounts:detail", kwargs={"slug": self.slug})
+
+    def get_average_rating(self):
+        rations = RatingUser.objects.filter(user_rated=self)
+        total = 0
+        for cont in rations:
+            total += cont.vote
+        if rations.count() == 0:
+            return 0
+        else:
+            return total / rations.count()
+
     @property
     def get_instance_centent_type(self):
         return ContentType.objects.get_for_model(self.__class__)
@@ -89,3 +105,10 @@ def create_profile(sender, instance, **kwargs):
 
 
 pre_save.connect(create_profile, sender=UserProfile)
+
+
+class RatingUser(models.Model):
+    user_rating = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, default=1,
+                                    related_name="user_rated")
+    user_rated = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="user_rating")
+    vote = models.DecimalField(blank=True, null=True, max_digits=2, decimal_places=1)
