@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'comments',
     'videos',
     'subjects',
+    'import_export',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -78,6 +79,7 @@ WSGI_APPLICATION = 'simple-SocialMedia.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+'''
 
 DATABASES = {
     'default': {
@@ -100,7 +102,6 @@ DATABASES = {
         },
     }
 }
-'''
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 

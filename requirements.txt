@@ -9,4 +9,4 @@ markdown2
 olefile
 Pillow
 pytz
-
+django-import-export
