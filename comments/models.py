@@ -13,12 +13,14 @@ from accounts.models import UserProfile
 # Create your models here.
 
 class Comment(models.Model):
-    user = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey('accounts.UserProfile', on_delete=models.CASCADE, default=1, related_name="transmitter")
     content = models.TextField(null=False, blank=False)
     added = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="comment_likes")
     dislikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="comment_dislikes")
+    user2 = models.ForeignKey('accounts.UserProfile', default=1, blank=True, related_name="receiver",
+                              on_delete=models.DO_NOTHING)
 
     class Meta:
         ordering = ['-added']

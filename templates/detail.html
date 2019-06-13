@@ -5,57 +5,69 @@
     {{ profile.slug }}|{{ block.super }}
 {% endblock %}
 {% block content %}
-    <div class="row1">
+    <div class="row1" xmlns="http://www.w3.org/1999/html">
         <h1>{{ profile.username }} perfil
             {% include "items/follow_button.html" %}
         </h1>
     </div>
-        <div class="row1 center-block">
-           <form id="form_rating" method="POST" action="{% url "accounts:user_rating" profile.slug %}">
-                {% csrf_token %}
-                <h4>
+    <div class="row1 center-block">
+        <form id="form_rating" method="POST" action="{% url "accounts:user_rating" profile.slug %}">
+            {% csrf_token %}
+            <h4>
                 <fieldset {% if user_ == profile %}disabled{% endif %} id="fieldset_rating" class="rating">
-                    <input type="radio" id="star5" name="rating" value="5" class="input_rating" {% if rating_average == 5.0 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star5" name="rating" value="5" class="input_rating"
+                            {% if rating_average == 5.0 %} checked='checked' {% endif %}/>
                     <label class="full" for="star5" title="5 estrellas"></label>
 
 
-                    <input type="radio" id="star4half" name="rating" value="4.5" class="input_rating" {% if rating_average >= 4.5 and rating_average < 5.0 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star4half" name="rating" value="4.5" class="input_rating"
+                            {% if rating_average >= 4.5 and rating_average < 5.0 %} checked='checked' {% endif %}/>
                     <label class="half" for="star4half" title="4.5 estrellas"></label>
 
 
-                    <input type="radio" id="star4" name="rating" value="4" class="input_rating" {% if rating_average >= 4.0 and rating_average < 4.5 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star4" name="rating" value="4" class="input_rating"
+                            {% if rating_average >= 4.0 and rating_average < 4.5 %} checked='checked' {% endif %}/>
                     <label class="full" for="star4" title="4 estrellas"></label>
 
-                    <input type="radio" id="star3half" name="rating" value="3.5" class="input_rating" {% if rating_average >= 3.5 and rating_average < 4.0 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star3half" name="rating" value="3.5" class="input_rating"
+                            {% if rating_average >= 3.5 and rating_average < 4.0 %} checked='checked' {% endif %}/>
                     <label class="half" for="star3half" title="3.5 estrellas"></label>
 
 
-                    <input type="radio" id="star3" name="rating" value="3" class="input_rating" {% if rating_average >= 3.0 and rating_average < 3.5 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star3" name="rating" value="3" class="input_rating"
+                            {% if rating_average >= 3.0 and rating_average < 3.5 %} checked='checked' {% endif %}/>
                     <label class="full" for="star3" title="3 estrellas"></label>
 
-                    <input type="radio" id="star2half" name="rating" value="2.5" class="input_rating" {% if rating_average >= 2.5 and rating_average < 3.0 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star2half" name="rating" value="2.5" class="input_rating"
+                            {% if rating_average >= 2.5 and rating_average < 3.0 %} checked='checked' {% endif %}/>
                     <label class="half" for="star2half" title="2.5 estrellas"></label>
 
 
-                    <input type="radio" id="star2" name="rating" value="2" class="input_rating" {% if rating_average >= 2.0 and rating_average < 2.5 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star2" name="rating" value="2" class="input_rating"
+                            {% if rating_average >= 2.0 and rating_average < 2.5 %} checked='checked' {% endif %}/>
                     <label class="full" for="star2" title="2 estrellas"></label>
 
 
-                    <input type="radio" id="star1half" name="rating" value="1.5" class="input_rating" {% if rating_average >= 1.5 and rating_average < 2.0%} checked='checked' {% endif %}/>
+                    <input type="radio" id="star1half" name="rating" value="1.5" class="input_rating"
+                            {% if rating_average >= 1.5 and rating_average < 2.0 %} checked='checked' {% endif %}/>
                     <label class="half" for="star1half" title="1.5 estrellas"></label>
 
 
-                    <input type="radio" id="star1" name="rating" value="1" class="input_rating" {% if rating_average >= 1.0 and rating_average < 1.5 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="star1" name="rating" value="1" class="input_rating"
+                            {% if rating_average >= 1.0 and rating_average < 1.5 %} checked='checked' {% endif %}/>
                     <label class="full" for="star1" title="1 estrella"></label>
 
-                    <input type="radio" id="starhalf" name="rating" value="0.5" class="input_rating" {% if rating_average >= 0.5 and rating_average < 1.0 %} checked='checked' {% endif %}/>
+                    <input type="radio" id="starhalf" name="rating" value="0.5" class="input_rating"
+                            {% if rating_average >= 0.5 and rating_average < 1.0 %} checked='checked' {% endif %}/>
                     <label class="half" for="starhalf" title="0.5 estrellas"></label>
                 </fieldset>
-                </h4>
-            </form>
-        <p style="padding-top: 1%; text-align: center">{% if user_ != profile %}Tu puntuación <span class="badge">{% if rating_vote %} {{ rating_vote }} {% else %} No puntuaste {% endif %}</span>{% endif %}
-        Puntuación media <span class="badge"> {{ rating_average }}</span>
-        Numero de votos <span class="badge"> {% if votes %} {{ votes }} {% else %} 0 {% endif %}</span></p>
+            </h4>
+        </form>
+        <p style="padding-top: 1%; text-align: center">{% if user_ != profile %}Tu puntuación
+            <span class="badge">{% if rating_vote %} {{ rating_vote }} {% else %} No
+                puntuaste {% endif %}</span>{% endif %}
+            Puntuación media <span class="badge"> {{ rating_average }}</span>
+            Numero de votos <span class="badge"> {% if votes %} {{ votes }} {% else %} 0 {% endif %}</span></p>
     </div>
 
     <div class="container-fluid text-center" style="height: max-content; padding-top: 20px">
@@ -67,7 +79,7 @@
                     </div>
                     <div class="card-body">
                         {% if profile.image %}
-                            <img style="height: 50%; width: 50%;margin-top: 20px" src="{{ profile.image.url }}">
+                            <img style="height: 90px; width: 90px;margin-top: 20px" src="{{ profile.image.url }}">
                         {% else %}
                             <img class="img-responsive" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
                                  style="height: 50%; width:50%;margin-left: 25%">
@@ -77,32 +89,33 @@
                     <div class="card-footer" style="padding-top: 10px">
                         <div class="row1" style="padding-top: 5%">
                             <h4><strong>Información</strong></h4>
-                            <p>
-                                <strong>Username:</strong> {{ profile.username }}
-                            </p>
+
+                            <strong>Username:</strong> {{ profile.username }}<br>
+
                             {% if profile.first_name %}<p><strong>Nombre:</strong> {{ profile.first_name }}</p>
                             {% endif %}
                             {% if profile.last_name %}<p><strong>Apellido:</strong> {{ profile.last_name }}</p>
                             {% endif %}
-                            <p><strong>Email:</strong> {{ profile.email }}</p>
-                            <p><strong>Registrado:</strong> {{ profile.added.date }}</p>
-                            <p><strong>Ultimo acceso:</strong> {{ profile.last_login }}</p></div>
+                            <strong>Email:</strong> {{ profile.email }}<br>
+                            <strong>Registrado:</strong> {{ profile.added.date }}<br>
+                            <strong>Ultimo acceso:</strong> {{ profile.last_login }}<br>
+                        </div>
                     </div>
                     <div class="row1" style="padding-top: 5%">
                         <h4><strong>Aportaciones</strong></h4>
-                        <h4><span class="label label-primary">Videos subidos {{ profile.video_set.count }}</span></h4>
-                        <h4><span
-                                class="label label-primary ">Comentarios realizados {{ profile.comment_set.count }}</span>
+                        <span class="label label-primary">Videos subidos {{ profile.video_set.count }}</span><br>
+                        <span
+                                class="label label-primary ">Comentarios realizados {{ profile.comment_set.count }}</span><br>
                         </h4>
-                        <h4><span class="label label-primary ">Seguidores {{ profile.followers.count }}</span></h4>
+                        <span class="label label-primary ">Seguidores {{ profile.followers.count }}</span><br>
                     </div>
                     <div class="row" style="padding-top: 5%">
                         <h4><strong>Descripcion</strong></h4>
-                        <p>Aqui va la descripcion de cada perfil</p>
+                        Aqui va la descripcion de cada perfil<br>
                     </div>
                     <div class="row" style="padding-top: 5%">
                         <h4><strong>Intereses</strong></h4>
-                        <p>Aqui van las asignaturas que en las que esta interesado</p>
+                        Aqui van las asignaturas que en las que esta interesado<br>
                     </div>
                 </div>
                 <div class="col-md-7 col-sm-6 text-left">
@@ -115,12 +128,11 @@
 
     <div>
         {% if request.user != profile %}
-            <div class="container-fluid text-center" style="padding-top: 20px">
-                <h2>Puntúa a este usuario</h2>
-            </div>
             <div class="container-fluid" style="padding-top: 30px">
                 <div class="col-sm-9">
                     <form method="POST" action=".">
+                        <h2>Puntúa a este usuario</h2>
+
                         {% csrf_token %}
                         {{ form|crispy }}
                         <input type="submit" class="btn btn-primary" value="Post">
@@ -132,13 +144,13 @@
 
     </div>
 
-  <script>
+    <script>
         $(document).ready(function () {
             $('.input_rating').on('click', function () {
                 $('#form_rating').submit();
                 console.log("xdsadsadsa");
             })
         })
-  </script>
+    </script>
 
 {% endblock %}

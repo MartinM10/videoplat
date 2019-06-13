@@ -33,8 +33,8 @@ class UserProfileForm(forms.ModelForm):
     first_name = forms.CharField(label="Nombre", required=False)
     last_name = forms.CharField(label="Apellido", required=False)
     email = forms.CharField(label="Email", required=False)
-    subjects = forms.ModelMultipleChoiceField(label="Asignaturas de interes", widget=forms.Select,
-                                              queryset=Subject.objects.all(), required=False)
+
+    subjects = forms.ModelMultipleChoiceField(label="Asignaturas de interes", widget=forms.SelectMultiple, queryset=Subject.objects.all(), required=False)
 
     class Meta:
         """docstring for Meta"""
