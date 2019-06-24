@@ -9,8 +9,8 @@
                     <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..." style="width: 6%;height: 6%">
                 {% endif %}
 
-                de <a href='{% url "accounts:detail" slug=comment.user.username %}'><strong>{{ comment.user }}</strong></a>
-                para <a href='{% url "accounts:detail" slug=comment.user2.username %}'>
+                de <a href='{% url "accounts:detail" slug=comment.user.slug %}'><strong>{{ comment.user }}</strong></a>
+                para <a href='{% url "accounts:detail" slug=comment.user2.slug %}'>
                 <strong>{{ comment.user2 }}</strong></a>
 
                 <span class="text-muted">Hace {{ comment.added|timesince }}</span>

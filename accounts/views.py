@@ -83,7 +83,7 @@ def profile_detail(request, slug=None):
         return HttpResponseRedirect(profile_instance.get_absolute_url())
 
     # qs_comments = Comment.objects.filter(user=profile_instance, parent=None) sin mensajes hijos
-    qs_comments = Comment.objects.filter(user2=profile_instance).exclude(user=user_)
+    qs_comments = Comment.objects.filter(user2=profile_instance)
 
     qs_videos = Video.objects.filter(user=profile_instance)
     # qs_videos_comments = UsersVideos.objects.filter(video=qs_videos)

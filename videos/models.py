@@ -8,7 +8,7 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
-from accounts.models import UserProfile
+from accounts.models import UserProfile, upload_location
 from comments.models import Comment
 from subjects.models import Subject
 
@@ -28,6 +28,15 @@ class Video(models.Model):
     views = models.BigIntegerField(null=True, blank=True, default=0)
     subjects = models.ManyToManyField(Subject, blank=True, related_name="videos_subjects")
     comments = models.IntegerField(default=0, null=True, blank=True)
+    order = models.PositiveSmallIntegerField(null=True, blank=True)
+    image = models.ImageField(
+        upload_to=upload_location,
+        null=True, blank=True,
+        height_field='height_field',
+        width_field='width_field',
+    )
+    height_field = models.IntegerField(default=0, null=True, blank=True)
+    width_field = models.IntegerField(default=0, null=True, blank=True)
 
     class Meta:
         db_table = 'video'

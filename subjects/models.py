@@ -4,10 +4,6 @@ from django.db import models
 from accounts.models import UserProfile
 from comments.models import Comment
 
-
-
-
-
 '''
 class SubjectsVideos(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -71,6 +67,7 @@ class Degree(models.Model):
 
     # Relationships
     center = models.ForeignKey(Center, blank=True, null=True, on_delete=models.CASCADE)
+
     # subject = models.ForeignKey(Subject, blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
@@ -87,17 +84,20 @@ class Subject(models.Model):
     validated = models.BooleanField(default=False)
     added = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
-
+    topic = models.PositiveSmallIntegerField(blank=True, null=True)
     # Relationships
     degree = models.ForeignKey(Degree, blank=True, null=True, on_delete=models.CASCADE)
+
     # video = models.ManyToManyField(Video, blank=True,
     # related_name="subject_videos")
 
     class Meta:
         ordering = ['-added']
+        unique_together = (('name', 'degree', 'topic'),)
 
     def __str__(self):
         return self.name
+
 
 # class CentersDegrees(models.Model):
 #     center = models.ForeignKey(Center, on_delete=models.CASCADE)
