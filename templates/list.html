@@ -27,16 +27,15 @@
         {% else %}
 
             <div class="container-fluid">
-                <h4><strong>Warning!</strong> You've got no followers :(</h4>
+                <h4><strong>Atención!</strong> ¿Todavía no sigues a nadie? :(</h4>
             </div>
         {% endif %}
 
         {% if request.user.is_authenticated %}
             <div class="container-fluid">
-                <h4><strong>People</strong> are interested in subjects like you, <strong>click View</strong> to see
-                    their
-                    profiles,
-                    if empty (see all users)</h4>
+                <h4>Aquí te proponemos una lista de <strong>Usuarios</strong> con los que tienes asignaturas en común,
+                    <strong>click en Perfil</strong> para conocerlos
+                </h4>
             </div>
 
         {% endif %}

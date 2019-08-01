@@ -1,11 +1,11 @@
-    {% if request.user != profile %}
-        {% if profile in user_.get_follow_instances %}
-            <a href="{{ profile.get_follow_url }}" class="btn btn-info">
-                <span class="glyphicon glyphicon-ok"></span> Following
-            </a>
-        {% else %}
-            <a href="{{ profile.get_follow_url }}" class="btn btn-info">
-                <span class="glyphicon glyphicon-plus"></span> Follow
-            </a>
-        {% endif %}
+{% if request.user != profile %}
+    {% if profile in user_.get_follow_instances %}
+        <a href="{{ profile.get_follow_url }}" class="btn btn-info">
+            <span class="glyphicon glyphicon-ok"></span> Siguiendo
+        </a>
+    {% else %}
+        <a href="{{ profile.get_follow_url }}" class="btn btn-info">
+            <span class="glyphicon glyphicon-plus"></span> Seguir
+        </a>
     {% endif %}
+{% endif %}

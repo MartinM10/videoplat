@@ -6,10 +6,11 @@
 {% endblock %}
 {% block content %}
     <div class="row1" xmlns="http://www.w3.org/1999/html">
-        <h1>{{ profile.username }} perfil
+        <h1> Perfil de {{ profile.username }}
             {% include "items/follow_button.html" %}
         </h1>
     </div>
+    <h3>Puntúa a {{ profile.username }}</h3>
     <div class="row1 center-block">
         <form id="form_rating" method="POST" action="{% url "accounts:user_rating" profile.slug %}">
             {% csrf_token %}
@@ -90,7 +91,7 @@
                         <div class="row1" style="padding-top: 5%">
                             <h4><strong>Información</strong></h4>
 
-                            <strong>Username:</strong> {{ profile.username }}<br>
+                            <strong>Nombre de usuario:</strong> {{ profile.username }}<br>
 
                             {% if profile.first_name %}<p><strong>Nombre:</strong> {{ profile.first_name }}</p>
                             {% endif %}
@@ -131,11 +132,11 @@
             <div class="container-fluid" style="padding-top: 30px">
                 <div class="col-sm-9">
                     <form method="POST" action=".">
-                        <h2>Puntúa a este usuario</h2>
+                        <h3>Deja un comentario a {{ profile.username }}</h3>
 
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <input type="submit" class="btn btn-primary" value="Post">
+                        <input type="submit" class="btn btn-primary" value="Comentar">
                     </form>
                 </div>
                 <div class="col-sm-3"></div>

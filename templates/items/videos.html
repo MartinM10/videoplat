@@ -81,7 +81,6 @@
                 Puntuación media <span class="badge"> {{ rating_average }}</span>
                 Numero de votos <span class="badge"> {% if votes %} {{ votes }} {% else %} 0 {% endif %}</span></p>
 
-
             </div>
 
 
@@ -97,7 +96,11 @@
                 <h4><strong>{{ video.user }}</strong></h4>
             </a>
             <div class="panel" style="align-self: auto; background-color: aliceblue">
-                <h4>{{ video.description }} </h4>
+                {% if video.description %}
+                    <h4>{{ video.description }} </h4>
+                {% else %}
+                    <h4>Este vídeo no tiene descripción</h4>
+                {% endif %}
             </div>
 
         </div>
@@ -106,7 +109,7 @@
         <form method="POST" action="{% url "videos:video_id" video_id=video.id %}" class=form-group>
             {% csrf_token %}
             {{ form|crispy }}
-            <input type="submit" class="btn btn-primary" value="Post">
+            <input type="submit" class="btn btn-primary" value="Comentar">
         </form>
     {% endif %}
 
@@ -178,7 +181,7 @@
                                   action="{% url "accounts:detail" slug=user.slug %}/">{% csrf_token %}
                                 {{ form|crispy }}
                                 <input type="hidden" name="parent_id" value="{{ comment.comments.id }}">
-                                <input type="submit" class="btn btn-default" value="Reply">
+                                <input type="submit" class="btn btn-default" value="Responder">
                             </form>
                         {% endif %}
                     </div>

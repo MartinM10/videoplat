@@ -29,12 +29,13 @@ VALIDATED_CHOICES = (
 
 class UserProfileForm(forms.ModelForm):
     """docstring for PostForm """
-    username = forms.CharField(label="Username", required=False)
+    username = forms.CharField(label="Nombre de usuario", required=False)
     first_name = forms.CharField(label="Nombre", required=False)
     last_name = forms.CharField(label="Apellido", required=False)
     email = forms.CharField(label="Email", required=False)
 
-    subjects = forms.ModelMultipleChoiceField(label="Asignaturas de interes", widget=forms.SelectMultiple, queryset=Subject.objects.all(), required=False)
+    subjects = forms.ModelMultipleChoiceField(label="Asignaturas de interes", widget=forms.SelectMultiple,
+                                              queryset=Subject.objects.all(), required=False)
 
     class Meta:
         """docstring for Meta"""
@@ -50,16 +51,15 @@ class UserProfileForm(forms.ModelForm):
         ]
 
 
-# User = get_user_model() NO ESTOY SEGURO
 User = UserProfile
 
 
 class UserAdvancedSearchUserForm(forms.Form):
-    username = forms.CharField(label="Username", required=False)
+    username = forms.CharField(label="Nombre de usuario", required=False)
     first_name = forms.CharField(label="Nombre", required=False)
     last_name = forms.CharField(label="Apellido", required=False)
     email = forms.CharField(label="Email", required=False)
-    followers = forms.IntegerField(label="Followers", required=False)
+    followers = forms.IntegerField(label="Nº de seguidores (>=)", required=False)
 
     class Meta:
         model = UserProfile
@@ -100,11 +100,11 @@ class UserAdvancedSearchVideoForm(forms.Form):
     title = forms.CharField(label="Título", required=False)
     user = forms.CharField(label="Propietario", required=False)
     subjects = forms.ModelChoiceField(queryset=Subject.objects.all().order_by('-name'), empty_label="", required=False)
-    views = forms.IntegerField(label="Visualizaciones", required=False)
-    likes = forms.IntegerField(label="Nº de Likes", required=False)
-    dislikes = forms.IntegerField(label="Nº de Dislikes", required=False)
+    views = forms.IntegerField(label="Nº de Visualizaciones (>=)", required=False)
+    likes = forms.IntegerField(label="Nº de Likes (>=)", required=False)
+    dislikes = forms.IntegerField(label="Nº de Dislikes (>=)", required=False)
     description = forms.CharField(label="Descripcion", required=False)
-    rating = forms.IntegerField(label="Rating", required=False)
+    rating = forms.IntegerField(label="Rating (>=)", required=False)
     start_date = forms.DateField(
         widget=SelectDateWidget(
             empty_label=("Año", "Mes", "Día")
@@ -170,8 +170,8 @@ class UserDisplayForm(forms.ModelForm):
 
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label="Nombre de usuario")
+    password = forms.CharField(widget=forms.PasswordInput, label="Contraseña")
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get("username")
@@ -182,19 +182,19 @@ class UserLoginForm(forms.Form):
         if username and password:
             user = authenticate(username=username, password=password)
             if not user:
-                raise forms.ValidationError("This user does not exist")
+                raise forms.ValidationError("Este usuario no existe")
             if not user.check_password(password):
-                raise forms.ValidationError("Incorrect passsword")
+                raise forms.ValidationError("Contraseña incorrecta")
             if not user.is_active:
-                raise forms.ValidationError("This user is not longer active.")
+                raise forms.ValidationError("Este usuario ya no está activo.")
         return super(UserLoginForm, self).clean(*args, **kwargs)
 
 
 class UserRegisterForm(forms.ModelForm):
-    username = forms.CharField(label="username")
-    email = forms.EmailField(label='Email address')
-    email2 = forms.EmailField(label='Confirm Email')
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label="Nombre de usuario")
+    email = forms.EmailField(label='Email')
+    email2 = forms.EmailField(label='Confirmar Email')
+    password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
 
     class Meta:
         model = User
@@ -212,10 +212,10 @@ class UserRegisterForm(forms.ModelForm):
         email = self.cleaned_data.get('email')
         email2 = self.cleaned_data.get('email2')
         if email != email2:
-            raise forms.ValidationError("Emails must match")
+            raise forms.ValidationError("El email debe coincidir")
         email_qs = User.objects.filter(email=email)
         username_qs = User.objects.filter(username=username)
         if email_qs.exists() or username_qs.exists():
-            raise forms.ValidationError("This email or username has already been registered")
+            raise forms.ValidationError("Este email ya está registrado")
 
         return super(UserRegisterForm, self).clean(*args, **kwargs)

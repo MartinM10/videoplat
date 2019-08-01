@@ -14,13 +14,13 @@ def showVideo(request, video_id):
     user = request.user
     video = get_object_or_404(Video, pk=video_id)
     instance_rating = RatingVideo.objects.filter(video_rating=video, user_rating=request.user).first()
-    print("INSTANCE_RATING: " + str(instance_rating))
-    print("GET AVERAGE: " + str(video.get_average_rating()))
+    # print("INSTANCE_RATING: " + str(instance_rating))
+    # print("GET AVERAGE: " + str(video.get_average_rating()))
     votes = RatingVideo.objects.filter(video_rating=video).count()
     # videos2 = Video.objects.filter(title=title)
     # comments = UsersVideos.objects.filter(user__video__title__icontains=title)
     views = video.views
-    print(views)
+    # print(views)
     video.views = views + 1
     form = CommentForm(request.POST or None)
     if form.is_valid():

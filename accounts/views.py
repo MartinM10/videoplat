@@ -43,10 +43,10 @@ def profile_edit(request, slug=None):
         instance = form.save(commit=False)
         instance.save()
         # message success
-        messages.success(request, "item saved")
+        messages.success(request, "Guardado correctamente")
         return HttpResponseRedirect(instance.get_absolute_url())
 
-    return render(request, "form.html", context={"form": form, "title": "edit", })
+    return render(request, "form.html", context={"form": form, "title": "Editar perfil", })
 
 
 def profile_detail(request, slug=None):
@@ -580,7 +580,7 @@ class FollowToggle(RedirectView):
 def login_view(request):
     if not request.user.is_authenticated:
         # next = request.GET.get('next')
-        title = "Login"
+        title = "Iniciar sesion"
         form = UserLoginForm(request.POST or None)
         if form.is_valid():
             username = form.cleaned_data.get("username")
@@ -598,7 +598,7 @@ def login_view(request):
 def register_view(request):
     if not request.user.is_authenticated:
         # next = request.GET.get('next')
-        title = "Register"
+        title = "Registro"
         form = UserRegisterForm(request.POST or None)
         if form.is_valid():
             user = form.save(commit=False)
