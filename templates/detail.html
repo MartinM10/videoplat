@@ -10,7 +10,11 @@
             {% include "items/follow_button.html" %}
         </h1>
     </div>
-    <h3>Puntúa a {{ profile.username }}</h3>
+    {% if user_ != profile %}
+        <h3>Puntúa a {{ profile.username }}</h3>
+    {% else %}
+        <h3>No puedes puntuarte a ti mismo</h3>
+    {% endif %}
     <div class="row1 center-block">
         <form id="form_rating" method="POST" action="{% url "accounts:user_rating" profile.slug %}">
             {% csrf_token %}
