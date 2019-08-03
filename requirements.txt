@@ -9,4 +9,5 @@ markdown2
 olefile
 Pillow
 pytz
+mysql
 django-import-export
