@@ -91,16 +91,26 @@
                         {% endif %}
 
                     </div>
-                    <div class="card-footer" style="padding-top: 10px">
-                        <div class="row1" style="padding-top: 5%">
+                    <div class="card-footer" style="padding-top: 5px">
+                        <div class="row1" style="padding-top: 2%">
                             <h4><strong>Información</strong></h4>
-
+                            {% if profile == user_ %}
+                                <h4>
+                                    <a href="{% url "accounts:edit" slug=request.user.slug %}"><span
+                                            class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar
+                                    </a>
+                                </h4>
+                            {% endif %}
                             <strong>Nombre de usuario:</strong> {{ profile.username }}<br>
 
-                            {% if profile.first_name %}<p><strong>Nombre:</strong> {{ profile.first_name }}</p>
-                            {% endif %}
-                            {% if profile.last_name %}<p><strong>Apellido:</strong> {{ profile.last_name }}</p>
-                            {% endif %}
+                            <p><strong>Nombre completo:</strong>
+                                {% if profile.first_name %}
+                                    {{ profile.first_name }}
+                                {% endif %}
+                                {% if profile.last_name %}
+                                    {{ profile.last_name }}
+                                {% endif %}
+                            </p>
                             <strong>Email:</strong> {{ profile.email }}<br>
                             <strong>Registrado:</strong> {{ profile.added.date }}<br>
                             <strong>Ultimo acceso:</strong> {{ profile.last_login }}<br>
@@ -116,11 +126,24 @@
                     </div>
                     <div class="row" style="padding-top: 5%">
                         <h4><strong>Descripcion</strong></h4>
-                        Aqui va la descripcion de cada perfil<br>
+                        {% if profile.description %}
+                            <p>
+                                {{ profile.description }}
+                            </p>
+                        {% endif %}
                     </div>
                     <div class="row" style="padding-top: 5%">
-                        <h4><strong>Intereses</strong></h4>
-                        Aqui van las asignaturas que en las que esta interesado<br>
+                        <h4><strong>Asignaturas de interés</strong></h4>
+                        {% if profile.subjects %}
+                            <p>
+                            <ul>
+                                {% for subject in profile.subjects.all %}
+                                    <li>{{ subject.name }}</li>
+                                {% endfor %}
+
+                            </ul>
+                            </p>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-7 col-sm-6 text-left">

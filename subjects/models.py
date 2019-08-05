@@ -27,6 +27,7 @@ class SubjectsVideos(models.Model):
 class University(models.Model):
     DOMAIN = (('PU', 'Public'), ('PR', 'Private'))
     name = models.CharField(max_length=255, blank=True, null=True)
+    acronym = models.CharField(max_length=5, blank=True, null=True, default='')
     website = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=50, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=True, null=True)
@@ -96,7 +97,8 @@ class Subject(models.Model):
         unique_together = (('name', 'degree', 'topic'),)
 
     def __str__(self):
-        return self.name
+        cadena = self.name + " || " + self.course + "|| " + self.degree.name + " || (" + self.degree.center.university.acronym + ")"
+        return cadena
 
 
 # class CentersDegrees(models.Model):

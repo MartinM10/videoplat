@@ -69,15 +69,9 @@ def subject_detail(request, subject_id):
 
 
 def subject_list(request):
-    subjects = Subject.objects.all()
-    degrees = Degree.objects.all()
-    centers = Center.objects.all()
-    universities = University.objects.all()
+    subjects = Subject.objects.all().order_by('name')
 
     context = {
-        'universities': universities,
-        'degrees': degrees,
-        'centers': centers,
         'subjects': subjects,
     }
 

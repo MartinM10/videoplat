@@ -33,9 +33,9 @@ class UserProfileForm(forms.ModelForm):
     first_name = forms.CharField(label="Nombre", required=False)
     last_name = forms.CharField(label="Apellido", required=False)
     email = forms.CharField(label="Email", required=False)
-
+    description = forms.Textarea()
     subjects = forms.ModelMultipleChoiceField(label="Asignaturas de interes", widget=forms.SelectMultiple,
-                                              queryset=Subject.objects.all(), required=False)
+                                              queryset=Subject.objects.all().order_by('-name'), required=False)
 
     class Meta:
         """docstring for Meta"""
@@ -46,6 +46,7 @@ class UserProfileForm(forms.ModelForm):
             "last_name",
             'email',
             # "interests",
+            'description',
             'subjects',
             "image",
         ]
@@ -195,6 +196,8 @@ class UserRegisterForm(forms.ModelForm):
     email = forms.EmailField(label='Email')
     email2 = forms.EmailField(label='Confirmar Email')
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
+    subjects = forms.ModelMultipleChoiceField(label="Asignaturas de interes", widget=forms.SelectMultiple,
+                                              queryset=Subject.objects.all().order_by('-name'), required=False)
 
     class Meta:
         model = User
@@ -202,7 +205,8 @@ class UserRegisterForm(forms.ModelForm):
             'username',
             'email',
             'email2',
-            'password'
+            'password',
+            'subjects',
         ]
 
     def clean(self, *args, **kwargs):

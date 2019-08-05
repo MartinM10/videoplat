@@ -13,12 +13,17 @@
 
                     <div class="caption">
                         <h3>{{ profile }}</h3>
-                        <p>subjects interest in :</p>
-                        {% for subject in profile.subjects.all %}
-                            <p>{{ subject.name }}</p>
-                        {% endfor %}
-                        <p><a href="{{ profile.get_absolute_url }}" class="btn btn-primary" role="button">Perfil</a>
+                        <p>Asignaturas de interés:</p>
+                        <p>
+                            <ul>
+                                {% for subject in profile.subjects.all %}
+                                    <li>{{ subject.name }}</li>
+                                {% endfor %}
+                        <p style="padding-top: 5%"><a href="{{ profile.get_absolute_url }}" class="btn btn-primary"
+                                                      role="button">Perfil</a>
                             {% include "items/follow_button.html" %}
+                        </p>
+                        </ul>
                         </p>
                     </div>
                 </div>

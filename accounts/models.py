@@ -38,6 +38,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(blank=True, max_length=140)
     last_name = models.CharField(blank=True, max_length=140)
     email = models.EmailField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     rating = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="rating_beetween_users",
                                     through='RatingUser')
 
@@ -53,7 +54,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     height_field = models.IntegerField(default=0, null=True, blank=True)
     width_field = models.IntegerField(default=0, null=True, blank=True)
     followers = models.ManyToManyField('self', blank=True, related_name="followers")
-    subjects = models.ManyToManyField('subjects.Subject', blank=True, related_name="users")
+    subjects = models.ManyToManyField('subjects.Subject', blank=True, related_name="users_interests_subjects")
     USERNAME_FIELD = 'username'
     objects = UserProfileManager()
     is_staff = models.BooleanField(default=False)

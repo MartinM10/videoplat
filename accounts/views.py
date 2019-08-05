@@ -40,8 +40,9 @@ def profile_edit(request, slug=None):
     top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
     form = UserProfileForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
-        instance = form.save(commit=False)
+        instance = form.save()
         instance.save()
+        # form.save_m2m
         # message success
         messages.success(request, "Guardado correctamente")
         return HttpResponseRedirect(instance.get_absolute_url())
@@ -276,11 +277,9 @@ def advanced_search_users(request):
                 return render(request, "advanced_search_users.html", context)
 
         else:
-            query = request.GET.get("search")
-            query_user = UserProfile.objects.filter(username__icontains=query)
-            if query_user:
-                print(query_user)
-            print(query)
+            # query = request.GET.get("search")
+            # query_user = UserProfile.objects.filter(username__icontains=query)
+            query_user = UserProfile.objects.all().order_by('username')
             form = UserAdvancedSearchUserForm()
             context = {'users': query_user, 'form': form}
             return render(request, "advanced_search_users.html", context)
@@ -320,11 +319,9 @@ def advanced_search_subjects(request):
                 return render(request, "advanced_search_subjects.html", context)
 
         else:
-            query = request.GET.get("search")
-            query_subject = Subject.objects.filter(name__icontains=query)
-            if query_subject:
-                print(query_subject)
-            print(query)
+            # query = request.GET.get("search")
+            # query_subject = Subject.objects.filter(name__icontains=query)
+            query_subject = Subject.objects.all().order_by('name')
             form = UserAdvancedSearchSubjectForm()
             context = {'subjects': query_subject, 'form': form}
             return render(request, "advanced_search_subjects.html", context)
@@ -373,11 +370,9 @@ def advanced_search_videos(request):
                 return render(request, "advanced_search_videos.html", context)
 
         else:
-            query = request.GET.get("search")
-            query_video = Video.objects.filter(title__icontains=query)
-            if query_video:
-                print(query_video)
-            print(query)
+            # query = request.GET.get("search")
+            # query_video = Video.objects.filter(title__icontains=query)
+            query_video = Video.objects.all().order_by('title')
             form = UserAdvancedSearchVideoForm()
             context = {'videos': query_video, 'form': form}
             return render(request, "advanced_search_videos.html", context)
@@ -387,15 +382,14 @@ def advanced_search_videos(request):
 
 
 def rating_user(request, slug):
-    print("XSADFSAFDS")
     user = get_object_or_404(UserProfile, slug=slug)
     rating_value = request.POST.get('rating')
-    print("USER" + str(user))
+    # print("USER" + str(user))
     if rating_value:
         instance_rating = RatingUser.objects.get_or_create(user_rated=user, user_rating=request.user)[0]
         instance_rating.vote = rating_value
         instance_rating.save(update_fields=['vote'])
-        print("RATING: " + str(instance_rating.vote))
+        # print("RATING: " + str(instance_rating.vote))
     return redirect(user.get_absolute_url())
 
 
@@ -601,10 +595,11 @@ def register_view(request):
         title = "Registro"
         form = UserRegisterForm(request.POST or None)
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save()
             password = form.cleaned_data.get('password')
             user.set_password(password)
             user.save()
+            # form.save_m2m
             new_user = authenticate(username=user.username, password=password)
             login(request, new_user)
             # if next:
@@ -626,7 +621,7 @@ def logout_view(request):
 
 def myvideos(request):
     user = request.user
-    videos = Video.objects.filter(user=user)
+    videos = Video.objects.filter(user=user).order_by('title')
 
     content = {
         'user': user,
