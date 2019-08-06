@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'simple-SocialMedia.urls'
+ROOT_URLCONF = 'videoplat.urls'
 
 TEMPLATES = [
     {
@@ -75,7 +75,7 @@ TEMPLATES = [
 
 AUTH_USER_MODEL = "accounts.UserProfile"
 
-WSGI_APPLICATION = 'simple-SocialMedia.wsgi.application'
+WSGI_APPLICATION = 'videoplat.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
