@@ -57,8 +57,6 @@ def profile_detail(request, slug=None):
         user_ = request.user
 
     instance_rating = RatingUser.objects.filter(user_rated=profile_instance, user_rating=request.user).first()
-    print("INSTANCE_RATING: " + str(instance_rating))
-    print("GET AVERAGE: " + str(profile_instance.get_average_rating()))
     votes = RatingUser.objects.filter(user_rated=profile_instance).count()
 
     form = CommentForm(request.POST or None)
@@ -87,9 +85,7 @@ def profile_detail(request, slug=None):
     qs_comments = Comment.objects.filter(user2=profile_instance)
 
     qs_videos = Video.objects.filter(user=profile_instance)
-    # qs_videos_comments = UsersVideos.objects.filter(video=qs_videos)
-    # if qs_videos_comments:
-    #    print ("qs_videos_comments")
+
     if instance_rating:
         context = {
             "profile": profile_instance,
