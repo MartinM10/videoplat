@@ -44,25 +44,6 @@
             </table>
         </div>
 
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown">
-                Asignaturas <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                {% for subject in subjects %}
-
-                    <li><a href="{% url "subjects:subject_detail" subject_id=subject.id %}">{{ subject.name }}</a></li>
-
-                {% endfor %}
-
-            </ul>
-
-        </div>
-
-
-
     {% endif %}
 
 

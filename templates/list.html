@@ -37,12 +37,10 @@
                     <strong>click en Perfil</strong> para conocerlos
                 </h4>
             </div>
-
+            <div class="row">
+                {% include "items/profiles.html" %}
+            </div>
         {% endif %}
-
-        <div class="row">
-            {% include "items/profiles.html" %}
-        </div>
         <div class="row">
             <div class="col-sm-3">
                 <h1 style="text-align: center"><span class="glyphicon glyphicon-user"></span></h1>
@@ -73,13 +71,13 @@
 
     <div class="panel-primary" style="padding-top: 5%">
         <div class="panel-heading">
-            <h4>Top Subidores</h4>
+            <h4>Top usuarios</h4>
         </div>
         <div class="panel-body" style="background-color: #f7f7f7">
             <ol>
                 {% for t3u in top3users %}
                     <a href="{% url "accounts:detail" slug=t3u.slug %}">
-                        <li>{{ t3u.username }}</li>
+                        <li>{{ t3u.username }} | {{ t3u.followers.count }} followers</li>
                     </a>
                 {% endfor %}
             </ol>
@@ -94,7 +92,7 @@
             <ol>
                 {% for t3vl in top3videoslikes %}
                     <a href="{% url "videos:video_id" video_id=t3vl.id %}">
-                        <li>{{ t3vl.title }}</li>
+                        <li>{{ t3vl.title }} | {{ t3vl.likes.count }} likes</li>
                     </a>
                 {% endfor %}
             </ol>
@@ -109,7 +107,7 @@
             <ol>
                 {% for t3vv in top3videosviews %}
                     <a href="{% url "videos:video_id" video_id=t3vv.id %}">
-                        <li>{{ t3vv.title }}</li>
+                        <li>{{ t3vv.title }} | {{ t3vv.views }} visualizaciones</li>
                     </a>
                 {% endfor %}
             </ol>

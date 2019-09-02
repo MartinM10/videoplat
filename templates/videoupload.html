@@ -4,7 +4,7 @@
     {{ block.super }}
 {% endblock %}
 {% block content %}
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" onsubmit="return checkCheckBoxes(this)">
         {% csrf_token %}
 
         <div class="alert alert-warning col-sm-10 ">
@@ -26,8 +26,23 @@
             <br>
             <input type="file" name="file">
             <br>
+            <div class="checkbox">
+                <label><input type="checkbox" name="checkbox" value="">He leído los términos y condiciones</label>
+            </div>
             <button type="submit">Subir</button>
         </div>
 
     </form>
+    <script>
+        function checkCheckBoxes(theForm) {
+            if (theForm.checkbox.checked == false) {
+                alert('Por favor selecciona la casilla he leido los terminos y condiciones');
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+    </script>
 {% endblock %}
+

@@ -6,7 +6,7 @@ from .models import UserProfile, RatingUser
 from comments.forms import CommentForm
 from comments.models import Comment
 #  from django.conf import settings
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib import messages
 
 from itertools import chain
@@ -392,7 +392,7 @@ def rating_user(request, slug):
 def main_page(request):
     form = CommentForm(request.POST or None)
     query_list_users = None
-    query_list_users_all = UserProfile.objects.all()
+    query_list_users_all = UserProfile.objects.all().exclude(username__icontains='admin')
     query_list_videos_all = Video.objects.all()
     query_list_comments_all = Comment.objects.all()
     query_list_subjects_all = Subject.objects.all()
@@ -400,7 +400,7 @@ def main_page(request):
     user = request.user
 
     comments = None
-    top3users = UserProfile.objects.order_by('followers').reverse()[:3]
+    top3users = UserProfile.objects.annotate(num_items=Count('followers')).order_by('num_items').reverse()[:3]
     top3videosviews = Video.objects.order_by('views').reverse()[:3]
     top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
 
