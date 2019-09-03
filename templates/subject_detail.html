@@ -14,11 +14,15 @@
 
     {% else %}
         <div class="alert alert-info col-sm-10 ">
-            <h2><strong>{{ subject.name }}</strong></h2>
+            <h2><strong>{{ subject.name }}</strong>
+                <a href="{% url 'subjects:subject_add' subject.id %}" class="btn btn-primary">Añadir a intereses
+                </a>
+            </h2>
             <h4>{{ subject.course }} Curso</h4>
-            <h4>{{ subject.degree }} </h4>
+            <h4>{{ subject.degree }}</h4>
             <h4>{{ subject.degree.center }}</h4>
             <h4>{{ subject.degree.center.university }}</h4>
+
         </div>
 
         {% if subject.videos_subjects.count == 0 %}

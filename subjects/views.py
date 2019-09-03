@@ -49,16 +49,15 @@ def subject_detail(request, subject_id):
 
     if request.user.is_authenticated:
         # user_ = get_object_or_404(UserProfile, user=request.user)
-        # query = request.GET.get("search")
-        print(subject_id)
+        user_ = UserProfile.objects.get(pk=request.user.id)
+        # print(user_)
         subject = Subject.objects.get(pk=subject_id)
-        if subject:
-            print("SIII")
-        else:
-            print("NOOO")
         videos = subject.videos_subjects.all()
-        if videos:
-            print("TAMBIEN")
+
+        if request.POST:
+            print('entrooo')
+            user_.subjects.add(subject)
+            user_.save()
 
         context = {
             'subject': subject,
@@ -76,3 +75,11 @@ def subject_list(request):
     }
 
     return render(request, "subject_list.html", context)
+
+
+def subject_add(request, subject_id):
+    user_ = UserProfile.objects.get(pk=request.user.id)
+    subject = Subject.objects.get(pk=subject_id)
+    user_.subjects.add(subject)
+    user_.save()
+    return redirect('subjects:subject_detail', subject_id)

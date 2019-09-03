@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from .views import (
-    subject_detail, subject_list)
+    subject_detail, subject_list, subject_add)
 
 app_name = 'subjects'
 urlpatterns = [
@@ -13,5 +13,5 @@ urlpatterns = [
 
     url(r'^(?P<subject_id>\d)/$', subject_detail, name="subject_detail"),
     # url(r'^(?P<slug>[\w-]+)/(?P<comment_id>\d+)/likes$', CommentLikeToggle.as_view(), name="like_toggle"),
-
+    url(r'^(?P<subject_id>\d)/add/$', subject_add, name="subject_add")
 ]

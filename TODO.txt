@@ -1,26 +1,27 @@
 POR HACER:
     - Corregir que cuando se suba un video (en Videoupload.html) se guarde en la base de datos que ese video pertenece
-        a esa asignatura que se ha seleccionado desde el html --> HECHO
+        a esa asignatura que se ha seleccionado desde el html   --> HECHO
 
-    - Añadir los comentarios (con los likes, etc) a los videos --> ARREGLAR
+    - Añadir los comentarios (con los likes, etc) a los videos  --> HECHO
 
     - Hacer una página html para mostrar información en detalle de cada asignatura (creo que lo estaba haciendo en
-        templates/items/subjects.html)
+        templates/items/subjects.html)                          --> HECHO
 
     - Dejarlo más bonito visualmente ya sea usando css o boostrap, o lo que sea
-
+                                                                --> HECHO
     - Revisar que todo funciona correctamente
 
-    - Contabilizar las visualizaciones --> POR HACER
+    - Contabilizar las visualizaciones --> HECHO (se podria mejorar supongo que con Javascript)
 
     - Mostrar todas las asignaturas por curso, por grado, por centro, por universidad, [desplegables]
 
-    - CORREGIR SUBJECT_DETAIL (videos)
+    - CORREGIR SUBJECT_DETAIL (videos)                          --> HECHO
 
     - Establecer un orden a los vídeos de subida (orden recomendado impuesto por el propietario)
-
+                                                                --> POR HACER
     - Establecer un checkbox que acepte condiciones a la hora de la subida de ficheros
-
+                                                                --> HECHO
     - Establecer un botón en la página de detalle de las asignaturas para incluirlo en la lista de intereses
-
+                                                                --> HECHO
     - Establecer un botón para añadir un vídeo a la lista de favoritos, y mostrar dicha lista
+                                                                --> POR HACER
