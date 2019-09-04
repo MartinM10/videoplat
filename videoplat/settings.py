@@ -24,7 +24,7 @@ SECRET_KEY = ')=p(@u4gqww0=e6e-h!q^b@kid(4s_&2j@o8+@7g!y2a78$0@a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'martinJS.pythonanywhere.com']
 
 # Application definition
 
