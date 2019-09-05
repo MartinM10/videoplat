@@ -35,9 +35,6 @@ from .forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserAdvance
 # Create your views here.
 def profile_edit(request, slug=None):
     instance = get_object_or_404(UserProfile, slug=slug)
-    top3users = UserProfile.objects.order_by('followers').reverse()[:3]
-    top3videosviews = Video.objects.order_by('views').reverse()[:3]
-    top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
     form = UserProfileForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save()
@@ -395,7 +392,9 @@ def main_page(request):
     user = request.user
 
     comments = None
-    top3users = UserProfile.objects.annotate(num_items=Count('followers')).order_by('num_items').reverse()[:3]
+    top3users = UserProfile.objects.exclude(username__icontains='admin').annotate(
+        num_items=Count('followers')).order_by(
+        'num_items').reverse()[:3]
     top3videosviews = Video.objects.order_by('views').reverse()[:3]
     top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
 
