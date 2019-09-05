@@ -1,62 +1,97 @@
+<style>
+    .carousel-inner > .item > img, p, h4,
+    .carousel-inner > .item > a > img > p > h4 {
+        width: 70%;
+        margin: auto;
+        text-align: center;
+    }
+</style>
 {% if  users.exists %}
-    {% for profile in users %}
-        {% if request.user != profile %}
+    <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
 
-            <div class="col-sm-1 col-md-2">
-                <div class="thumbnail">
-                    {% if profile.image %}
-                        <img style="height: 50%; width:50%;" src="{{ profile.image.url }}">
-                    {% else %}
-                        <img class="img-responsive" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                             style="height: 50%; width:50%">
+            <div class="item active">
+                {% for profile in users %}
+                    {% if request.user != profile %}
 
-                    {% endif %}
 
-                    <div class="caption">
-                        <h4>{{ profile }}</h4>
-                        <p>Asignaturas de interés:</p>
-                        <p>
+                        {% if profile.image %}
+                            <img style="height: 10%; width:10%;" src="{{ profile.image.url }}">
+                        {% else %}
+                            <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                                 style="height: 10%; width:10%">
+
+                        {% endif %}
+
+                        <div class="caption">
+                            <h4>{{ profile }}</h4>
+                            <h4>Interesado en las asignaturas:</h4>
                             <ul>
                                 {% for subject in profile.subjects.all %}
                                     <li>{{ subject.name }}</li>
                                 {% endfor %}
-                        <p style="padding-top: 5%"><a href="{{ profile.get_absolute_url }}" class="btn btn-primary"
-                                                      role="button">Perfil</a>
-                            {% include "items/follow_button.html" %}
-                        </p>
-                        </ul>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-{% else %}
-    {% for profile in all_users %}
-        {% if request.user != profile %}
-
-            <div class="col-sm-1 col-md-2">
-                <div class="thumbnail">
-                    {% if profile.image %}
-                        <img style="height: 50%; width:50%; " src="{{ profile.image.url }}">
-                    {% else %}
-                        <img class="img-responsive" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                             style="width: 50%;width: 50%">
-
+                                <p style="padding-top: 5%"><a href="{{ profile.get_absolute_url }}"
+                                                              class="btn btn-primary"
+                                                              role="button">Perfil</a>
+                                    {% include "items/follow_button.html" %}
+                                </p>
+                            </ul>
+                            </p>
+                        </div>
+                    {% endif %}
+                    {% if forloop.counter|divisibleby:1 and not forloop.last %}
+                        </div>
+                        <div class="item">
                     {% endif %}
 
-                    <div class="caption">
-                        <h4>{{ profile }}</h4>
-                        <p>Interesado en las asignaturas:</p>
-                        {% for subject in profile.subjects.all %}
-                            <p>{{ subject.name }}</p>
-                        {% endfor %}
-                        <p><a href="{{ profile.get_absolute_url }}" class="btn btn-primary" role="button">Perfil</a>
-                            {% include "items/follow_button.html" %}
-                        </p>
-                    </div>
+                {% endfor %}
                 </div>
+            <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </div>
+        {% else %}
+        <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="item active">
+                    {% for profile in all_users %}
+                        {% if request.user != profile %}
+
+                            {% if profile.image %}
+                                <img style="height: 10%; width:10%; " src="{{ profile.image.url }}">
+                            {% else %}
+                                <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                                     style="width: 10%;width: 10%">
+
+                            {% endif %}
+
+                            <div class="caption">
+                                <h4>{{ profile }}</h4>
+                                <h4>Interesado en las asignaturas:</h4>
+                                {% for subject in profile.subjects.all %}
+                                    <p>{{ subject.name }}</p>
+                                {% endfor %}
+                                <p><a href="{{ profile.get_absolute_url }}" class="btn btn-primary"
+                                      role="button">Perfil</a>
+                                    {% include "items/follow_button.html" %}
+                                </p>
+                            </div>
+                            {% if forloop.counter|divisibleby:1 and not forloop.last %}
+                                </div>
+                                <div class="item">
+                            {% endif %}
+                        {% endif %}
+
+                    {% endfor %}
+                    </div>
+                <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                </a>
             </div>
-        {% endif %}
-    {% endfor %}
 {% endif %}

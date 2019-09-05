@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -23,10 +25,15 @@
     <!-- Jquery-->
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
 
 </head>
 
@@ -101,30 +108,19 @@
         </div>
     </div>
 
-{% endblock %}
+{% endblock navbar %}
 
 {% include "items/messages_display.html" %}
 
-{% block laterales %}
+{% block screen %}
 
     <div class="container-fluid text-center" style="height: max-content">
         <div class="row content">
             <div class="col-sm-2 sidenav">
-                <a href="https://www.uma.es/"><img src="{% static 'images/uma_logo.png' %}"
-                                                   style="height: 100%;width: 100%"></a>
-                <p>
-                    {% block detalle %}
-
-                    {% endblock %}
-                </p>
-
-
-                {% if request.user.is_authenticated %}
-                    <p><a href="#">Link</a>
-                    </p>
-                {% endif %}
-
-
+                {% block detalle %}
+                    <a href="https://www.uma.es/"><img src="{% static 'images/uma_logo.png' %}"
+                                                       style="height: 100%;width: 100%"></a>
+                {% endblock %}
             </div>
             <div class="col-sm-8 text-left">
                 {% block content %}
@@ -136,14 +132,18 @@
 
                 {% endblock %}
             </div>
-            <div class="container-fluid">
-            </div>
         </div>
     </div>
 
-{% endblock %}
+{% endblock screen %}
 
+{% block carrusel %}
 
+{% endblock carrusel %}
+
+{% block stats %}
+
+{% endblock stats %}
 </body>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"

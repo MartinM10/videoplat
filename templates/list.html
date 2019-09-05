@@ -6,10 +6,10 @@
 
 {% block content %}
 
-    <div class="container-fluid" style="height: max-content">
+    <div class="container-fluid">
         {% if comments %}
             <div class="container-fluid">
-                <h4>Your followers posts: </h4>
+                <h4>Mensajes de tus seguidores: </h4>
             </div>
             <div class="row">
                 {% include "items/comments.html" %}
@@ -37,35 +37,11 @@
                     <strong>click en Perfil</strong> para conocerlos
                 </h4>
             </div>
-            <div class="row">
-                {% include "items/profiles.html" %}
-            </div>
+
         {% endif %}
-        <div class="row">
-            <div class="col-sm-3">
-                <h1 style="text-align: center"><span class="glyphicon glyphicon-user"></span></h1>
-                <h3 style="text-align: center">Usuarios</h3>
-                <h3 style="text-align: center"> {{ all_users.count }}</h3>
-            </div>
-            <div class="col-sm-3">
-                <h1 style="text-align: center"><span class="glyphicon glyphicon-hd-video"></span></h1>
-                <h3 style="text-align: center">Videos</h3>
-                <h3 style="text-align: center">{{ all_videos.count }}</h3>
-            </div>
-            <div class="col-sm-3">
-                <h1 style="text-align: center"><span class="glyphicon glyphicon-book"></span></h1>
-                <h3 style="text-align: center">Asignaturas</h3>
-                <h3 style="text-align: center">{{ all_subjects.count }}</h3>
-            </div>
-            <div class="col-sm-3">
-                <h1 style="text-align: center"><span class="glyphicon glyphicon-comment"></span></h1>
-                <h3 style="text-align: center">Comentarios</h3>
-                <h3 style="text-align: center">{{ all_comments.count }}</h3>
-            </div>
-        </div>
     </div>
 
-{% endblock %}
+{% endblock content %}
 
 {% block tops %}
 
@@ -114,7 +90,7 @@
         </div>
     </div>
 
-{% endblock %}
+{% endblock tops %}
 
 {% block detalle %}
     {% if user_.is_authenticated %}
@@ -126,12 +102,43 @@
 
             <a href="{% url "accounts:edit" slug=user.slug %}">
                 <img class="img-responsive" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                     style="height: 50%; width:50%;margin-top: 20px; margin-left: 40px; border-radius: 80%">
+                     style="height: 50%; width:50%;margin-top: 20px; border-radius: 80%">
             </a>
         {% endif %}
         <div>
             <a href="{% url "myvideos" %}">{{ user.video_set.count }} Videos subidos</a>
         </div>
     {% endif %}
-{% endblock %}
+{% endblock detalle %}
 
+{% block carrusel %}
+    <div class="container-fluid">
+        {% include "items/profiles.html" %}
+
+    </div>
+{% endblock carrusel %}
+
+{% block stats %}
+    <div class="row">
+        <div class="col-sm-3">
+            <h1 style="text-align: center"><span class="glyphicon glyphicon-user"></span></h1>
+            <h3 style="text-align: center">Usuarios</h3>
+            <h3 style="text-align: center"> {{ all_users.count }}</h3>
+        </div>
+        <div class="col-sm-3">
+            <h1 style="text-align: center"><span class="glyphicon glyphicon-hd-video"></span></h1>
+            <h3 style="text-align: center">Videos</h3>
+            <h3 style="text-align: center">{{ all_videos.count }}</h3>
+        </div>
+        <div class="col-sm-3">
+            <h1 style="text-align: center"><span class="glyphicon glyphicon-book"></span></h1>
+            <h3 style="text-align: center">Asignaturas</h3>
+            <h3 style="text-align: center">{{ all_subjects.count }}</h3>
+        </div>
+        <div class="col-sm-3">
+            <h1 style="text-align: center"><span class="glyphicon glyphicon-comment"></span></h1>
+            <h3 style="text-align: center">Comentarios</h3>
+            <h3 style="text-align: center">{{ all_comments.count }}</h3>
+        </div>
+    </div>
+{% endblock stats %}
