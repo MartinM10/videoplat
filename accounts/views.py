@@ -335,7 +335,6 @@ def advanced_search_videos(request):
                 user = form.cleaned_data.get('user')
                 description = form.cleaned_data.get('description')
                 likes = form.cleaned_data.get('likes')
-                dislikes = form.cleaned_data.get('dislikes')
                 views = form.cleaned_data.get('views')
                 subjects = form.cleaned_data.get('subjects')
                 rating = form.cleaned_data.get('rating')
@@ -343,7 +342,6 @@ def advanced_search_videos(request):
                 end_date = form.cleaned_data.get('end_date')
                 query_video = Video.objects.all().order_by('-views')
 
-                print(user)
                 if title:
                     query_video = query_video.filter(title__icontains=title).order_by('-views')
                 if user:
@@ -351,9 +349,7 @@ def advanced_search_videos(request):
                 if description:
                     query_video = query_video.filter(description__icontains=description).order_by('-views')
                 if likes:
-                    query_video = query_video.filter(video__likes=likes).order_by('-views')
-                if dislikes:
-                    query_video = query_video.filter(video__dislikes=dislikes).order_by('-views')
+                    query_video = query_video.filter(likes=likes).order_by('-views')
                 if views:
                     query_video = query_video.filter(views__gte=views).order_by('-views')
                 if subjects:
@@ -361,7 +357,6 @@ def advanced_search_videos(request):
                 if rating:
                     query_video = query_video.filter(content_type__overall_rating__rating__gte=rating).order_by(
                         '-views')
-                print(query_video)
                 context = {'videos': query_video, 'form': form}
                 return render(request, "advanced_search_videos.html", context)
 

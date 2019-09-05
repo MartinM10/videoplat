@@ -63,7 +63,7 @@
 
                             <tr>
                                 <td>{{ user.username }}</td>
-                                <td></td>
+                                <td>{{ user.get_average_rating }}</td>
                                 <td>{{ user.first_name }}</td>
                                 <td>{{ user.last_name }}</td>
                                 <td>{{ user.email }}</td>
@@ -97,11 +97,8 @@
                             <th style="text-align: center">Grado</th>
                             <th style="text-align: center">Centro</th>
                             <th style="text-align: center">Universidad</th>
-                            <th style="text-align: center">Creditos</th>
-                            <th style="text-align: center">Añadida</th>
                             <th style="text-align: center">Validada</th>
                             <th style="text-align: center">Enlace</th>
-
                         </tr>
                         </thead>
 
@@ -115,8 +112,6 @@
                                 <td>{{ subject.degree }}</td>
                                 <td>{{ subject.degree.center }}</td>
                                 <td>{{ subject.degree.center.university }}</td>
-                                <td>{{ subject.degree.credits }}</td>
-                                <td>{{ subject.added }}</td>
                                 <td>{{ subject.validated }}</td>
                                 <td><a href="{% url "subjects:subject_detail" subject_id=subject.id %}"> Enlace</a></td>
 
@@ -169,7 +164,7 @@
                                     <td>{{ video.views }}</td>
                                     <td>{{ video.likes.count }}</td>
                                     <td>{{ video.dislikes.count }}</td>
-                                    <td>{{ video.rating.count }}</td>
+                                    <td>{{ video.get_average_rating }}</td>
                                     <td>{{ video.added }}</td>
                                     <td><a href="{% url 'videos:video_id' video.id %}">Enlace</a></td>
                                 </tr>

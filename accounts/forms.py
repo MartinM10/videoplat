@@ -100,10 +100,10 @@ class UserAdvancedSearchSubjectForm(forms.Form):
 class UserAdvancedSearchVideoForm(forms.Form):
     title = forms.CharField(label="Título", required=False)
     user = forms.CharField(label="Propietario", required=False)
-    subjects = forms.ModelChoiceField(queryset=Subject.objects.all().order_by('-name'), empty_label="", required=False)
+    subjects = forms.ModelChoiceField(label="Asignatura", queryset=Subject.objects.all().order_by('name'),
+                                      empty_label="", required=False)
     views = forms.IntegerField(label="Nº de Visualizaciones (>=)", required=False)
     likes = forms.IntegerField(label="Nº de Likes (>=)", required=False)
-    dislikes = forms.IntegerField(label="Nº de Dislikes (>=)", required=False)
     description = forms.CharField(label="Descripcion", required=False)
     rating = forms.IntegerField(label="Rating (>=)", required=False)
     start_date = forms.DateField(

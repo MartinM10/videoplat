@@ -21,8 +21,6 @@
                         <th style="text-align: center">Grado</th>
                         <th style="text-align: center">Centro</th>
                         <th style="text-align: center">Universidad</th>
-                        <th style="text-align: center">Creditos</th>
-                        <th style="text-align: center">Creada</th>
                         <th style="text-align: center">Validada</th>
                         <th style="text-align: center">Enlace</th>
                     </tr>
@@ -35,8 +33,6 @@
                             <td>{{ subject.degree }}</td>
                             <td>{{ subject.degree.center }}</td>
                             <td>{{ subject.degree.center.university }}</td>
-                            <td>{{ subject.degree.credits }}</td>
-                            <td>{{ subject.added }}</td>
                             <td>{{ subject.validated }}</td>
                             <td><a href="{% url 'subjects:subject_detail' subject.id %}">Enlace</a></td>
                         </tr>
@@ -54,7 +50,7 @@
             $('#subject-table thead tr').clone(true).appendTo('#subject-table thead');
             $('#subject-table thead tr:eq(1) th').each(function (i) {
                 var title = $(this).text();
-                $(this).html('<input type="text" style="width: 110%;" placeholder="' + title + '" />');
+                $(this).html('<input type="text" style="width: 100%;" placeholder="' + title + '" />');
 
                 $('input', this).on('keyup change', function () {
                     if (table.column(i).search() !== this.value) {
