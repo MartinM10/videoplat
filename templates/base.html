@@ -137,9 +137,11 @@
 
 {% endblock screen %}
 
-{% block carrusel %}
+{% if request.user.is_authenticated %}
+    {% block carrusel %}
 
-{% endblock carrusel %}
+    {% endblock carrusel %}
+{% endif %}
 
 {% block stats %}
 
