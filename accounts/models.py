@@ -53,7 +53,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     )
     height_field = models.IntegerField(default=0, null=True, blank=True)
     width_field = models.IntegerField(default=0, null=True, blank=True)
-    followers = models.ManyToManyField('self', blank=True, related_name="followers")
+    followers = models.ManyToManyField('self', blank=True, related_name="followers1", symmetrical=False)
+    num_followers = models.BigIntegerField(default=0, null=True, blank=True)
     subjects = models.ManyToManyField('subjects.Subject', blank=True, related_name="users_interests_subjects")
     USERNAME_FIELD = 'username'
     objects = UserProfileManager()

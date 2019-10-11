@@ -43,8 +43,8 @@
                             <td>{{ subject.degree }}</td>
                             <td>{{ video.comments }}</td>
                             <td>{{ video.views }}</td>
-                            <td>{{ video.likes.count }}</td>
-                            <td>{{ video.dislikes.count }}</td>
+                            <td>{{ video.num_likes }}</td>
+                            <td>{{ video.num_dislikes }}</td>
                             <td>{{ video.get_average_rating }}</td>
                             <td>{{ video.added }}</td>
                             <td><a href="{% url 'videos:video_id' video.id %}">Enlace</a></td>

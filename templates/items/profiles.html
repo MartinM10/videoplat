@@ -24,13 +24,13 @@
                         {% endif %}
 
                         <div class="caption">
-                            <h4>{{ profile }}</h4>
+                           <h4><b>{{ profile }}</b></h4>
                             <h4>Interesado en las asignaturas:</h4>
                             <ul>
                                 {% for subject in profile.subjects.all %}
-                                    <li>{{ subject.name }}</li>
+                                    <u><p>{{ subject.name }}</p></u>
                                 {% endfor %}
-                                <p style="padding-top: 5%"><a href="{{ profile.get_absolute_url }}"
+                                <p style="padding-top: 2%"><a href="{{ profile.get_absolute_url }}"
                                                               class="btn btn-primary"
                                                               role="button">Perfil</a>
                                     {% include "items/follow_button.html" %}
@@ -47,7 +47,7 @@
                 {% endfor %}
                 </div>
             <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-                <i class="fa fa-angle-left"></i>
+                <i class="fa fa-angle-left" style="padding-left: 50%; padding-top: 1%"></i>
             </a>
             <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
                 <i class="fa fa-angle-right"></i>
@@ -69,13 +69,14 @@
                             {% endif %}
 
                             <div class="caption">
-                                <h4>{{ profile }}</h4>
+                                <h4><b>{{ profile }}</b></h4>
                                 <h4>Interesado en las asignaturas:</h4>
                                 {% for subject in profile.subjects.all %}
-                                    <p>{{ subject.name }}</p>
+                                    <u><p>{{ subject.name }}</p></u>
                                 {% endfor %}
-                                <p><a href="{{ profile.get_absolute_url }}" class="btn btn-primary"
-                                      role="button">Perfil</a>
+                                <p style="padding-top: 2%"><a href="{{ profile.get_absolute_url }}"
+                                                              class="btn btn-primary"
+                                                              role="button">Perfil</a>
                                     {% include "items/follow_button.html" %}
                                 </p>
                             </div>
@@ -88,7 +89,7 @@
                     {% endfor %}
                     </div>
                 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-                    <i class="fa fa-angle-left"></i>
+                    <i class="fa fa-angle-left" style="padding-left: 50%; padding-top: 1%"></i>
                 </a>
                 <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
                     <i class="fa fa-angle-right"></i>

@@ -40,7 +40,7 @@
                                 <td>{{ user.first_name }}</td>
                                 <td>{{ user.last_name }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.followers.count }}</td>
+                                <td>{{ user.num_followers }}</td>
                                 <td>{{ user.video_set.count }}</td>
                                 <td><a href="{% url "accounts:detail" slug=user.slug %}"> Enlace</a></td>
 

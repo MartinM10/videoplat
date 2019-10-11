@@ -53,7 +53,7 @@
             <ol>
                 {% for t3u in top3users %}
                     <a href="{% url "accounts:detail" slug=t3u.slug %}">
-                        <li>{{ t3u.username }} | {{ t3u.followers.count }} followers</li>
+                        <li>{{ t3u.username }} | {{ t3u.num_followers }} followers</li>
                     </a>
                 {% endfor %}
             </ol>
@@ -112,9 +112,9 @@
 {% endblock detalle %}
 
 {% block carrusel %}
+    <h3 style="text-align: center">Usuarios recomendados</h3>
     <div class="container-fluid">
         {% include "items/profiles.html" %}
-
     </div>
 {% endblock carrusel %}
 

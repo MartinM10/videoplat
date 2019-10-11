@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
+from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
@@ -22,9 +23,13 @@ class Video(models.Model):
     edited = models.DateTimeField(auto_now=True)
     parent = models.ForeignKey("self", null=True, blank="True", on_delete=models.SET_NULL)
     likes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_likes")
+    num_likes = models.BigIntegerField(default=0, blank=True, null=True)
     dislikes = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="videos_dislikes")
+    num_dislikes = models.BigIntegerField(default=0, blank=True, null=True)
+
     rating = models.ManyToManyField('accounts.UserProfile', blank=True, related_name="video_rating",
                                     through='RatingVideo')
+
     views = models.BigIntegerField(null=True, blank=True, default=0)
     subjects = models.ManyToManyField(Subject, blank=True, related_name="videos_subjects")
     comments = models.IntegerField(default=0, null=True, blank=True)

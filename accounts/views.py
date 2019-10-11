@@ -9,7 +9,7 @@ from comments.models import Comment
 from django.db.models import Q, Count
 from django.contrib import messages
 
-from itertools import chain
+from itertools import chain, product
 
 #  from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect  # Http404   HttpResponse
@@ -212,7 +212,7 @@ def search(request):
     if request.user.is_authenticated:
         query = request.GET.get("search")
         user_ = request.user
-        print(query)
+        # print(query)
         query_list = None
         if query:
             query_user = UserProfile.objects.filter(
@@ -262,7 +262,7 @@ def advanced_search_users(request):
                 if email:
                     query_user = query_user.filter(email__icontains=email)
                 if followers:
-                    query_user = query_user.filter(followers=followers)
+                    query_user = query_user.filter(num_followers__gte=followers)
                 if subjects:
                     query_user = query_user.filter(subjects__name__icontains=subjects)
 
@@ -346,13 +346,13 @@ def advanced_search_videos(request):
                 if description:
                     query_video = query_video.filter(description__icontains=description).order_by('-views')
                 if likes:
-                    query_video = query_video.filter(likes=likes).order_by('-views')
+                    query_video = query_video.filter(num_likes__gte=likes).order_by('-views')
                 if views:
                     query_video = query_video.filter(views__gte=views).order_by('-views')
                 if subjects:
                     query_video = query_video.filter(subjects__name__icontains=subjects).order_by('-views')
                 if rating:
-                    query_video = query_video.filter(content_type__overall_rating__rating__gte=rating).order_by(
+                    query_video = query_video.filter(get_average_rating=rating).order_by(
                         '-views')
                 context = {'videos': query_video, 'form': form}
                 return render(request, "advanced_search_videos.html", context)
@@ -392,9 +392,12 @@ def main_page(request):
     user = request.user
 
     comments = None
-    top3users = UserProfile.objects.exclude(username__icontains='admin').annotate(
+    top3users = UserProfile.objects.exclude(username__icontains='admin').order_by('num_followers').reverse()[:3]
+    '''
+        UserProfile.objects.exclude(username__icontains='admin').annotate(
         num_items=Count('followers')).order_by(
         'num_items').reverse()[:3]
+    '''
     top3videosviews = Video.objects.order_by('views').reverse()[:3]
     top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
 
@@ -482,10 +485,18 @@ class VideoLikeToggle(RedirectView):
         if user.is_authenticated:
             if user in video_instance.likes.all():
                 video_instance.likes.remove(user)
+
+                if video_instance.num_likes > 0:
+                    video_instance.num_likes -= 1
             else:
                 video_instance.likes.add(user)
+                video_instance.num_likes += 1
+
                 if user in video_instance.dislikes.all():
                     video_instance.dislikes.remove(user)
+            print(video_instance.num_likes)
+            video_instance.save()
+
         else:
             return "/login"
         return url_
@@ -504,10 +515,16 @@ class VideoDisLikeToggle(RedirectView):
         if user.is_authenticated:
             if user in video_instance.dislikes.all():
                 video_instance.dislikes.remove(user)
+                if video_instance.num_dislikes > 0:
+                    video_instance.num_dislikes -= 1
             else:
                 video_instance.dislikes.add(user)
+                video_instance.num_dislikes += 1
+
                 if user in video_instance.likes.all():
                     video_instance.likes.remove(user)
+            print(video_instance.num_dislikes)
+            video_instance.save()
         else:
             return "/login"
         return url_
@@ -545,14 +562,23 @@ class FollowToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             slug = self.kwargs.get("slug")
+
             # print(slug)
             user = self.request.user
+            # print(user)
             user_to_follow = UserProfile.objects.get(slug=slug)
             url_ = user.get_absolute_url()
             if user_to_follow in user.followers.all():
                 user.followers.remove(user_to_follow)
+                if user_to_follow.num_followers > 0:
+                    user_to_follow.num_followers -= 1
+                    # print(user_to_follow.num_followers)
+
             else:
                 user.followers.add(user_to_follow)
+                user_to_follow.num_followers += 1
+                # print(user_to_follow.num_followers)
+            user_to_follow.save()
             # print(user.followers.all())
             return user_to_follow.get_absolute_url()
         else:
@@ -631,7 +657,7 @@ def uploadVideo(request):
         new_video.save(),
         messages.success(request, "item saved")
         # video = new_video,
-        print(request.POST['subjects'])
+        # print(request.POST['subjects'])
         subject = Subject.objects.get(id=request.POST['subjects'])
         new_video.subjects.add(subject)
 
