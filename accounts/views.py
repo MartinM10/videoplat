@@ -399,7 +399,7 @@ def main_page(request):
         'num_items').reverse()[:3]
     '''
     top3videosviews = Video.objects.order_by('views').reverse()[:3]
-    top3videoslikes = Video.objects.order_by('likes').reverse()[:3]
+    top3videoslikes = Video.objects.order_by('num_likes').reverse()[:3]
 
     if user.is_authenticated:
         user_mod = get_object_or_404(UserProfile, pk=user.pk)
