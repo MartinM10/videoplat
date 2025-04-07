@@ -22,5 +22,5 @@ python manage runserver
 - like system can user like any user or video
 - Follow other users
 - Upload videos
-- See videos
-- edit his information , edit data and his image.
+- Watch videos
+- edit profile information , edit data and profile picture.
